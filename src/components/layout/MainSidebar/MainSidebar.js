@@ -22,11 +22,11 @@ class MainSidebar extends React.Component {
   }
 
   componentWillMount() {
-    Store.addChangeListener(Constants.TOGGLE_SIDEBAR, this.onChange);
+    Store.addChangeListener(Constants.CHANGE, this.onChange);
   }
 
   componentWillUnmount() {
-    Store.removeChangeListener(Constants.TOGGLE_SIDEBAR, this.onChange);
+    Store.removeChangeListener(Constants.CHANGE, this.onChange);
   }
 
   onChange() {
@@ -48,7 +48,7 @@ class MainSidebar extends React.Component {
     return (
       <Col tag="aside" className={classes} lg={{ size: 2 }} md={{ size: 3 }}>
         <SidebarMainNavbar hideLogoText={this.props.hideLogoText} />
-        <SidebarSearch />
+        {/* <SidebarSearch /> */}
         <SidebarNavItems />
       </Col>
     );
