@@ -7,14 +7,7 @@ export default [
       sort: true
     }
   },
-  // {
-  //   name: "date",
-  //   label: "date",
-  //   options: {
-  //     filter: true,
-  //     sort: true
-  //   }
-  // },
+  
   {
     name: "Emetteur",
     label: "Emetteur",
@@ -47,6 +40,7 @@ export default [
       sort: true
     }
   },
+  
   {
     name: "Somme",
     label: "Somme",
@@ -62,5 +56,13 @@ export default [
       filter: false,
       sort: true
     }
-  }
+  },
+  {
+    name: "date",
+    label: "date",
+    options: {
+      filter: true,
+      sort: true
+     }
+   }
 ];

@@ -13,7 +13,6 @@ const defaultToolbarStyles = {
 class CustomToolbar extends React.Component {
   state = { open: false };
   handleClick = () => {
-    console.log("clicked on icon!");
     this.toggle();
   };
 
@@ -32,9 +31,9 @@ class CustomToolbar extends React.Component {
             <AddIcon className={classes.deleteIcon} />
           </IconButton>
         </Tooltip>
-        <Modal size="lg" open={open} toggle={this.toggle}>
+        <Modal size="lg" open={open} >
           <ModalBody>
-            <ChequeModal />
+            <ChequeModal toggle={this.toggle} />
           </ModalBody>
         </Modal>
       </React.Fragment>
