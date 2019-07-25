@@ -64,7 +64,7 @@ BlogOverview.propTypes = {
 BlogOverview.defaultProps = {
   smallStats: [
     {
-      label: "Posts",
+      label: "Cheques",
       value: "2,390",
       percentage: "4.7%",
       increase: true,
