@@ -7,12 +7,12 @@ export default function() {
       htmlAfter: ""
     },
     {
-      title: "Appeles D'offres",
+      title: "Appeles d'offres",
       htmlBefore: '<i class="material-icons">gavel</i>',
       to: "/appelesOffres"
     },
     {
-      title: "Gestion Des Cheques",
+      title: "Gestion des cheques",
       htmlBefore: '<i class="material-icons">payment</i>',
       to: "/cheques"
     }

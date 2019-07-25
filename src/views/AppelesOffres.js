@@ -237,6 +237,14 @@ class AppelsOffres extends Component {
     const { open } = this.state;
     return (
       <Container fluid className="main-content-container px-4">
+        <Row noGutters className="page-header py-4">
+          <PageTitle
+            sm="4"
+            title="Gestion des appels d'offres"
+            subtitle=""
+            className="text-sm-left"
+          />
+        </Row>
         <Card className="mt-1">
           <CardBody className="p-0 pb-3">{baord}</CardBody>
         </Card>
