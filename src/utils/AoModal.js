@@ -1,9 +1,11 @@
 import React from "react";
 import { ListGroup, ListGroupItem, Row, Col } from "shards-react";
+import lanesLayout from "./lanesLayout";
 
 const AoModal = props => {
   let data = props.data;
   console.log(data);
+  console.log(lanesLayout);
   return (
     <div>
       <p>{data.chef_ouvrage}</p>
