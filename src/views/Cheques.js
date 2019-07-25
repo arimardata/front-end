@@ -67,8 +67,8 @@ class Cheque extends Component {
         <Row noGutters className="page-header py-4">
           <PageTitle
             sm="4"
-            title="Gestion Des Utilisateurs "
-            subtitle="Lister Utilisateurs"
+            title="Gestion Des Cheques"
+            subtitle="Gerer  les Cheques"
             className="text-sm-left"
           />
         </Row>

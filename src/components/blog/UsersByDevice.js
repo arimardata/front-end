@@ -106,20 +106,20 @@ UsersByDevice.propTypes = {
 };
 
 UsersByDevice.defaultProps = {
-  title: "Users by device",
+  title: "Appels D'offres",
   chartData: {
     datasets: [
       {
         hoverBorderColor: "#ffffff",
         data: [68.3, 24.2, 7.5],
         backgroundColor: [
-          "rgba(0,123,255,0.9)",
-          "rgba(0,123,255,0.5)",
-          "rgba(0,123,255,0.3)"
+          "rgba(0,255,0,0.5)",
+          "rgba(198,16,16,0.5)",
+          "rgba(227,202,96,0.5)"
         ]
       }
     ],
-    labels: ["Desktop", "Tablet", "Mobile"]
+    labels: ["Retenus", "Non Retenus ", "En attente"]
   }
 };
 

@@ -62,8 +62,8 @@ class Tables extends React.Component {
         <Row noGutters className="page-header py-4">
           <PageTitle
             sm="4"
-            title="Gestion Des Utilisateurs "
-            subtitle="Lister Utilisateurs"
+            title="Gestion Des Cheques "
+            subtitle="Lister et gerer les  Cheques"
             className="text-sm-left"
           />
         </Row>

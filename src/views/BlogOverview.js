@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Container, Row, Col } from "shards-react";
+import { Alert, Container, Row, Col } from "shards-react";
 
 import PageTitle from "./../components/common/PageTitle";
 import SmallStats from "./../components/common/SmallStats";
@@ -13,6 +13,10 @@ import TopReferrals from "./../components/common/TopReferrals";
 const BlogOverview = ({ smallStats }) => (
   <Container fluid className="main-content-container px-4">
     {/* Page Header */}
+    <Alert className="mb-0">
+      <i className="fa fa-info mx-2" />
+      Des Statistiques Aleatoires pour le moment
+    </Alert>
     <Row noGutters className="page-header py-4">
       <PageTitle
         title="Statistiques"
@@ -64,7 +68,7 @@ BlogOverview.propTypes = {
 BlogOverview.defaultProps = {
   smallStats: [
     {
-      label: "Cheques",
+      label: "Total d'appels d'offres ",
       value: "2,390",
       percentage: "4.7%",
       increase: true,
@@ -82,7 +86,7 @@ BlogOverview.defaultProps = {
       ]
     },
     {
-      label: "Pages",
+      label: "Retrnus",
       value: "182",
       percentage: "12.4",
       increase: true,
@@ -100,7 +104,7 @@ BlogOverview.defaultProps = {
       ]
     },
     {
-      label: "Comments",
+      label: "Non Retenus",
       value: "8,147",
       percentage: "3.8%",
       increase: false,
@@ -119,7 +123,7 @@ BlogOverview.defaultProps = {
       ]
     },
     {
-      label: "New Customers",
+      label: "Favoris",
       value: "29",
       percentage: "2.71%",
       increase: false,
@@ -138,7 +142,7 @@ BlogOverview.defaultProps = {
       ]
     },
     {
-      label: "Subscribers",
+      label: "En attente",
       value: "17,281",
       percentage: "2.4%",
       increase: false,
