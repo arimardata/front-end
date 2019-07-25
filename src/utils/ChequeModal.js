@@ -12,36 +12,34 @@ import {
   Button
 } from "shards-react";
 import fetchApi from "./fetchApi";
-import { TableBody,MenuItem } from "@material-ui/core";
-import { ValidatorForm, TextValidator, SelectValidator } from 'react-material-ui-form-validator';
-import TextField from '@material-ui/core/TextField';
-
+import { Constants, Store, Dispatcher } from "../flux";
+import { TableBody, MenuItem } from "@material-ui/core";
+import {
+  ValidatorForm,
+  TextValidator,
+  SelectValidator
+} from "react-material-ui-form-validator";
+import TextField from "@material-ui/core/TextField";
 
 class ChequeModal extends React.Component {
-
-  //let data = props.data;
-  //console.log(data);
   constructor() {
     super();
 
-    this.state = {
-
-
-    };
-
+    this.state = {};
   }
 
   handleOnChange = e => {
-    const { target: { value, name } } = e;
+    const {
+      target: { value, name }
+    } = e;
 
     this.setState({
       [name]: value
     });
-  }
+  };
 
-  handleSubmit = async (e) => {
+  handleSubmit = async e => {
     // your submit logic
-    
 
     const data = await fetchApi({
       method: "POST",
@@ -50,22 +48,32 @@ class ChequeModal extends React.Component {
       token: window.localStorage.getItem("token"),
       body: this.state
     });
-    console.log(data)
-    this.props.toggle()
-  }
-  HandleAnnuler=()=>{
-this.setState({})
-this.props.toggle()
-  }
+    Dispatcher.dispatch({
+      actionType: Constants.TABLE_CHEQUE_UPDATED
+    });
+    this.props.toggle();
+  };
+  HandleAnnuler = () => {
+    this.setState({});
+    this.props.toggle();
+  };
   render() {
-    const { banque, somme, alerte, date, etat, emetteur, recepteur } = this.state;
+    const {
+      banque,
+      somme,
+      alerte,
+      date,
+      etat,
+      emetteur,
+      recepteur
+    } = this.state;
     return (
       <ListGroup flush>
         <ListGroupItem className="p-3">
           <Row>
             <Col>
               <ValidatorForm
-              autoComplete="off"
+                autoComplete="off"
                 ref="form"
                 onSubmit={this.handleSubmit}
                 onError={errors => console.log(errors)}
@@ -87,8 +95,11 @@ this.props.toggle()
                       onChange={this.handleOnChange}
                       name="somme"
                       value={somme}
-                      validators={["required",'isFloat']}
-                      errorMessages={["Ce Champ est Obligatoir : ", "la valeur doit etre numerique"]}
+                      validators={["required", "isFloat"]}
+                      errorMessages={[
+                        "Ce Champ est Obligatoir : ",
+                        "la valeur doit etre numerique"
+                      ]}
                     />
                   </Col>
                 </Row>
@@ -132,16 +143,11 @@ this.props.toggle()
                       onChange={this.handleOnChange}
                       name="etat"
                       label="Etat"
-                      
                       validators={["required"]}
                       errorMessages={["Ce Champ est Obligatoir : "]}
                     >
-                      <MenuItem value={"entrant"}>
-                        Entrant
-                      </MenuItem>
-                      <MenuItem value={"sortant"}>
-                        Sortant{" "}
-                      </MenuItem>
+                      <MenuItem value={"entrant"}>Entrant</MenuItem>
+                      <MenuItem value={"sortant"}>Sortant </MenuItem>
                     </SelectValidator>
                   </Col>
                   <Col md="4" className="form-group">
@@ -153,18 +159,22 @@ this.props.toggle()
                       value={date}
                       validators={["required"]}
                       errorMessages={["Ce Champ est Obligatoir : "]}
-                    /></Col>
+                    />
+                  </Col>
                 </Row>
-                <Button type="submit" /*onClick={this.handleResult}*/>Enrengistrer Cheque</Button>
-                <Button theme="danger" onClick={this.HandleAnnuler}>Annuler</Button>
+                <Button type="submit" /*onClick={this.handleResult}*/>
+                  Enrengistrer Cheque
+                </Button>
+                <Button theme="danger" onClick={this.HandleAnnuler}>
+                  Annuler
+                </Button>
               </ValidatorForm>
             </Col>
           </Row>
         </ListGroupItem>
       </ListGroup>
     );
-  };
+  }
 }
-
 
 export default ChequeModal;

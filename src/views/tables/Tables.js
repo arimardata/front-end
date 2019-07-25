@@ -3,6 +3,7 @@ import { Grid } from "@material-ui/core";
 import MUIDataTable from "mui-datatables";
 
 import fetchApi from "../../utils/fetchApi";
+import { Store, Constants } from "../../flux";
 
 import Options from "./cheque/Options";
 import Columns from "./cheque/Columns";
@@ -20,17 +21,10 @@ class Tables extends React.Component {
   }
 
   onChange() {
-    // let id = Store.getBlockedUser();
-    // let cheques = this.state.cheques;
-    // for (let i = 0; i < cheques.length; i++) {
-    //   if (users[i][0] == id) {
-    //     users[i][2] = users[i][2] === "Bloqué" ? "Débloqué" : "Bloqué";
-    //   }
-    // }
-    // this.setState({ users });
+    this.fetchCheques();
   }
 
-  async componentWillMount() {
+  fetchCheques = async () => {
     const data = await fetchApi({
       method: "GET",
       url: "/api/Cheques/find",
@@ -49,8 +43,17 @@ class Tables extends React.Component {
         elmnt.date
       ])
     );
-
+    console.log(cheques);
     this.setState({ cheques });
+  };
+
+  async componentWillMount() {
+    this.fetchCheques();
+    Store.addChangeListener(Constants.TABLE_CHEQUE_UPDATED, this.onChange);
+  }
+
+  componentWillUnmount() {
+    Store.removeChangeListener(Constants.TABLE_CHEQUE_UPDATED, this.onChange);
   }
 
   render() {

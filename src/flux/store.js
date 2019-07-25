@@ -52,10 +52,16 @@ class Store extends EventEmitter {
       case Constants.CLEARUSERDATA:
         this.cleareUserData();
         break;
+      case Constants.TABLE_CHEQUE_UPDATED:
+        this.reloadTable();
+        break;
       default:
     }
   }
 
+  reloadTable = () => {
+    this.emit(Constants.TABLE_CHEQUE_UPDATED);
+  };
   setUserData(payload) {
     _store.userData = payload;
     this.emit(Constants.LOGIN);
@@ -70,6 +76,7 @@ class Store extends EventEmitter {
     _store.userData = {};
     this.emit(Constants.CLEARUSERDATA);
   }
+
   addChangeListener(action, callback) {
     this.on(action, callback);
   }

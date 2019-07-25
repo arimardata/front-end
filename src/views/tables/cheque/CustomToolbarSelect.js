@@ -10,9 +10,6 @@ import fetchApi from "../../../utils/fetchApi";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 
-
-
-
 const defaultToolbarSelectStyles = {
   iconButton: {},
   iconContainer: {
@@ -44,7 +41,7 @@ class CustomToolbarSelect extends React.Component {
   };
 
   handleClickDeselectAll = () => {
-    console.log(this.props.selectedRows)
+    console.log(this.props.selectedRows);
     this.props.setSelectedRows([]);
   };
 
@@ -64,48 +61,44 @@ class CustomToolbarSelect extends React.Component {
   delete = () => {
     //console.log(this.props.displayData)
 
-    let data = this.props.selectedRows.data
-    data.map(async el => {
+    let data = this.props.selectedRows.data;
+    data.map(el => {
       let index = el.index;
-      let id = this.props.displayData[index].data[0]
-      console.log(id)
-      //console.log(index)
-      const data = await fetchApi({
+      let id = this.props.displayData[index].data[0];
+      fetchApi({
         method: "DELETE",
         url: "/api/Cheques/delete/" + id,
         token: window.localStorage.getItem("token")
+      }).then(data => {});
+      Dispatcher.dispatch({
+        actionType: Constants.TABLE_CHEQUE_UPDATED
       });
-
-    })
-
-
-  }
+    });
+  };
 
   render() {
     const { classes } = this.props;
     let edit;
- 
+
     if (this.props.selectedRows.data.length == 1)
-      edit = <Tooltip title={"Modifier"}>
-        <IconButton
-          className={classes.iconButton}
-        //onClick={this.delete}
-        >
-          <EditIcon />
-        </IconButton>
-      </Tooltip>
+      edit = (
+        <Tooltip title={"Modifier"}>
+          <IconButton
+            className={classes.iconButton}
+            //onClick={this.delete}
+          >
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
+      );
     return (
       <div className={classes.iconContainer}>
         <Tooltip title={"Tous supprimer"}>
-          <IconButton
-            className={classes.iconButton}
-            onClick={this.delete}
-          >
+          <IconButton className={classes.iconButton} onClick={this.delete}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
         {edit}
-
       </div>
     );
   }
