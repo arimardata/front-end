@@ -3,8 +3,8 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 
-import LoginPage from "./components/authontication/LoginPage";
-import Dashboard from "./dashbord/dashboard";
+import LoginPage from "./components/authentication/LoginPage";
+import Dashboard from "./Dashboard";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./shards-dashboard/styles/shards-dashboards.1.1.0.min.css";
 import { Store, Constants } from "./flux";

@@ -2,11 +2,11 @@ import React from "react";
 import { Nav } from "shards-react";
 
 import SidebarNavItem from "./SidebarNavItem";
-import { Store } from "../../../flux";
+import { Store, Constants } from "../../../flux";
 
 class SidebarNavItems extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       navItems: Store.getSidebarItems()
@@ -16,11 +16,11 @@ class SidebarNavItems extends React.Component {
   }
 
   componentWillMount() {
-    Store.addChangeListener(this.onChange);
+    Store.addChangeListener(Constants.TOGGLE_SIDEBAR, this.onChange);
   }
 
   componentWillUnmount() {
-    Store.removeChangeListener(this.onChange);
+    Store.removeChangeListener(Constants.TOGGLE_SIDEBAR, this.onChange);
   }
 
   onChange() {
@@ -40,7 +40,7 @@ class SidebarNavItems extends React.Component {
           ))}
         </Nav>
       </div>
-    )
+    );
   }
 }
 

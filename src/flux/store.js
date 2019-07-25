@@ -61,17 +61,21 @@ class Store extends EventEmitter {
     this.emit(Constants.LOGIN);
   }
 
+  getUserData() {
+    return _store.userData;
+  }
+
   cleareUserData() {
     window.localStorage.clear();
     _store.userData = {};
     this.emit(Constants.CLEARUSERDATA);
   }
-  addChangeListener(callback) {
-    this.on(Constants.CHANGE, callback);
+  addChangeListener(action, callback) {
+    this.on(action, callback);
   }
 
-  removeChangeListener(callback) {
-    this.removeListener(Constants.CHANGE, callback);
+  removeChangeListener(action, callback) {
+    this.removeListener(action, callback);
   }
 }
 

@@ -7,7 +7,7 @@ import SidebarMainNavbar from "./SidebarMainNavbar";
 import SidebarSearch from "./SidebarSearch";
 import SidebarNavItems from "./SidebarNavItems";
 
-import { Store } from "../../../flux";
+import { Store, Constants } from "../../../flux";
 
 class MainSidebar extends React.Component {
   constructor(props) {
@@ -22,11 +22,11 @@ class MainSidebar extends React.Component {
   }
 
   componentWillMount() {
-    Store.addChangeListener(this.onChange);
+    Store.addChangeListener(Constants.TOGGLE_SIDEBAR, this.onChange);
   }
 
   componentWillUnmount() {
-    Store.removeChangeListener(this.onChange);
+    Store.removeChangeListener(Constants.TOGGLE_SIDEBAR, this.onChange);
   }
 
   onChange() {
@@ -46,12 +46,7 @@ class MainSidebar extends React.Component {
     );
 
     return (
-      <Col
-        tag="aside"
-        className={classes}
-        lg={{ size: 2 }}
-        md={{ size: 3 }}
-      >
+      <Col tag="aside" className={classes} lg={{ size: 2 }} md={{ size: 3 }}>
         <SidebarMainNavbar hideLogoText={this.props.hideLogoText} />
         <SidebarSearch />
         <SidebarNavItems />

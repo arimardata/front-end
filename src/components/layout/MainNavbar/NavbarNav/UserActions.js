@@ -10,6 +10,8 @@ import {
   NavLink
 } from "shards-react";
 
+import { Dispatcher, Constants } from "../../../../flux";
+
 export default class UserActions extends React.Component {
   constructor(props) {
     super(props);
@@ -26,6 +28,10 @@ export default class UserActions extends React.Component {
       visible: !this.state.visible
     });
   }
+
+  logout = () => {
+    Dispatcher.dispatch({ actionType: Constants.CLEARUSERDATA, payload: {} });
+  };
 
   render() {
     return (
@@ -52,7 +58,12 @@ export default class UserActions extends React.Component {
             <i className="material-icons">&#xE896;</i> Transactions
           </DropdownItem>
           <DropdownItem divider />
-          <DropdownItem tag={Link} to="/" className="text-danger">
+          <DropdownItem
+            onClick={this.logout}
+            tag={Link}
+            to="/"
+            className="text-danger"
+          >
             <i className="material-icons text-danger">&#xE879;</i> Logout
           </DropdownItem>
         </Collapse>
