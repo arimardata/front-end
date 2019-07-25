@@ -35,7 +35,7 @@ export default {
   },
   filterType: "checkbox",
   filterList: ["Identifiant"],
-  CustomToolbarSelect: (selectedRows, displayData, setSelectedRows) => (
+  customToolbarSelect: (selectedRows, displayData, setSelectedRows) => (
     <CustomToolbarSelect
       selectedRows={selectedRows}
       displayData={displayData}
