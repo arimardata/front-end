@@ -35,6 +35,7 @@ export default {
   },
   filterType: "checkbox",
   filterList: ["Identifiant"],
+  responsive: "scroll",
   customToolbarSelect: (selectedRows, displayData, setSelectedRows) => (
     <CustomToolbarSelect
       selectedRows={selectedRows}
