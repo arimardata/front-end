@@ -192,30 +192,32 @@ class AppelsOffres extends Component {
     position,
     cardDetails
   ) {
-    let lane = this.state.baord.lanes.filter(elt => elt.id == targetLaneId);
-    const data = fetchApi({
-      method: "GET",
-      url: "/api/projects/changeetat/" + cardDetails.id + "/" + lane[0].title,
-      token: window.localStorage.getItem("token")
-    });
-    let baord = this.state.baord;
+    if (sourceLaneId !== targetLaneId) {
+      let lane = this.state.baord.lanes.filter(elt => elt.id == targetLaneId);
+      const data = fetchApi({
+        method: "GET",
+        url: "/api/projects/changeetat/" + cardDetails.id + "/" + lane[0].title,
+        token: window.localStorage.getItem("token")
+      });
+      let baord = this.state.baord;
 
-    baord.lanes.map(lane => {
-      if (lane.id == targetLaneId) {
-        lane.cards.push(cardDetails);
-      }
-    });
+      baord.lanes.map(lane => {
+        if (lane.id == targetLaneId) {
+          lane.cards.push(cardDetails);
+        }
+      });
 
-    baord.lanes.map(lane => {
-      if (lane.id == sourceLaneId) {
-        lane = {
-          ...lane,
-          cards: lane.cards.filter(card => card.id !== cardId)
-        };
-      }
-    });
+      baord.lanes.map(lane => {
+        if (lane.id == sourceLaneId) {
+          lane = {
+            ...lane,
+            cards: lane.cards.filter(card => card.id !== cardId)
+          };
+        }
+      });
 
-    this.setState({ baord });
+      this.setState({ baord });
+    }
   }
 
   render() {
