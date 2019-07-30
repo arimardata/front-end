@@ -4,7 +4,7 @@ export default [
     label: "Identifiant",
     options: {
       filter: false,
-      sort: true
+      sort: true,
     }
   },
   
@@ -20,7 +20,7 @@ export default [
     name: "Recepteur",
     label: "Recepteur",
     options: {
-      filter: false,
+      filter: true,
       sort: true
     }
   },
@@ -28,7 +28,7 @@ export default [
     name: "Banque",
     label: "Banque",
     options: {
-      filter: false,
+      filter: true,
       sort: true
     }
   },
