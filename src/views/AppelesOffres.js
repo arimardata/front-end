@@ -3,6 +3,7 @@ import PageTitle from "../components/common/PageTitle";
 import fetchApi from "../utils/fetchApi";
 import AoModal from "../utils/AoModal";
 import SelectModal from "../utils/SelectModal";
+import DialogModal from "../utils/DialogModal";
 import {
   ListGroup,
   ListGroupItem,
@@ -28,6 +29,7 @@ import Fab from "@material-ui/core/Fab";
 import { withStyles } from "@material-ui/core/styles";
 import { green } from "@material-ui/core/colors";
 import Icon from "@material-ui/core/Icon";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 // import lanesLayout from "../utils/lanesLayout";
 import Board from "react-trello";
@@ -53,6 +55,8 @@ class AppelsOffres extends Component {
     super(props);
 
     this.state = {
+      dragend: {},
+      openDialog: false,
       openSelect: false,
       aos: [],
       open: false,
@@ -223,39 +227,12 @@ class AppelsOffres extends Component {
       open: !this.state.open
     });
   }
-  async handleDragEnd(
-    cardId,
-    sourceLaneId,
-    targetLaneId,
-    position,
-    cardDetails
-  ) {
-    if (sourceLaneId !== targetLaneId) {
-      let lane = this.state.baord.lanes.filter(elt => elt.id == targetLaneId);
-      const data = fetchApi({
-        method: "GET",
-        url: "/api/projects/changeetat/" + cardDetails.id + "/" + lane[0].title,
-        token: window.localStorage.getItem("token")
-      });
-      let baord = this.state.baord;
-
-      baord.lanes.map(lane => {
-        if (lane.id == targetLaneId) {
-          lane.cards.push(cardDetails);
-        }
-      });
-
-      baord.lanes.map(lane => {
-        if (lane.id == sourceLaneId) {
-          lane = {
-            ...lane,
-            cards: lane.cards.filter(card => card.id !== cardId)
-          };
-        }
-      });
-
-      this.setState({ baord });
-    }
+  handleDragEnd(cardId, sourceLaneId, targetLaneId, position, cardDetails) {
+    this.setState({
+      ...this.state,
+      openDialog: true,
+      dragend: { cardId, sourceLaneId, targetLaneId, position, cardDetails }
+    });
   }
 
   handleClose = () => {
@@ -265,8 +242,54 @@ class AppelsOffres extends Component {
     this.setState({ ...this.state, openSelect: true });
   };
 
+  handleAgree = async () => {
+    const {
+      cardId,
+      sourceLaneId,
+      targetLaneId,
+      position,
+      cardDetails
+    } = this.state.dragend;
+    if (sourceLaneId !== targetLaneId) {
+      let lane = this.state.baord.lanes.filter(elt => elt.id == targetLaneId);
+      const data = fetchApi({
+        method: "GET",
+        url: "/api/projects/changeetat/" + cardDetails.id + "/" + lane[0].title,
+        token: window.localStorage.getItem("token")
+      });
+      let baord = this.state.baord;
+      baord.lanes.map(lane => {
+        if (lane.id == targetLaneId) {
+          lane.cards.push(cardDetails);
+        }
+      });
+      baord.lanes.map(lane => {
+        if (lane.id == sourceLaneId) {
+          lane = {
+            ...lane,
+            cards: lane.cards.filter(card => card.id !== cardId)
+          };
+        }
+      });
+      this.setState({ ...this.state, baord, openDialog: false });
+    }
+  };
+
+  handleDisagree = () => {
+    this.setState({ ...this.state, openDialog: false });
+    console.log("disagree");
+  };
+
+  onDataChange = newData => {
+    let baord = this.state.baord;
+    this.setState({ ...this.state, baord: newData });
+
+    this.setState({ ...this.state, baord });
+  };
+
   render() {
     const { classes } = this.props;
+    const { openDialog } = this.state;
     let baord;
     if (this.state.baord) {
       baord = (
@@ -278,10 +301,16 @@ class AppelsOffres extends Component {
           handleDragEnd={this.handleDragEnd}
           onCardClick={this.onCardClick}
           hideCardDeleteIcon
+          onDataChange={this.onDataChange}
+          collapsibleLanes
         />
       );
     } else {
-      baord = "loading";
+      baord = (
+        <center>
+          <CircularProgress disableShrink />
+        </center>
+      );
     }
     const { open } = this.state;
     return (
@@ -293,6 +322,14 @@ class AppelsOffres extends Component {
               title="Gestion des appels d'offres"
               subtitle=""
               className="text-sm-left"
+            />
+          </Row>
+          <Row>
+            <DialogModal
+              openDialog={openDialog}
+              handleDisagree={this.handleDisagree}
+              handleAgree={this.handleAgree}
+              dragend={this.state.dragend}
             />
           </Row>
           <Row>
