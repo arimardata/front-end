@@ -13,7 +13,7 @@ import {
 } from "shards-react";
 import fetchApi from "./fetchApi";
 import { Constants, Store, Dispatcher } from "../flux";
-import { TableBody, MenuItem } from "@material-ui/core";
+import { TableBody, MenuItem, MenuList } from "@material-ui/core";
 import {
   ValidatorForm,
   TextValidator,
@@ -21,11 +21,32 @@ import {
 } from "react-material-ui-form-validator";
 import TextField from "@material-ui/core/TextField";
 
-class ChequeModal extends React.Component {
-  constructor() {
-    super();
+class ChequeModalUpdate extends React.Component {
+  constructor(props) {
+    super(props);
+    
+    
+    this.state = {
+        id:props.id
+        
+    };
 
-    this.state = {};
+  }
+
+  async componentWillMount(){
+    let id = this.props.id;
+    console.log(id)
+    
+    const data = await fetchApi({
+        method: "GET",
+        url: "/api/Cheques/findone/"+id,
+        token: window.localStorage.getItem("token")
+      });
+
+    this.setState({
+        data
+    })
+    
   }
 
   handleOnChange = e => {
@@ -34,19 +55,20 @@ class ChequeModal extends React.Component {
     } = e;
 
     this.setState({
-      [name]: value
+     data :  {...this.state.data,[name]: value}
     });
   };
 
   handleSubmit = async e => {
     // your submit logic
+    let id = this.props.id
+
 
     const data = await fetchApi({
       method: "POST",
-
-      url: "/api/Cheques/ajouter",
+      url: "/api/Cheques/modifier/"+id,
       token: window.localStorage.getItem("token"),
-      body: this.state
+      body: this.state.data
     });
     Dispatcher.dispatch({
       actionType: Constants.TABLE_CHEQUE_UPDATED
@@ -57,17 +79,21 @@ class ChequeModal extends React.Component {
     this.setState({});
     this.props.toggle();
   };
+
+
   render() {
+    
+    if (this.state.data){
     const {
-      banque,
-      somme,
-      alerte,
-      date,
-      etat,
-      emetteur,
-      recepteur
-    } = this.state;
-    return (
+        banque,
+        somme,
+        alerte,
+        date,
+        etat,
+        emetteur,
+        recepteur
+      } = this.state.data; 
+      return (
       <ListGroup flush>
         <ListGroupItem className="p-3">
           <Row>
@@ -85,6 +111,7 @@ class ChequeModal extends React.Component {
                       onChange={this.handleOnChange}
                       name="banque"
                       value={banque}
+                     // defaultValue={ this.state.data.banque}
                       validators={["required"]}
                       errorMessages={["Ce Champ est Obligatoir : "]}
                     />
@@ -95,6 +122,7 @@ class ChequeModal extends React.Component {
                       onChange={this.handleOnChange}
                       name="somme"
                       value={somme}
+                      //defaultValue={ this.state.data.somme}
                       validators={["required", "isFloat"]}
                       errorMessages={[
                         "Ce Champ est Obligatoir : ",
@@ -110,6 +138,7 @@ class ChequeModal extends React.Component {
                       onChange={this.handleOnChange}
                       name="emetteur"
                       value={emetteur}
+                      //defaultValue={ this.state.data.emetteur}
                       validators={["required"]}
                       errorMessages={["Ce Champ est Obligatoir : "]}
                     />
@@ -120,6 +149,7 @@ class ChequeModal extends React.Component {
                       onChange={this.handleOnChange}
                       name="recepteur"
                       value={recepteur}
+                      //defaultValue={ this.state.data.recepteur}
                       validators={["required"]}
                       errorMessages={["Ce Champ est Obligatoir : "]}
                     />
@@ -133,6 +163,7 @@ class ChequeModal extends React.Component {
                       onChange={this.handleOnChange}
                       name="alerte"
                       value={alerte}
+                      //defaultValue={ this.state.data.alerte}
                       validators={["required", "isNumber"]}
                       errorMessages={[
                         "Ce Champ est Obligatoir : ",
@@ -142,7 +173,9 @@ class ChequeModal extends React.Component {
                   </Col>
                   <Col md="2" className="form-group">
                     <SelectValidator
+                     
                       value={etat}
+                      
                       onChange={this.handleOnChange}
                       name="etat"
                       label="Etat"
@@ -160,13 +193,14 @@ class ChequeModal extends React.Component {
                       onChange={this.handleOnChange}
                       name="date"
                       value={date}
+                      //defaultValue={ this.state.data.date}
                       validators={["required"]}
                       errorMessages={["Ce Champ est Obligatoir : "]}
                     />
                   </Col>
                 </Row>
                 <Button type="submit" /*onClick={this.handleResult}*/>
-                  Enrengistrer Cheque
+                  Modifier Cheque
                 </Button>
                 <Button theme="danger" onClick={this.HandleAnnuler}>
                   Annuler
@@ -177,7 +211,9 @@ class ChequeModal extends React.Component {
         </ListGroupItem>
       </ListGroup>
     );
+}
+    return "loading"
   }
 }
 
-export default ChequeModal;
+export default ChequeModalUpdate;
