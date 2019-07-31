@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PageTitle from "../components/common/PageTitle";
 import fetchApi from "../utils/fetchApi";
 import AoModal from "../utils/AoModal";
+import SelectModal from "../utils/SelectModal";
 import {
   ListGroup,
   ListGroupItem,
@@ -22,23 +23,55 @@ import {
   Progress
 } from "shards-react";
 import { Store, Constants } from "../flux";
+import DownIcon from "@material-ui/icons/KeyboardArrowDown";
+import Fab from "@material-ui/core/Fab";
+import { withStyles } from "@material-ui/core/styles";
+import { green } from "@material-ui/core/colors";
+import Icon from "@material-ui/core/Icon";
+
 // import lanesLayout from "../utils/lanesLayout";
 import Board from "react-trello";
+
+const styles = theme => ({
+  root: {
+    position: "relative"
+  },
+  fab: {
+    position: "absolute",
+    top: theme.spacing(2),
+    right: theme.spacing(2),
+    backgroundColor: green[500],
+    color: theme.palette.common.white,
+    "&:hover": {
+      backgroundColor: green[600]
+    }
+  }
+});
 
 class AppelsOffres extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      openSelect: false,
       aos: [],
       open: false,
       clicked: {},
+      checklanes: {
+        lane1: true,
+        lane2: true,
+        lane3: true,
+        lane4: true,
+        lane5: true,
+        lane6: true
+      },
       lanesLayout: {
         lanes: [
           {
             id: "lane1",
             title: "Favoris",
             label: "",
+            hidden: false,
             cards: [],
             cardStyle: { backgroundColor: "rgba(128,128,128,0.1)" },
             style: {
@@ -51,6 +84,7 @@ class AppelsOffres extends Component {
             id: "lane2",
             title: "Postule",
             label: "",
+            hidden: false,
             cards: [],
             cardStyle: { backgroundColor: "rgba(227,202,96,0.1)" },
             style: {
@@ -63,6 +97,7 @@ class AppelsOffres extends Component {
             id: "lane3",
             title: "Archive Des Projets Non-Accepte",
             label: "",
+            hidden: false,
             cards: [],
             cardStyle: { backgroundColor: "rgba(198,16,16,0.1)" },
             style: {
@@ -76,6 +111,7 @@ class AppelsOffres extends Component {
             id: "lane4",
             title: "Retenu",
             label: "",
+            hidden: false,
             cards: [],
             cardStyle: { backgroundColor: "rgba(0,255,0,0.1)" },
             style: {
@@ -89,6 +125,7 @@ class AppelsOffres extends Component {
             id: "lane5",
             title: "Archive Des Projets Finis",
             label: "",
+            hidden: false,
             cards: [],
             cardStyle: { backgroundColor: "rgba(0,255,0,0.1)" },
             style: {
@@ -102,6 +139,7 @@ class AppelsOffres extends Component {
             id: "lane6",
             title: "A Modifier",
             label: "",
+            hidden: false,
             cards: [],
             cardStyle: { backgroundColor: "rgba(227,202,96,0.1)" },
             style: {
@@ -113,17 +151,26 @@ class AppelsOffres extends Component {
         ]
       }
     };
-    this.onChange = this.onChange.bind(this);
     this.handleDragEnd = this.handleDragEnd.bind(this);
     this.toggle = this.toggle.bind(this);
     this.onCardClick = this.onCardClick.bind(this);
   }
 
-  onChange() {
-    // this.setState({
-    //   ...this.state
-    // });
-  }
+  handleChange = e => {
+    const name = e.target.name;
+    const value = e.target.value === "true";
+    let lanesLayout = this.state.lanesLayout;
+    let index;
+    for (let i = 0; i < lanesLayout.lanes.length; i++) {
+      if (lanesLayout.lanes[i].id === name) index = i;
+    }
+    lanesLayout.lanes[index].hidden = value;
+    this.setState({
+      ...this.state,
+      lanesLayout,
+      checklanes: { ...this.state.checklanes, [name]: !value }
+    });
+  };
 
   fetchAos = async () => {
     const data = await fetchApi({
@@ -132,15 +179,7 @@ class AppelsOffres extends Component {
       url: "/api/projects/find",
       token: window.localStorage.getItem("token")
     });
-    // let baord = Object.assign({}, lanesLayout);
-    // baord.lanes = lanesLayout.lanes.concat();
-    // baord.lanes.map((lane, i) => {
-    //   lane = Object.assign({}, lanesLayout.lanes[i]);
-    //   lane.cardStyle = Object.assign({}, lanesLayout.lanes[i].cardStyle);
-    //   lane.style = Object.assign({}, lanesLayout.lanes[i].style);
-    //   lane.cards = lanesLayout.lanes[i].cards.concat();
-    // });
-    // console.log(baord);
+
     let baord = this.state.lanesLayout;
     data.map((ao, id) => {
       let index;
@@ -173,7 +212,6 @@ class AppelsOffres extends Component {
     let lane = this.state.baord.lanes.filter(elt => elt.id == laneId);
     let card = lane[0].cards.filter(elt => elt.id == cardId);
     let ao = this.state.aos.filter(ao => ao.num_AO == card[0].title);
-    console.log("ao", ao);
     this.setState({
       open: !this.state.open,
       clicked: ao[0]
@@ -220,17 +258,26 @@ class AppelsOffres extends Component {
     }
   }
 
+  handleClose = () => {
+    this.setState({ ...this.state, openSelect: false });
+  };
+  handleClickOpen = () => {
+    this.setState({ ...this.state, openSelect: true });
+  };
+
   render() {
+    const { classes } = this.props;
     let baord;
     if (this.state.baord) {
       baord = (
         <Board
-          laneDraggable={false}
+          laneDraggable={true}
           data={this.state.baord}
           draggable
           style={{ backgroundColor: "#efefef" }}
           handleDragEnd={this.handleDragEnd}
           onCardClick={this.onCardClick}
+          hideCardDeleteIcon
         />
       );
     } else {
@@ -238,26 +285,44 @@ class AppelsOffres extends Component {
     }
     const { open } = this.state;
     return (
-      <Container fluid className="main-content-container px-4">
-        <Row noGutters className="page-header py-4">
-          <PageTitle
-            sm="4"
-            title="Gestion des appels d'offres"
-            subtitle=""
-            className="text-sm-left"
-          />
-        </Row>
-        <Card className="mt-1">
-          <CardBody className="p-0 pb-3">{baord}</CardBody>
-        </Card>
-        <Modal size="lg" open={open} toggle={this.toggle}>
-          <ModalBody>
-            <AoModal data={this.state.clicked} />
-          </ModalBody>
-        </Modal>
-      </Container>
+      <div className={classes.root}>
+        <Container fluid className="main-content-container px-4">
+          <Row noGutters className="page-header py-4">
+            <PageTitle
+              sm="4"
+              title="Gestion des appels d'offres"
+              subtitle=""
+              className="text-sm-left"
+            />
+          </Row>
+          <Row>
+            <SelectModal
+              checklanes={this.state.checklanes}
+              handleClose={this.handleClose}
+              open={this.state.openSelect}
+              handleChange={this.handleChange}
+            />
+          </Row>
+          <Card className="mt-1">
+            <CardBody className="p-0 pb-3">{baord}</CardBody>
+          </Card>
+          <Modal size="lg" open={open} toggle={this.toggle}>
+            <ModalBody>
+              <AoModal data={this.state.clicked} />
+            </ModalBody>
+          </Modal>
+          <Fab
+            onClick={this.handleClickOpen}
+            aria-label={"Expand"}
+            className={classes.fab}
+            color="inherit"
+          >
+            <Icon>edit_icon</Icon>
+          </Fab>
+        </Container>
+      </div>
     );
   }
 }
 
-export default AppelsOffres;
+export default withStyles(styles)(AppelsOffres);
