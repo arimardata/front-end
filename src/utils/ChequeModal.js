@@ -25,17 +25,37 @@ class ChequeModal extends React.Component {
   constructor() {
     super();
 
-    this.state = {};
+    this.state = {recepteur: "",emetteur:""};
   }
 
   handleOnChange = e => {
     const {
       target: { value, name }
     } = e;
+    if (name == "etat") {
+      if (value == "Entrant") {
+        this.setState({
+          etat:value,
+          recepteur: "Gecomar",
+          emetteur:""
+        })
+      }
+      else {
+        this.setState({
+          etat:value,
+          emetteur: "Gecomar",
+          recepteur:""
+        })
+      }
+    }
+    else {
+      this.setState({
+        [name]: value
+      });
+    }
 
-    this.setState({
-      [name]: value
-    });
+
+
   };
 
   handleSubmit = async e => {
@@ -57,6 +77,7 @@ class ChequeModal extends React.Component {
     this.setState({});
     this.props.toggle();
   };
+
   render() {
     const {
       banque,
@@ -65,115 +86,166 @@ class ChequeModal extends React.Component {
       date,
       etat,
       emetteur,
-      recepteur
+      recepteur,
+      compte,
+      email,
+      telephone,
     } = this.state;
     return (
       <ListGroup flush>
         <ListGroupItem className="p-3">
-          <Row>
-            <Col>
-              <ValidatorForm
-                //autoComplete="off"
-                ref="form"
-                onSubmit={this.handleSubmit}
-                onError={errors => console.log(errors)}
-              >
-                <Row form>
-                  <Col md="6" className="form-group">
-                    <TextValidator
-                      label="Banque"
-                      onChange={this.handleOnChange}
-                      name="banque"
-                      value={banque}
-                      validators={["required"]}
-                      errorMessages={["Ce Champ est Obligatoir : "]}
-                    />
-                  </Col>
-                  <Col md="6">
-                    <TextValidator
-                      label="Somme"
-                      onChange={this.handleOnChange}
-                      name="somme"
-                      value={somme}
-                      validators={["required", "isFloat"]}
-                      errorMessages={[
-                        "Ce Champ est Obligatoir : ",
-                        "la valeur doit etre numerique"
-                      ]}
-                    />
-                  </Col>
-                </Row>
-                <Row form>
-                  <Col md="6" className="form-group">
-                    <TextValidator
-                      label="Emetteur"
-                      onChange={this.handleOnChange}
-                      name="emetteur"
-                      value={emetteur}
-                      validators={["required"]}
-                      errorMessages={["Ce Champ est Obligatoir : "]}
-                    />
-                  </Col>
-                  <Col md="6">
-                    <TextValidator
-                      label="Recepteur"
-                      onChange={this.handleOnChange}
-                      name="recepteur"
-                      value={recepteur}
-                      validators={["required"]}
-                      errorMessages={["Ce Champ est Obligatoir : "]}
-                    />
-                  </Col>
-                </Row>
 
-                <Row form>
-                  <Col md="6" className="form-group">
-                    <TextValidator
-                      label="Alerte"
-                      onChange={this.handleOnChange}
-                      name="alerte"
-                      value={alerte}
-                      validators={["required", "isNumber"]}
-                      errorMessages={[
-                        "Ce Champ est Obligatoir : ",
-                        "la valeur doit etre en nombre de jours"
-                      ]}
-                    />
-                  </Col>
-                  <Col md="2" className="form-group">
-                    <SelectValidator
-                      value={etat}
-                      onChange={this.handleOnChange}
-                      name="etat"
-                      label="Etat"
-                      validators={["required"]}
-                      errorMessages={["Ce Champ est Obligatoir : "]}
-                    >
-                      <MenuItem value={"entrant"}>Entrant</MenuItem>
-                      <MenuItem value={"sortant"}>Sortant </MenuItem>
-                    </SelectValidator>
-                  </Col>
-                  <Col md="4" className="form-group">
-                    <TextField
-                      type="date"
-                      label=" "
-                      onChange={this.handleOnChange}
-                      name="date"
-                      value={date}
-                      validators={["required"]}
-                      errorMessages={["Ce Champ est Obligatoir : "]}
-                    />
-                  </Col>
-                </Row>
-                <Button type="submit" /*onClick={this.handleResult}*/>
-                  Enrengistrer Cheque
+          <ValidatorForm
+            //autoComplete="off"
+            ref="form"
+            onSubmit={this.handleSubmit}
+            onError={errors => console.log(errors)}
+          >
+            <Row form>
+              <Col md="2" className="form-group">
+                <SelectValidator
+                  value={etat}
+
+                  onChange={this.handleOnChange}
+                  style={{ width: "100%" }}
+                  name="etat"
+                  label="Etat"
+                  validators={["required"]}
+                  errorMessages={["Ce Champ est Obligatoir : "]}
+                >
+                  <MenuItem value={"Entrant"}>Entrant</MenuItem>
+                  <MenuItem value={"Sortant"}>Sortant </MenuItem>
+                </SelectValidator>
+              </Col>
+              <Col md="5" className="form-group">
+                <TextValidator
+                  label="Emetteur"
+                  onChange={this.handleOnChange}
+                  style={{ width: "100%" }}
+                  name="emetteur"
+                  value={emetteur}
+                  validators={["required"]}
+                  errorMessages={["Ce Champ est Obligatoir : "]}
+                />
+              </Col>
+              <Col md="5" className="form-group">
+                <TextValidator
+                  label="Recepteur"
+                  onChange={this.handleOnChange}
+                  style={{ width: "100%" }}
+                  name="recepteur"
+                  value={recepteur}
+                  validators={["required"]}
+                  errorMessages={["Ce Champ est Obligatoir : "]}
+                />
+              </Col>
+
+            </Row>
+            <Row form>
+              <Col md="6" className="form-group">
+                <TextValidator
+                  label="Banque"
+                  onChange={this.handleOnChange}
+                  style={{ width: "100%" }}
+                  name="banque"
+                  value={banque}
+                  validators={["required"]}
+                  errorMessages={["Ce Champ est Obligatoir : "]}
+                />
+              </Col>
+              <Col md="6" className="form-group">
+                <TextValidator
+                  label="N° Compte"
+                  onChange={this.handleOnChange}
+                  style={{ width: "100%" }}
+                  name="compte"
+                  value={compte}
+                  validators={["required","maxStringLength:24","isNumber"]}
+                  errorMessages={["Ce Champ est Obligatoir : ","Max 24 caractere","La valeur doit etre numerique"]}
+                />
+              </Col>
+
+
+
+            </Row>
+            <Row>
+              <Col md="4" className="form-group">
+                <TextValidator
+                  label="Somme"
+                  onChange={this.handleOnChange}
+                  style={{ width: "100%" }}
+                  name="somme"
+                  value={somme}
+                  validators={["required", "isFloat"]}
+                  errorMessages={[
+                    "Ce Champ est Obligatoir : ",
+                    "la valeur doit etre numerique"
+                  ]}
+                />
+              </Col>
+
+              <Col md="4" className="form-group">
+                <TextValidator
+                  label="N° Telephone"
+                  onChange={this.handleOnChange}
+                  style={{ width: "100%" }}
+                  name="telephone"
+                  value={telephone}
+                  validators={["required"]}
+                  errorMessages={["Ce Champ est Obligatoir : "]}
+                />
+              </Col>
+              <Col md="4" className="form-group">
+                <TextValidator
+                  label="Email"
+                  onChange={this.handleOnChange}
+                  style={{ width: "100%" }}
+                  name="email"
+                  value={email}
+                  validators={["required", "isEmail"]}
+                  errorMessages={["Ce Champ est Obligatoir : ", "Entrez un email valide"]}
+                />
+              </Col>
+            </Row>
+
+            <Row form>
+              <Col md="6" className="form-group">
+                <TextValidator
+                  label="Alerte"
+                  onChange={this.handleOnChange}
+                  style={{ width: "100%" }}
+                  name="alerte"
+                  value={alerte}
+                  validators={["required", "isNumber"]}
+                  errorMessages={[
+                    "Ce Champ est Obligatoir : ",
+                    "la valeur doit etre en nombre de jours"
+                  ]}
+                />
+              </Col>
+
+              <Col md="6" className="form-group">
+                <TextField
+                  type="date"
+                  label=" "
+                  onChange={this.handleOnChange}
+                  style={{ width: "100%" }}
+                  name="date"
+                  value={date}
+                  validators={["required"]}
+                  errorMessages={["Ce Champ est Obligatoir : "]}
+                />
+              </Col>
+            </Row>
+
+            <Button type="submit" /*onClick={this.handleResult}*/>
+              Enrengistrer Cheque
                 </Button>
-                <Button theme="danger" onClick={this.HandleAnnuler}>
-                  Annuler
+            <Button theme="danger" onClick={this.HandleAnnuler}>
+              Annuler
                 </Button>
-              </ValidatorForm>
-            </Col>
-          </Row>
+          </ValidatorForm>
+
         </ListGroupItem>
       </ListGroup>
     );

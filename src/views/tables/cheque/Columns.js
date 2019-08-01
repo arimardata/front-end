@@ -5,9 +5,18 @@ export default [
     options: {
       filter: false,
       sort: true,
+      display: false
     }
   },
-  
+  {
+    name: "etat",
+    label: "Etat",
+    options: {
+      filter: false,
+      sort: true
+    }
+  },
+
   {
     name: "Emetteur",
     label: "Emetteur",
@@ -33,36 +42,45 @@ export default [
     }
   },
   {
-    name: "Alerte",
-    label: "Alerte",
+    name: "Compte",
+    label: "N° Compte",
     options: {
-      filter: false,
-      sort: true
-    }
-  },
-  
-  {
-    name: "Somme",
-    label: "Somme",
-    options: {
-      filter: false,
-      sort: true
-    }
-  },
-  {
-    name: "etat",
-    label: "etat",
-    options: {
-      filter: false,
-      sort: true
+      filter: true,
+      sort: false
     }
   },
   {
     name: "date",
-    label: "date",
+    label: "Date",
     options: {
       filter: true,
-      sort: true
-     }
-   }
+      sort: false
+    }
+  },
+
+  {
+    name: "Alerte",
+    label: "Alerte",
+    options: {
+      filter: false,
+      sort: false
+    }
+  },
+  {
+    name: "telephone",
+    label: "N° Telephone",
+    options: {
+      filter: true,
+      sort: false
+    }
+  },
+  {
+    name: "email",
+    label: "Email",
+    options: {
+      filter: true,
+      sort: false
+    }
+  }
+
 ];

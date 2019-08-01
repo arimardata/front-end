@@ -126,6 +126,7 @@ class CustomToolbarSelect extends React.Component {
 
     return (
       <div className={classes.iconContainer}>
+        
         <Tooltip title={"Tous supprimer"}>
           <IconButton className={classes.iconButton} onClick={this.delete}>
             <DeleteIcon />

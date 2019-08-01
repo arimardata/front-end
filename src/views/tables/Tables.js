@@ -34,13 +34,16 @@ class Tables extends React.Component {
     data.map(elmnt =>
       cheques.push([
         elmnt.id,
+        elmnt.etat,
         elmnt.emetteur,
         elmnt.recepteur,
         elmnt.banque,
-        elmnt.alerte,
         elmnt.somme,
-        elmnt.etat,
-        elmnt.date
+        elmnt.date,
+        elmnt.alerte,
+        elmnt.compte,
+        elmnt.email,
+        elmnt.telephone
       ])
     );
     console.log(cheques);
