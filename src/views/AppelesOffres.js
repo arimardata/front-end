@@ -221,6 +221,7 @@ class AppelsOffres extends Component {
       clicked: ao[0]
     });
     this.toggle();
+    console.log(ao[0]);
   }
   toggle() {
     this.setState({
@@ -277,7 +278,6 @@ class AppelsOffres extends Component {
 
   handleDisagree = () => {
     this.setState({ ...this.state, openDialog: false });
-    console.log("disagree");
   };
 
   onDataChange = newData => {
@@ -330,6 +330,7 @@ class AppelsOffres extends Component {
               handleDisagree={this.handleDisagree}
               handleAgree={this.handleAgree}
               dragend={this.state.dragend}
+              aos={this.state.aos}
             />
           </Row>
           <Row>

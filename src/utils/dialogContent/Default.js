@@ -5,13 +5,22 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 
-export default function Default({ handleAgree, handleDisagree }) {
+export default function Default({ handleAgree, handleDisagree, aos, dragend }) {
+  const ref = React.useRef("form");
   function handleSubmit() {
-    // your submit logic
+    aos.map(ao => {
+      if (ao.id === dragend.cardId) {
+        console.log(ao);
+        ao.moinsDisant = "";
+        ao.montant = "";
+        ao.cautionFinal = "";
+      }
+    });
+    handleAgree();
   }
   return (
     <ValidatorForm
-      //   ref="form"
+      ref={ref}
       onSubmit={handleSubmit}
       onError={errors => console.log(errors)}
     >
@@ -22,7 +31,7 @@ export default function Default({ handleAgree, handleDisagree }) {
         <Button onClick={handleDisagree} color="primary">
           Annuler
         </Button>
-        <Button onClick={handleAgree} color="primary">
+        <Button type="submit" color="primary">
           Confirmer
         </Button>
       </DialogActions>

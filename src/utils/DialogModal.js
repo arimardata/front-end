@@ -18,7 +18,8 @@ export default function DialogModal({
   openDialog,
   handleAgree,
   handleDisagree,
-  dragend
+  dragend,
+  aos
 }) {
   function handleAgreeDiaog() {
     handleAgree();
@@ -29,7 +30,7 @@ export default function DialogModal({
   return (
     <div>
       <Dialog
-        open={openDialog}
+        open={!(dragend.sourceLaneId === dragend.targetLaneId) && openDialog}
         TransitionComponent={Transition}
         keepMounted
         onClose={handleDisagree}
@@ -43,12 +44,16 @@ export default function DialogModal({
           <MoinsDisant
             handleAgree={handleAgreeDiaog}
             handleDisagree={handleDisagreeDiaog}
+            dragend={dragend}
+            aos={aos}
           />
         )}
         {dragend.targetLaneId === "lane4" && (
           <CautionFinal
             handleAgree={handleAgreeDiaog}
             handleDisagree={handleDisagreeDiaog}
+            dragend={dragend}
+            aos={aos}
           />
         )}
 
@@ -57,6 +62,8 @@ export default function DialogModal({
             <Default
               handleAgree={handleAgreeDiaog}
               handleDisagree={handleDisagreeDiaog}
+              dragend={dragend}
+              aos={aos}
             />
           )}
       </Dialog>

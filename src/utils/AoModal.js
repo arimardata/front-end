@@ -5,7 +5,6 @@ import lanesLayout from "./lanesLayout";
 const AoModal = props => {
   let data = props.data;
   console.log(data);
-  console.log(lanesLayout);
   return (
     <div>
       <p>{data.chef_ouvrage}</p>
@@ -38,11 +37,43 @@ const AoModal = props => {
       <div>Estimation : </div>
       <br />
       <div>{data.estimation}</div>
+      <hr />
+      <div className="row">
+        <div className="col">
+          <div>Caution provisoire(CP) : </div>
+          <br />
+          <div>{data.caution}</div>
+        </div>
+
+        <div className="col">
+          {data.etat === "Retenu" && data.cautionFinal && (
+            <>
+              <div>Caution final : </div>
+              <br />
+              <div>{data.cautionFinal}</div>
+            </>
+          )}
+        </div>
+      </div>
 
       <hr />
-      <div>Caution provisoire(CP) : </div>
-      <br />
-      <div>{data.caution}</div>
+      {data.etat === "Archive Des Projets Non-Accepte" && data.moinsDisant && (
+        <div className="row">
+          <div className="col">
+            <div>Le moins disant : </div>
+            <br />
+            <div>{data.moinsDisant}</div>
+          </div>
+
+          <div className="col">
+            <>
+              <div>Le montant : </div>
+              <br />
+              <div>{data.montant}</div>
+            </>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
