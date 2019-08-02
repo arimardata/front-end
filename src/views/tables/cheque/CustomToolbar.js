@@ -6,9 +6,7 @@ import { withStyles } from "@material-ui/core/styles";
 import ChequeModal from "../../../utils/ChequeModal";
 import { Modal, ModalBody } from "shards-react";
 
-const defaultToolbarStyles = {
-  iconButton: {}
-};
+const defaultToolbarStyles = {};
 
 class CustomToolbar extends React.Component {
   state = { open: false };
@@ -27,11 +25,11 @@ class CustomToolbar extends React.Component {
     return (
       <React.Fragment>
         <Tooltip title={"Add new record"}>
-          <IconButton className={classes.iconButton} onClick={this.handleClick}>
-            <AddIcon className={classes.deleteIcon} />
+          <IconButton onClick={this.handleClick}>
+            <AddIcon />
           </IconButton>
         </Tooltip>
-        <Modal size="lg" open={open} >
+        <Modal size="lg" open={open}>
           <ModalBody>
             <ChequeModal toggle={this.toggle} />
           </ModalBody>

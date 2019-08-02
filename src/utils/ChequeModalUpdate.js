@@ -25,7 +25,6 @@ class ChequeModalUpdate extends React.Component {
   constructor(props) {
     super(props);
 
-
     this.state = {
       id: props.id,
       recepteur: "",
@@ -36,16 +35,13 @@ class ChequeModalUpdate extends React.Component {
       date: "",
       etat: "",
       compte: "",
-      email:"",
-      telephone:"",
-
+      email: "",
+      telephone: ""
     };
-
   }
 
   async componentWillMount() {
     let id = this.props.id;
-    console.log(id)
 
     const data = await fetchApi({
       method: "GET",
@@ -55,29 +51,25 @@ class ChequeModalUpdate extends React.Component {
 
     this.setState({
       data
-    })
-
+    });
   }
 
   handleOnChange = e => {
     const {
       target: { value, name }
     } = e;
-    
-   
-      this.setState({
-        data: {
-           ...this.state.data, [name]: value }
-      });
 
-      
-    
+    this.setState({
+      data: {
+        ...this.state.data,
+        [name]: value
+      }
+    });
   };
 
   handleSubmit = async e => {
     // your submit logic
-    let id = this.props.id
-
+    let id = this.props.id;
 
     const data = await fetchApi({
       method: "POST",
@@ -95,9 +87,7 @@ class ChequeModalUpdate extends React.Component {
     this.props.toggle();
   };
 
-
   render() {
-
     if (this.state.data) {
       const {
         banque,
@@ -109,7 +99,7 @@ class ChequeModalUpdate extends React.Component {
         recepteur,
         compte,
         email,
-        telephone,
+        telephone
       } = this.state.data;
       return (
         <ListGroup flush>
@@ -117,7 +107,7 @@ class ChequeModalUpdate extends React.Component {
             <Row>
               <Col>
                 <ValidatorForm
-                  //autoComplete="off"
+                  autoComplete="off"
                   ref="form"
                   onSubmit={this.handleSubmit}
                   onError={errors => console.log(errors)}
@@ -126,7 +116,6 @@ class ChequeModalUpdate extends React.Component {
                     <Col md="2" className="form-group">
                       <SelectValidator
                         value={etat}
-
                         onChange={this.handleOnChange}
                         style={{ width: "100%" }}
                         name="etat"
@@ -160,7 +149,6 @@ class ChequeModalUpdate extends React.Component {
                         errorMessages={["Ce Champ est Obligatoir : "]}
                       />
                     </Col>
-
                   </Row>
                   <Row form>
                     <Col md="6" className="form-group">
@@ -181,13 +169,18 @@ class ChequeModalUpdate extends React.Component {
                         style={{ width: "100%" }}
                         name="compte"
                         value={compte}
-                        validators={["required","maxStringLength:24","isNumber"]}
-                  errorMessages={["Ce Champ est Obligatoir : ","Max 24 caractere","La valeur doit etre numerique"]}
+                        validators={[
+                          "required",
+                          "maxStringLength:24",
+                          "isNumber"
+                        ]}
+                        errorMessages={[
+                          "Ce Champ est Obligatoir : ",
+                          "Max 24 caractere",
+                          "La valeur doit etre numerique"
+                        ]}
                       />
                     </Col>
-
-
-
                   </Row>
 
                   <Row>
@@ -225,7 +218,10 @@ class ChequeModalUpdate extends React.Component {
                         name="email"
                         value={email}
                         validators={["required", "isEmail"]}
-                        errorMessages={["Ce Champ est Obligatoir : ", "Entrez un email valide"]}
+                        errorMessages={[
+                          "Ce Champ est Obligatoir : ",
+                          "Entrez un email valide"
+                        ]}
                       />
                     </Col>
                   </Row>
@@ -260,10 +256,10 @@ class ChequeModalUpdate extends React.Component {
                   </Row>
                   <Button type="submit" /*onClick={this.handleResult}*/>
                     Modifier Cheque
-                </Button>
+                  </Button>
                   <Button theme="danger" onClick={this.HandleAnnuler}>
                     Annuler
-                </Button>
+                  </Button>
                 </ValidatorForm>
               </Col>
             </Row>
@@ -271,7 +267,7 @@ class ChequeModalUpdate extends React.Component {
         </ListGroup>
       );
     }
-    return "loading"
+    return "loading";
   }
 }
 

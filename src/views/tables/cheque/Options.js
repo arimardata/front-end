@@ -36,14 +36,15 @@ export default {
   filterType: "checkbox",
   filterList: ["Identifiant"],
   responsive: "scroll",
+
+  customToolbar: () => {
+    return <CustomToolbar />;
+  },
   customToolbarSelect: (selectedRows, displayData, setSelectedRows) => (
     <CustomToolbarSelect
       selectedRows={selectedRows}
       displayData={displayData}
       setSelectedRows={setSelectedRows}
     />
-  ),
-  customToolbar: () => {
-    return <CustomToolbar />;
-  }
+  )
 };

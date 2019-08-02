@@ -67,7 +67,8 @@ class AppelsOffres extends Component {
         lane3: true,
         lane4: true,
         lane5: true,
-        lane6: true
+        lane6: true,
+        lane7: true
       },
       lanesLayout: {
         lanes: [
@@ -97,27 +98,27 @@ class AppelsOffres extends Component {
               borderTop: "solid 2px #E3CA60"
             }
           },
+
           {
             id: "lane3",
-            title: "Archive Des Projets Non-Accepte",
-            label: "",
-            hidden: false,
-            cards: [],
-            cardStyle: { backgroundColor: "rgba(198,16,16,0.1)" },
-            style: {
-              backgroundColor: "rgba(198,16,16,0.05)",
-              color: "rgb(198,16,16)",
-              borderTop: "solid 2px rgb(198,16,16)",
-              heigth: "200px"
-            }
-          },
-          {
-            id: "lane4",
             title: "Retenu",
             label: "",
             hidden: false,
             cards: [],
             cardStyle: { backgroundColor: "rgba(0,255,0,0.1)" },
+            style: {
+              backgroundColor: "rgba(0,255,0,0.05)",
+              color: "green",
+              borderTop: "solid 2px green"
+            }
+          },
+          {
+            id: "lane4",
+            title: "Projets",
+            label: "",
+            hidden: false,
+            cards: [],
+            cardStyle: { backgroundColor: "rgba(0,200,0,0.1)" },
             style: {
               backgroundColor: "rgba(0,255,0,0.05)",
               color: "green",
@@ -150,6 +151,20 @@ class AppelsOffres extends Component {
               backgroundColor: "rgba(227,202,96,0.05)",
               color: "rgb(227,202,96)",
               borderTop: "solid 2px rgb(227,202,96)"
+            }
+          },
+          {
+            id: "lane7",
+            title: "Archive Des Projets Non-Accepte",
+            label: "",
+            hidden: false,
+            cards: [],
+            cardStyle: { backgroundColor: "rgba(198,16,16,0.1)" },
+            style: {
+              backgroundColor: "rgba(198,16,16,0.05)",
+              color: "rgb(198,16,16)",
+              borderTop: "solid 2px rgb(198,16,16)",
+              heigth: "200px"
             }
           }
         ]
@@ -229,11 +244,16 @@ class AppelsOffres extends Component {
     });
   }
   handleDragEnd(cardId, sourceLaneId, targetLaneId, position, cardDetails) {
+    let source = parseInt(sourceLaneId.substr(sourceLaneId.length - 1));
+    let target = parseInt(targetLaneId.substr(targetLaneId.length - 1));
+    // if (source > target) return false;
+    // else {
     this.setState({
       ...this.state,
       openDialog: true,
       dragend: { cardId, sourceLaneId, targetLaneId, position, cardDetails }
     });
+    // }
   }
 
   handleClose = () => {

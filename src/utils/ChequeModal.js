@@ -25,7 +25,7 @@ class ChequeModal extends React.Component {
   constructor() {
     super();
 
-    this.state = {recepteur: "",emetteur:""};
+    this.state = { recepteur: "", emetteur: "" };
   }
 
   handleOnChange = e => {
@@ -35,27 +35,22 @@ class ChequeModal extends React.Component {
     if (name == "etat") {
       if (value == "Entrant") {
         this.setState({
-          etat:value,
+          etat: value,
           recepteur: "Gecomar",
-          emetteur:""
-        })
-      }
-      else {
+          emetteur: ""
+        });
+      } else {
         this.setState({
-          etat:value,
+          etat: value,
           emetteur: "Gecomar",
-          recepteur:""
-        })
+          recepteur: ""
+        });
       }
-    }
-    else {
+    } else {
       this.setState({
         [name]: value
       });
     }
-
-
-
   };
 
   handleSubmit = async e => {
@@ -89,14 +84,13 @@ class ChequeModal extends React.Component {
       recepteur,
       compte,
       email,
-      telephone,
+      telephone
     } = this.state;
     return (
       <ListGroup flush>
         <ListGroupItem className="p-3">
-
           <ValidatorForm
-            //autoComplete="off"
+            autoComplete="off"
             ref="form"
             onSubmit={this.handleSubmit}
             onError={errors => console.log(errors)}
@@ -105,7 +99,6 @@ class ChequeModal extends React.Component {
               <Col md="2" className="form-group">
                 <SelectValidator
                   value={etat}
-
                   onChange={this.handleOnChange}
                   style={{ width: "100%" }}
                   name="etat"
@@ -139,7 +132,6 @@ class ChequeModal extends React.Component {
                   errorMessages={["Ce Champ est Obligatoir : "]}
                 />
               </Col>
-
             </Row>
             <Row form>
               <Col md="6" className="form-group">
@@ -160,13 +152,14 @@ class ChequeModal extends React.Component {
                   style={{ width: "100%" }}
                   name="compte"
                   value={compte}
-                  validators={["required","maxStringLength:24","isNumber"]}
-                  errorMessages={["Ce Champ est Obligatoir : ","Max 24 caractere","La valeur doit etre numerique"]}
+                  validators={["required", "maxStringLength:24", "isNumber"]}
+                  errorMessages={[
+                    "Ce Champ est Obligatoir : ",
+                    "Max 24 caractere",
+                    "La valeur doit etre numerique"
+                  ]}
                 />
               </Col>
-
-
-
             </Row>
             <Row>
               <Col md="4" className="form-group">
@@ -203,7 +196,10 @@ class ChequeModal extends React.Component {
                   name="email"
                   value={email}
                   validators={["required", "isEmail"]}
-                  errorMessages={["Ce Champ est Obligatoir : ", "Entrez un email valide"]}
+                  errorMessages={[
+                    "Ce Champ est Obligatoir : ",
+                    "Entrez un email valide"
+                  ]}
                 />
               </Col>
             </Row>
@@ -240,12 +236,11 @@ class ChequeModal extends React.Component {
 
             <Button type="submit" /*onClick={this.handleResult}*/>
               Enrengistrer Cheque
-                </Button>
+            </Button>
             <Button theme="danger" onClick={this.HandleAnnuler}>
               Annuler
-                </Button>
+            </Button>
           </ValidatorForm>
-
         </ListGroupItem>
       </ListGroup>
     );

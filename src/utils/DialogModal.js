@@ -40,7 +40,7 @@ export default function DialogModal({
         <DialogTitle id="alert-dialog-slide-title">
           {"Vos etes entrain de changer l'état d'un appel d'offre"}
         </DialogTitle>
-        {dragend.targetLaneId === "lane3" && (
+        {dragend.targetLaneId === "lane7" && (
           <MoinsDisant
             handleAgree={handleAgreeDiaog}
             handleDisagree={handleDisagreeDiaog}
@@ -48,7 +48,7 @@ export default function DialogModal({
             aos={aos}
           />
         )}
-        {dragend.targetLaneId === "lane4" && (
+        {dragend.targetLaneId === "lane3" && (
           <CautionFinal
             handleAgree={handleAgreeDiaog}
             handleDisagree={handleDisagreeDiaog}
@@ -57,8 +57,8 @@ export default function DialogModal({
           />
         )}
 
-        {dragend.targetLaneId !== "lane3" &&
-          dragend.targetLaneId !== "lane4" && (
+        {dragend.targetLaneId !== "lane7" &&
+          dragend.targetLaneId !== "lane3" && (
             <Default
               handleAgree={handleAgreeDiaog}
               handleDisagree={handleDisagreeDiaog}

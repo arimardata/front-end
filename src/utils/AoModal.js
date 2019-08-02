@@ -1,13 +1,29 @@
 import React from "react";
 import { ListGroup, ListGroupItem, Row, Col } from "shards-react";
 import lanesLayout from "./lanesLayout";
+import IconButton from "@material-ui/core/IconButton";
 
 const AoModal = props => {
   let data = props.data;
   console.log(data);
   return (
     <div>
-      <p>{data.chef_ouvrage}</p>
+      <div className="row">
+        <div className="col-10">
+          <p>{data.chef_ouvrage}</p>
+        </div>
+        <div className="col-1">
+          <IconButton>
+            <i className="material-icons">picture_as_pdf</i>
+          </IconButton>
+        </div>
+        <div className="col-1">
+          <IconButton>
+            <i className="material-icons">cloud_download</i>
+          </IconButton>
+        </div>
+      </div>
+
       <hr />
       <div className="row">
         <div className="col">
