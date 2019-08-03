@@ -27,7 +27,7 @@ import { Store, Constants } from "../flux";
 import DownIcon from "@material-ui/icons/KeyboardArrowDown";
 import Fab from "@material-ui/core/Fab";
 import { withStyles } from "@material-ui/core/styles";
-import { green } from "@material-ui/core/colors";
+import { green,blue } from "@material-ui/core/colors";
 import Icon from "@material-ui/core/Icon";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
@@ -46,6 +46,16 @@ const styles = theme => ({
     color: theme.palette.common.white,
     "&:hover": {
       backgroundColor: green[600]
+    }
+  },
+  fab2: {
+    position: "absolute",
+    top: theme.spacing(2),
+    right: theme.spacing(10),
+    backgroundColor: blue[500],
+    color: theme.palette.common.white,
+    "&:hover": {
+      backgroundColor: blue[600]
     }
   }
 });
@@ -287,6 +297,24 @@ class AppelsOffres extends Component {
     this.setState({ ...this.state, baord });
   };
 
+  handleScript= async()=>{
+
+    try {
+      await fetchApi({
+        method: "GET",
+        url: "/api/projects/runscript",
+        token: window.localStorage.getItem("token")
+      });
+      
+    }
+    catch(error) {
+      console.error(error);
+    }
+    window.location.reload();
+    
+  }
+
+
   render() {
     const { classes } = this.props;
     const { openDialog } = this.state;
@@ -348,6 +376,7 @@ class AppelsOffres extends Component {
               <AoModal data={this.state.clicked} />
             </ModalBody>
           </Modal>
+          
           <Fab
             onClick={this.handleClickOpen}
             aria-label={"Expand"}
@@ -356,6 +385,15 @@ class AppelsOffres extends Component {
           >
             <Icon>edit_icon</Icon>
           </Fab>
+          <Fab
+            onClick={this.handleScript}
+            aria-label={"Expand"}
+            className={classes.fab2}
+            color="inherit"
+          >
+            <Icon>autorenew</Icon>
+          </Fab>
+          
         </Container>
       </div>
     );
