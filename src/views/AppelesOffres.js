@@ -178,6 +178,7 @@ class AppelsOffres extends Component {
   handleChange = e => {
     const name = e.target.name;
     const value = e.target.value === "true";
+    console.log(name, value);
     let lanesLayout = this.state.lanesLayout;
     let index;
     for (let i = 0; i < lanesLayout.lanes.length; i++) {

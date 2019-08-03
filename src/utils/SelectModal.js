@@ -114,7 +114,7 @@ export default function SelectModal({
                     color="primary"
                   />
                 }
-                label="Archive Des Projets Non-Accepte"
+                label="Retenu"
               />
             </FormGroup>
             <FormGroup>
@@ -128,9 +128,10 @@ export default function SelectModal({
                     color="primary"
                   />
                 }
-                label="Retenu"
+                label="Projets"
               />
             </FormGroup>
+
             <FormGroup>
               <FormControlLabel
                 control={
@@ -145,6 +146,7 @@ export default function SelectModal({
                 label="Archive Des Projets Finis"
               />
             </FormGroup>
+
             <FormGroup>
               <FormControlLabel
                 control={
@@ -156,7 +158,21 @@ export default function SelectModal({
                     color="primary"
                   />
                 }
-                label=" A Modifier"
+                label="A Modifier"
+              />
+            </FormGroup>
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={checklanes.lane7}
+                    onChange={handleChange}
+                    value={checklanes.lane7}
+                    name="lane7"
+                    color="primary"
+                  />
+                }
+                label="Archive Des Projets Non-Accepte"
               />
             </FormGroup>
           </FormControl>
