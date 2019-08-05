@@ -6,8 +6,14 @@ import DialogContent from "@material-ui/core/DialogContent";
 import { Container, Row } from "shards-react";
 // import Col from "@material-ui/core/Col";
 import DialogContentText from "@material-ui/core/DialogContentText";
+import fetchApi from "../fetchApi";
 
-export default function MoinsDisant({ handleAgree, handleDisagree }) {
+export default function MoinsDisant({
+  handleAgree,
+  handleDisagree,
+  dragend,
+  aos
+}) {
   const [moinsDisant, setMoinsDisant] = React.useState("");
   const [montant, setMontant] = React.useState("");
   const ref = React.useRef("form");
@@ -28,6 +34,20 @@ export default function MoinsDisant({ handleAgree, handleDisagree }) {
   }
 
   function handleSubmit() {
+    aos.map(ao => {
+      if (ao.id === dragend.cardId) {
+        ao.moinsDisant = moinsDisant;
+        ao.montant = montant;
+        ao.etat = "Archive Des Projets Non-Accepte";
+      }
+    });
+    fetchApi({
+      method: "POST",
+
+      url: "/api/projects/moinsDisant/" + dragend.cardId,
+      token: window.localStorage.getItem("token"),
+      body: { moinsDisant, montant }
+    }).then(data => console.log(data));
     handleAgree();
   }
   return (
@@ -55,8 +75,11 @@ export default function MoinsDisant({ handleAgree, handleDisagree }) {
                 onChange={handleChange}
                 name="montant"
                 value={montant}
-                validators={["required"]}
-                errorMessages={["Champ obligatoire"]}
+                validators={["required", "isFloat"]}
+                errorMessages={[
+                  "Champ obligatoire",
+                  "Ce champ doit étre un nombre"
+                ]}
               />
             </Row>
           </Container>

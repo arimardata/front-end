@@ -1,14 +1,29 @@
 import React from "react";
 import { ListGroup, ListGroupItem, Row, Col } from "shards-react";
 import lanesLayout from "./lanesLayout";
+import IconButton from "@material-ui/core/IconButton";
 
 const AoModal = props => {
   let data = props.data;
   console.log(data);
-  console.log(lanesLayout);
   return (
     <div>
-      <p>{data.chef_ouvrage}</p>
+      <div className="row">
+        <div className="col-10">
+          <p>{data.chef_ouvrage}</p>
+        </div>
+        <div className="col-1">
+          <IconButton>
+            <i className="material-icons">picture_as_pdf</i>
+          </IconButton>
+        </div>
+        <div className="col-1">
+          <IconButton>
+            <i className="material-icons">cloud_download</i>
+          </IconButton>
+        </div>
+      </div>
+
       <hr />
       <div className="row">
         <div className="col">
@@ -38,11 +53,43 @@ const AoModal = props => {
       <div>Estimation : </div>
       <br />
       <div>{data.estimation}</div>
+      <hr />
+      <div className="row">
+        <div className="col">
+          <div>Caution provisoire(CP) : </div>
+          <br />
+          <div>{data.caution}</div>
+        </div>
+
+        <div className="col">
+          {data.etat === "Retenu" && data.cautionFinal && (
+            <>
+              <div>Caution final : </div>
+              <br />
+              <div>{data.cautionFinal}</div>
+            </>
+          )}
+        </div>
+      </div>
 
       <hr />
-      <div>Caution provisoire(CP) : </div>
-      <br />
-      <div>{data.caution}</div>
+      {data.etat === "Archive Des Projets Non-Accepte" && data.moinsDisant && (
+        <div className="row">
+          <div className="col">
+            <div>Le moins disant : </div>
+            <br />
+            <div>{data.moinsDisant}</div>
+          </div>
+
+          <div className="col">
+            <>
+              <div>Le montant : </div>
+              <br />
+              <div>{data.montant}</div>
+            </>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

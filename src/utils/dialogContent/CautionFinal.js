@@ -4,8 +4,14 @@ import Button from "@material-ui/core/Button";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
+import fetchApi from "../fetchApi";
 
-export default function CautionFinal({ handleAgree, handleDisagree }) {
+export default function CautionFinal({
+  handleAgree,
+  handleDisagree,
+  dragend,
+  aos
+}) {
   const [cautionFinal, setCautionFinal] = React.useState("");
   const ref = React.useRef("form");
 
@@ -15,7 +21,20 @@ export default function CautionFinal({ handleAgree, handleDisagree }) {
   }
 
   function handleSubmit() {
-    // your submit logic
+    aos.map(ao => {
+      if (ao.id === dragend.cardId) {
+        ao.cautionFinal = cautionFinal;
+        ao.etat = "Retenu";
+      }
+    });
+
+    fetchApi({
+      method: "POST",
+
+      url: "/api/projects/AjouterCaution/" + dragend.cardId,
+      token: window.localStorage.getItem("token"),
+      body: { cautionFinal }
+    }).then(data => console.log(data));
     handleAgree();
   }
   return (
@@ -31,8 +50,11 @@ export default function CautionFinal({ handleAgree, handleDisagree }) {
             onChange={handleChange}
             name="cautionFinal"
             value={cautionFinal}
-            validators={["required"]}
-            errorMessages={["Champ obligatoire"]}
+            validators={["required", "isFloat"]}
+            errorMessages={[
+              "Champ obligatoire",
+              "Ce champ doit étre un nombre"
+            ]}
           />
         </DialogContentText>
       </DialogContent>

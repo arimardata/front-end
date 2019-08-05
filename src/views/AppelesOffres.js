@@ -77,7 +77,8 @@ class AppelsOffres extends Component {
         lane3: true,
         lane4: true,
         lane5: true,
-        lane6: true
+        lane6: true,
+        lane7: true
       },
       lanesLayout: {
         lanes: [
@@ -107,27 +108,27 @@ class AppelsOffres extends Component {
               borderTop: "solid 2px #E3CA60"
             }
           },
+
           {
             id: "lane3",
-            title: "Archive Des Projets Non-Accepte",
-            label: "",
-            hidden: false,
-            cards: [],
-            cardStyle: { backgroundColor: "rgba(198,16,16,0.1)" },
-            style: {
-              backgroundColor: "rgba(198,16,16,0.05)",
-              color: "rgb(198,16,16)",
-              borderTop: "solid 2px rgb(198,16,16)",
-              heigth: "200px"
-            }
-          },
-          {
-            id: "lane4",
             title: "Retenu",
             label: "",
             hidden: false,
             cards: [],
             cardStyle: { backgroundColor: "rgba(0,255,0,0.1)" },
+            style: {
+              backgroundColor: "rgba(0,255,0,0.05)",
+              color: "green",
+              borderTop: "solid 2px green"
+            }
+          },
+          {
+            id: "lane4",
+            title: "Projets",
+            label: "",
+            hidden: false,
+            cards: [],
+            cardStyle: { backgroundColor: "rgba(0,200,0,0.1)" },
             style: {
               backgroundColor: "rgba(0,255,0,0.05)",
               color: "green",
@@ -161,6 +162,20 @@ class AppelsOffres extends Component {
               color: "rgb(227,202,96)",
               borderTop: "solid 2px rgb(227,202,96)"
             }
+          },
+          {
+            id: "lane7",
+            title: "Archive Des Projets Non-Accepte",
+            label: "",
+            hidden: false,
+            cards: [],
+            cardStyle: { backgroundColor: "rgba(198,16,16,0.1)" },
+            style: {
+              backgroundColor: "rgba(198,16,16,0.05)",
+              color: "rgb(198,16,16)",
+              borderTop: "solid 2px rgb(198,16,16)",
+              heigth: "200px"
+            }
           }
         ]
       }
@@ -173,6 +188,7 @@ class AppelsOffres extends Component {
   handleChange = e => {
     const name = e.target.name;
     const value = e.target.value === "true";
+    console.log(name, value);
     let lanesLayout = this.state.lanesLayout;
     let index;
     for (let i = 0; i < lanesLayout.lanes.length; i++) {
@@ -231,6 +247,7 @@ class AppelsOffres extends Component {
       clicked: ao[0]
     });
     this.toggle();
+    console.log(ao[0]);
   }
   toggle() {
     this.setState({
@@ -238,11 +255,16 @@ class AppelsOffres extends Component {
     });
   }
   handleDragEnd(cardId, sourceLaneId, targetLaneId, position, cardDetails) {
+    let source = parseInt(sourceLaneId.substr(sourceLaneId.length - 1));
+    let target = parseInt(targetLaneId.substr(targetLaneId.length - 1));
+    // if (source > target) return false;
+    // else {
     this.setState({
       ...this.state,
       openDialog: true,
       dragend: { cardId, sourceLaneId, targetLaneId, position, cardDetails }
     });
+    // }
   }
 
   handleClose = () => {
@@ -287,7 +309,6 @@ class AppelsOffres extends Component {
 
   handleDisagree = () => {
     this.setState({ ...this.state, openDialog: false });
-    console.log("disagree");
   };
 
   onDataChange = newData => {
@@ -358,6 +379,7 @@ class AppelsOffres extends Component {
               handleDisagree={this.handleDisagree}
               handleAgree={this.handleAgree}
               dragend={this.state.dragend}
+              aos={this.state.aos}
             />
           </Row>
           <Row>
