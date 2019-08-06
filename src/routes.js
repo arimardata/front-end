@@ -9,6 +9,7 @@ import BlogOverview from "./views/BlogOverview";
 import UserProfileLite from "./views/UserProfileLite";
 // import GestionDeCheques from "./views/Cheques";
 import Tables from "./views/tables/Tables";
+import Personnel from "./views/tables/Personnel";
 import Errors from "./views/Errors";
 import ComponentsOverview from "./views/ComponentsOverview";
 // import Tables from "./views/Tables";
@@ -35,6 +36,11 @@ export default [
     path: "/cheques",
     layout: DefaultLayout,
     component: Tables
+  },
+  {
+    path: "/personnels",
+    layout: DefaultLayout,
+    component: Personnel
   },
   // {
   //   path: "/errors",

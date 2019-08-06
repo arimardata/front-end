@@ -12,6 +12,11 @@ export default function() {
       to: "/appelesOffres"
     },
     {
+      title: "Gestion des personnels",
+      htmlBefore: '<i class="material-icons">people</i>',
+      to: "/personnels"
+    },
+    {
       title: "Gestion des cheques",
       htmlBefore: '<i class="material-icons">payment</i>',
       to: "/cheques"
