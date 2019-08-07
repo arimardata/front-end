@@ -17,6 +17,11 @@ export default function() {
       to: "/personnels"
     },
     {
+      title: "Gestion de stock",
+      htmlBefore: '<i class="material-icons">local_shipping</i>',
+      to: "/stock"
+    },
+    {
       title: "Gestion des cheques",
       htmlBefore: '<i class="material-icons">payment</i>',
       to: "/cheques"

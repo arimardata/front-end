@@ -74,7 +74,7 @@ class Tables extends React.Component {
           <Grid item xs={12}>
             <MUIDataTable
               key={Math.random()}
-              title={"Employee List"}
+              title={""}
               data={this.state.cheques}
               columns={Columns}
               options={Options}
