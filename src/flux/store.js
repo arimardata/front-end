@@ -7,6 +7,7 @@ import getSidebarNavItems from "../data/sidebar-nav-items";
 let _store = {
   menuVisible: false,
   navItems: getSidebarNavItems(),
+  typeStock: "Consomable",
   userData: {
     id: window.localStorage.getItem("id"),
     username: window.localStorage.getItem("username"),
@@ -55,12 +56,42 @@ class Store extends EventEmitter {
       case Constants.TABLE_CHEQUE_UPDATED:
         this.reloadTable();
         break;
+      case Constants.TABLE_CONSOMABLE_UPDATED:
+        this.reloadConsomable();
+        break;
+      case Constants.TABLE_NON_CONSOMABLE_UPDATED:
+        this.reloadNonConsomable();
+        break;
+      case Constants.TYPE_STOCK_SELECT:
+        this.selectStockChanget();
       default:
     }
   }
 
+  getTypeStock = () => {
+    return _store.typeStock;
+  };
+  selectStockChanget = () => {
+    switch (_store.typeStock) {
+      case "Consomable":
+        _store.typeStock = "Non consomable";
+        break;
+      case "Non consomable":
+        _store.typeStock = "Consomable";
+        break;
+    }
+  };
+
   reloadTable = () => {
     this.emit(Constants.TABLE_CHEQUE_UPDATED);
+  };
+
+  reloadConsomable = () => {
+    this.emit(Constants.TABLE_CONSOMABLE_UPDATED);
+  };
+
+  reloadNonConsomable = () => {
+    this.emit(Constants.TABLE_NON_CONSOMABLE_UPDATED);
   };
   setUserData(payload) {
     _store.userData = payload;

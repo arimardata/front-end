@@ -8,7 +8,7 @@ import Select from "@material-ui/core/Select";
 import { withStyles } from "@material-ui/core/styles";
 
 import fetchApi from "../../utils/fetchApi";
-import { Store, Constants } from "../../flux";
+import { Store, Constants, Dispatcher } from "../../flux";
 
 import Options from "./stock/Options";
 import ColumnsConsomable from "./stock/ColumnsConsomable";
@@ -30,51 +30,90 @@ class Stock extends React.Component {
     super(props);
 
     this.state = { typeMateriel: "Materiels consomables" };
-    this.onChange = this.onChange.bind(this);
   }
 
-  onChange() {
-    // this.fetchCheques();
-  }
+  onChangeConsomable = () => {
+    this.fetchConsomable();
+  };
+  onChangeNonConsomable = () => {
+    this.fetchNonConsomable();
+  };
 
-  // fetchCheques = async () => {
-  //   const data = await fetchApi({
-  //     method: "GET",
-  //     url: "/api/Cheques/find",
-  //     token: window.localStorage.getItem("token")
-  //   });
-  //   let cheques = [];
-  //   data.map(elmnt =>
-  //     cheques.push([
-  //       elmnt.id,
-  //       elmnt.etat,
-  //       elmnt.emetteur,
-  //       elmnt.recepteur,
-  //       elmnt.banque,
-  //       elmnt.somme,
-  //       elmnt.date,
-  //       elmnt.alerte,
-  //       elmnt.compte,
-  //       elmnt.email,
-  //       elmnt.telephone
-  //     ])
-  //   );
-  //   this.setState({ cheques });
-  // };
+  fetchConsomable = async () => {
+    const data = await fetchApi({
+      method: "GET",
+      url: "/api/stock/consomable/find",
+      token: window.localStorage.getItem("token")
+    });
+    let consomables = [];
+    data.map(elmnt =>
+      consomables.push([
+        elmnt.id,
+        elmnt.id_mat,
+        elmnt.quantite,
+        elmnt.prix_unite
+      ])
+    );
+    this.setState({ consomables });
+  };
+
+  fetchNonConsomable = async () => {
+    const data = await fetchApi({
+      method: "GET",
+      url: "/api/stock/nonconsomable/find",
+      token: window.localStorage.getItem("token")
+    });
+    let nonconsomables = [];
+    data.map(elmnt =>
+      nonconsomables.push([
+        elmnt.id,
+        elmnt.id_mat,
+        elmnt.quantite,
+        elmnt.cout_par_heure,
+        elmnt.prix_achat,
+        elmnt.date_achat
+      ])
+    );
+    this.setState({ nonconsomables });
+  };
 
   handleChange = e => {
     const { name, value } = e.target;
-    console.log(name, value);
+    switch (value) {
+      case "Materiels consomables":
+        this.fetchConsomable();
+        break;
+      case "Materiels non-consomables":
+        this.fetchNonConsomable();
+        break;
+    }
+    Dispatcher.dispatch({
+      actionType: Constants.TYPE_STOCK_SELECT
+    });
     this.setState({ [name]: value });
   };
 
   async componentWillMount() {
-    // this.fetchCheques();
-    Store.addChangeListener(Constants.TABLE_CHEQUE_UPDATED, this.onChange);
+    this.fetchConsomable();
+    Store.addChangeListener(
+      Constants.TABLE_CONSOMABLE_UPDATED,
+      this.onChangeConsomable
+    );
+    Store.addChangeListener(
+      Constants.TABLE_NON_CONSOMABLE_UPDATED,
+      this.onChangeNonConsomable
+    );
   }
 
   componentWillUnmount() {
-    Store.removeChangeListener(Constants.TABLE_CHEQUE_UPDATED, this.onChange);
+    Store.removeChangeListener(
+      Constants.TABLE_CONSOMABLE_UPDATED,
+      this.onChangeConsomable
+    );
+    Store.removeChangeListener(
+      Constants.TABLE_NON_CONSOMABLE_UPDATED,
+      this.onChangeNonConsomable
+    );
   }
 
   render() {
@@ -120,7 +159,11 @@ class Stock extends React.Component {
             <MUIDataTable
               key={Math.random()}
               title={""}
-              // data={this.state.cheques}
+              data={
+                this.state.typeMateriel === "Materiels consomables"
+                  ? this.state.consomables
+                  : this.state.nonconsomables
+              }
               columns={columns}
               options={Options}
             />

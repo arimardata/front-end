@@ -21,12 +21,11 @@ import {
 } from "react-material-ui-form-validator";
 import TextField from "@material-ui/core/TextField";
 
-class CreerMaterielModal extends React.Component {
+class UpdateMaterielModal extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      type: "Consomable",
       materiel: "",
       quantite: "",
 
@@ -49,9 +48,9 @@ class CreerMaterielModal extends React.Component {
     let url;
     let body = {};
     let actionType;
-    switch (this.state.type) {
+    switch (Store.getTypeStock()) {
       case "Consomable":
-        url = "/api/stock/consomable/create";
+        url = "/api/stock/consomable/update/" + this.props.id;
         body = {
           id_mat: this.state.materiel,
           quantite: this.state.quantite,
@@ -60,7 +59,7 @@ class CreerMaterielModal extends React.Component {
         actionType = Constants.TABLE_CONSOMABLE_UPDATED;
         break;
       case "Non consomable":
-        url = "/api/stock/nonconsomable/create";
+        url = "/api/stock/nonconsomable/update/" + this.props.id;
         body = {
           id_mat: this.state.materiel,
           quantite: this.state.quantite,
@@ -71,6 +70,7 @@ class CreerMaterielModal extends React.Component {
         actionType = Constants.TABLE_NON_CONSOMABLE_UPDATED;
         break;
     }
+    console.log(body);
     const data = await fetchApi({
       method: "POST",
       url,
@@ -133,22 +133,7 @@ class CreerMaterielModal extends React.Component {
           </Col>
         </Row>
 
-        <Row>
-          <Col md="4" className="form-group">
-            <SelectValidator
-              value={type}
-              onChange={this.handleOnChange}
-              style={{ width: "100%" }}
-              name="type"
-              label="Type"
-            >
-              <MenuItem value={"Consomable"}>Consomable</MenuItem>
-              <MenuItem value={"Non consomable"}>Non consomable </MenuItem>
-            </SelectValidator>
-          </Col>
-        </Row>
-
-        {this.state.type === "Consomable" && (
+        {Store.getTypeStock() === "Consomable" && (
           <Row form>
             <Col md="6" className="form-group">
               <TextValidator
@@ -166,7 +151,7 @@ class CreerMaterielModal extends React.Component {
             </Col>
           </Row>
         )}
-        {this.state.type === "Non consomable" && (
+        {Store.getTypeStock() === "Non consomable" && (
           <div>
             <Row form>
               <Col md="6" className="form-group">
@@ -229,4 +214,4 @@ class CreerMaterielModal extends React.Component {
   }
 }
 
-export default CreerMaterielModal;
+export default UpdateMaterielModal;
