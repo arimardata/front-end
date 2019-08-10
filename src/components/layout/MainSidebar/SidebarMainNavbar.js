@@ -36,7 +36,7 @@ class SidebarMainNavbar extends React.Component {
                 className="d-inline-block align-top mr-1"
                 style={{ maxWidth: "25px" }}
                 src={require("../../../images/shards-dashboards-logo.svg")}
-                alt="Gecomar Data"
+                alt="Gecomar "
               />
               {!hideLogoText && (
                 <span className="d-none d-md-inline ml-1">Gecomar Data</span>
