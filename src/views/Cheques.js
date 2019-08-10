@@ -46,13 +46,16 @@ class Cheque extends Component {
   render() {
     const columns = [
       "id",
-      "date",
+      "etat",
       "Emetteur",
       "Recepteur",
       "Banque",
-      "Alerte",
+      "Compte",
       "Somme",
-      "etat"
+      "date",
+      "Alerte",
+      "email",
+      "telephone" 
     ];
 
     const options = {

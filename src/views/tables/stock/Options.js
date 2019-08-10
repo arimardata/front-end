@@ -36,6 +36,7 @@ export default {
   filterType: "checkbox",
   filterList: ["Identifiant"],
   responsive: "scroll",
+  filter: false,
 
   customToolbar: () => {
     return <CustomToolbar />;

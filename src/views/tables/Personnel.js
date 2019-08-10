@@ -5,14 +5,14 @@ import MUIDataTable from "mui-datatables";
 import fetchApi from "../../utils/fetchApi";
 import { Store, Constants } from "../../flux";
 
-import Options from "./cheque/Options";
-import Columns from "./cheque/Columns";
+import Options from "./personnel/Options";
+import Columns from "./personnel/Columns";
 
 import { Container, Row } from "shards-react";
 import PageTitle from "../../components/common/PageTitle";
 
 // import { Store, Constants, Dispatcher } from "../../flux";
-class Tables extends React.Component {
+class Personnel extends React.Component {
   constructor(props) {
     super(props);
 
@@ -21,37 +21,36 @@ class Tables extends React.Component {
   }
 
   onChange() {
-    this.fetchCheques();
+    // this.fetchCheques();
   }
 
-  fetchCheques = async () => {
-    const data = await fetchApi({
-      method: "GET",
-      url: "/api/Cheques/find",
-      token: window.localStorage.getItem("token")
-    });
-    let cheques = [];
-    data.map(elmnt =>
-      cheques.push([
-        elmnt.id,
-        elmnt.etat,
-        elmnt.emetteur,
-        elmnt.recepteur,
-        elmnt.banque,
-        elmnt.somme,
-        elmnt.date,
-        elmnt.alerte,
-        elmnt.compte,
-        elmnt.email,
-        elmnt.telephone
-      ])
-    );
-    console.log(cheques);
-    this.setState({ cheques });
-  };
+  // fetchCheques = async () => {
+  //   const data = await fetchApi({
+  //     method: "GET",
+  //     url: "/api/Cheques/find",
+  //     token: window.localStorage.getItem("token")
+  //   });
+  //   let cheques = [];
+  //   data.map(elmnt =>
+  //     cheques.push([
+  //       elmnt.id,
+  //       elmnt.etat,
+  //       elmnt.emetteur,
+  //       elmnt.recepteur,
+  //       elmnt.banque,
+  //       elmnt.somme,
+  //       elmnt.date,
+  //       elmnt.alerte,
+  //       elmnt.compte,
+  //       elmnt.email,
+  //       elmnt.telephone
+  //     ])
+  //   );
+  //   this.setState({ cheques });
+  // };
 
   async componentWillMount() {
-    this.fetchCheques();
+    // this.fetchCheques();
     Store.addChangeListener(Constants.TABLE_CHEQUE_UPDATED, this.onChange);
   }
 
@@ -65,8 +64,8 @@ class Tables extends React.Component {
         <Row noGutters className="page-header py-4">
           <PageTitle
             sm="4"
-            title="Gestion Des Cheques "
-            subtitle="Lister et gerer les  Cheques"
+            title="Gestion des personnels "
+            subtitle="Lister et gerer les personnels"
             className="text-sm-left"
           />
         </Row>
@@ -75,7 +74,7 @@ class Tables extends React.Component {
             <MUIDataTable
               key={Math.random()}
               title={""}
-              data={this.state.cheques}
+              // data={this.state.cheques}
               columns={Columns}
               options={Options}
             />
@@ -86,4 +85,4 @@ class Tables extends React.Component {
   }
 }
 
-export default Tables;
+export default Personnel;

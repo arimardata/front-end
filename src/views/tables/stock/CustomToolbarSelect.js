@@ -9,7 +9,7 @@ import { Store, Constants, Dispatcher } from "../../../flux";
 import fetchApi from "../../../utils/fetchApi";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
-import ChequeModalUpdate from "../../../utils/ChequeModalUpdate";
+import UpdateMaterielModal from "../../../utils/UpdateMaterielModal";
 
 import { Modal, ModalBody } from "shards-react";
 
@@ -41,19 +41,29 @@ class CustomToolbarSelect extends React.Component {
   };
 
   delete = () => {
-    //console.log(this.props.displayData)
-
     let data = this.props.selectedRows.data;
-    data.map(el => {
+    data.map(async el => {
       let index = el.index;
       let id = this.props.displayData[index].data[0];
-      fetchApi({
+      let url, actionType;
+
+      switch (Store.getTypeStock()) {
+        case "Consomable":
+          url = "/api/stock/consomable/delete/" + id;
+          actionType = Constants.TABLE_CONSOMABLE_UPDATED;
+          break;
+        case "Non consomable":
+          url = "/api/stock/nonconsomable/delete/" + id;
+          actionType = Constants.TABLE_NON_CONSOMABLE_UPDATED;
+          break;
+      }
+      await fetchApi({
         method: "DELETE",
-        url: "/api/Cheques/delete/" + id,
+        url,
         token: window.localStorage.getItem("token")
-      }).then(data => {});
+      });
       Dispatcher.dispatch({
-        actionType: Constants.TABLE_CHEQUE_UPDATED
+        actionType
       });
     });
   };
@@ -93,10 +103,10 @@ class CustomToolbarSelect extends React.Component {
               <DeleteIcon />
             </IconButton>
           </Tooltip>
-          {edit}
+          {/* {edit} */}
           <Modal size="lg" open={this.state.open}>
             <ModalBody>
-              <ChequeModalUpdate id={this.state.id} toggle={this.toggle} />
+              <UpdateMaterielModal id={this.state.id} toggle={this.toggle} />
             </ModalBody>
           </Modal>
         </React.Fragment>

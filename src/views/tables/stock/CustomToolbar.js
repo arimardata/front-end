@@ -3,7 +3,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import AddIcon from "@material-ui/icons/Add";
 import { withStyles } from "@material-ui/core/styles";
-import ChequeModal from "../../../utils/ChequeModal";
+import CreerMaterielModal from "../../../utils/CreerMaterielModal";
 import { Modal, ModalBody } from "shards-react";
 
 const defaultToolbarStyles = {};
@@ -31,7 +31,7 @@ class CustomToolbar extends React.Component {
         </Tooltip>
         <Modal size="lg" open={open}>
           <ModalBody>
-            <ChequeModal toggle={this.toggle} />
+            <CreerMaterielModal toggle={this.toggle} />
           </ModalBody>
         </Modal>
       </React.Fragment>
