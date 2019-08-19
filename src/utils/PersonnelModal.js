@@ -228,7 +228,7 @@ class PersonnelModal extends React.Component {
               name="cin"
               label="CIN"
               validators={["required"]}
-              errorMessages={["Ce Champ est Obligatoire : "]}
+              errorMessages={["Ce champ est obligatoire : "]}
             />
           </Col>
           <Col md="5" className="form-group">
@@ -239,7 +239,7 @@ class PersonnelModal extends React.Component {
               name="nom"
               value={nom}
               validators={["required"]}
-              errorMessages={["Ce Champ est Obligatoir : "]}
+              errorMessages={["Ce champ est obligatoire : "]}
             />
           </Col>
           <Col md="5" className="form-group">
@@ -250,7 +250,7 @@ class PersonnelModal extends React.Component {
               name="prenom"
               value={prenom}
               validators={["required"]}
-              errorMessages={["Ce Champ est Obligatoir : "]}
+              errorMessages={["Ce champ est obligatoire : "]}
             />
           </Col>
         </Row>
@@ -263,7 +263,7 @@ class PersonnelModal extends React.Component {
               name="diplome"
               value={diplome}
               validators={["required"]}
-              errorMessages={["Ce Champ est Obligatoir : "]}
+              errorMessages={["Ce champ est obligatoire : "]}
             />
           </Col>
           <Col md="6" className="form-group">
@@ -273,12 +273,8 @@ class PersonnelModal extends React.Component {
               style={{ width: "100%" }}
               name="qualite"
               value={qualite}
-              validators={["required", "maxStringLength:24", "isNumber"]}
-              errorMessages={[
-                "Ce Champ est Obligatoire : ",
-                "Max 24 caractere",
-                "La valeur doit etre numerique"
-              ]}
+              validators={["required"]}
+              errorMessages={["Ce champ est obligatoire : "]}
             />
           </Col>
         </Row>
@@ -291,7 +287,7 @@ class PersonnelModal extends React.Component {
               name="telephone"
               value={telephone}
               validators={["required"]}
-              errorMessages={["Ce Champ est Obligatoir : "]}
+              errorMessages={["Ce champ est obligatoire : "]}
             />
           </Col>
           <Col md="6" className="form-group">
@@ -303,7 +299,7 @@ class PersonnelModal extends React.Component {
               value={email}
               validators={["required", "isEmail"]}
               errorMessages={[
-                "Ce Champ est Obligatoir : ",
+                "Ce champ est obligatoire : ",
                 "Entrez un email valide"
               ]}
             />
@@ -321,7 +317,7 @@ class PersonnelModal extends React.Component {
               name="date_naissance"
               value={date_naissance}
               validators={["required"]}
-              errorMessages={["Ce Champ est Obligatoire : "]}
+              errorMessages={["Ce champ est obligatoire : "]}
             />
           </Col>
         </Row>
