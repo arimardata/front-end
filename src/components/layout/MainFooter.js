@@ -30,7 +30,7 @@ MainFooter.propTypes = {
 
 MainFooter.defaultProps = {
   contained: false,
-  copyright: "Copyright © 2019 Arimar DATA"
+  copyright: "Copyright © 2019 Gecomar"
 };
 
 export default MainFooter;
