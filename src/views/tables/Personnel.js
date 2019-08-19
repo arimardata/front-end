@@ -1,22 +1,33 @@
 import React from "react";
 import { Grid } from "@material-ui/core";
 import MUIDataTable from "mui-datatables";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import { withStyles } from "@material-ui/core/styles";
 
 import fetchApi from "../../utils/fetchApi";
-import { Store, Constants } from "../../flux";
+import { Store, Constants, Dispatcher } from "../../flux";
 
 import Options from "./personnel/Options";
 import Columns from "./personnel/Columns";
 
 import { Container, Row } from "shards-react";
 import PageTitle from "../../components/common/PageTitle";
+import ColumnsSaisonier from "./personnel/ColumnsSaisonier";
 
-// import { Store, Constants, Dispatcher } from "../../flux";
+const styles = theme => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120
+  }
+});
 class Personnel extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = { type_personnel: "Permanent" };
     this.onChange = this.onChange.bind(this);
   }
 
@@ -58,7 +69,29 @@ class Personnel extends React.Component {
     Store.removeChangeListener(Constants.TABLE_CHEQUE_UPDATED, this.onChange);
   }
 
+  handleChange = e => {
+    const { name, value } = e.target;
+    switch (value) {
+      case "Administratif":
+        // this.fetchConsomable();
+        break;
+      case "Permanent":
+        // this.fetchNonConsomable();
+        break;
+      case "Saisonier":
+        // this.fetchNonConsomable();
+        break;
+    }
+    Dispatcher.dispatch({
+      // actionType: Constants.TYPE_STOCK_SELECT
+    });
+    this.setState({ [name]: value });
+  };
+
   render() {
+    const { classes } = this.props;
+    let columns =
+      this.state.type_personnel === "Saisonier" ? ColumnsSaisonier : Columns;
     return (
       <Container fluid className="main-content-container px-4">
         <Row noGutters className="page-header py-4">
@@ -69,13 +102,32 @@ class Personnel extends React.Component {
             className="text-sm-left"
           />
         </Row>
+        <Row noGutters className="page-header py-4">
+          <FormControl className={classes.formControl}>
+            <InputLabel htmlFor="demo-controlled-open-select">
+              Type :
+            </InputLabel>
+            <Select
+              value={this.state.type_personnel}
+              onChange={this.handleChange}
+              inputProps={{
+                name: "type_personnel",
+                id: "demo-controlled-open-select"
+              }}
+            >
+              <MenuItem value={"Administratif"}>Administratif</MenuItem>
+              <MenuItem value={"Permanent"}>Permanent</MenuItem>
+              <MenuItem value={"Saisonier"}>Saisonier</MenuItem>
+            </Select>
+          </FormControl>
+        </Row>
         <Grid container spacing={32}>
           <Grid item xs={12}>
             <MUIDataTable
               key={Math.random()}
               title={""}
               // data={this.state.cheques}
-              columns={Columns}
+              columns={columns}
               options={Options}
             />
           </Grid>
@@ -85,4 +137,4 @@ class Personnel extends React.Component {
   }
 }
 
-export default Personnel;
+export default withStyles(styles)(Personnel);

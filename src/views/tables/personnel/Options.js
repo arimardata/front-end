@@ -35,7 +35,7 @@ export default {
   },
   filterType: "checkbox",
   filterList: ["Identifiant"],
-  responsive: "scroll",
+  responsive: "stacked",
 
   customToolbar: () => {
     return <CustomToolbar />;

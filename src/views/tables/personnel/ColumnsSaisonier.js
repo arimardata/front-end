@@ -76,27 +76,27 @@ export default [
   },
 
   {
-    name: "salaire",
-    label: "Salaire",
+    name: "cout par jour",
+    label: "Cout par jour",
     options: {
       filter: false,
       sort: true
     }
   },
   {
-    name: "date d'embauche",
-    label: "Date d'embauche",
+    name: "date debut",
+    label: "Date debut",
     options: {
       filter: false,
       sort: true
     }
   },
   {
-    name: "cnss",
-    label: "cnss",
+    name: "date fin",
+    label: "Date fin",
     options: {
       filter: false,
-      sort: false
+      sort: true
     }
   }
 ];
