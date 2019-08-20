@@ -103,7 +103,7 @@ class CustomToolbarSelect extends React.Component {
               <DeleteIcon />
             </IconButton>
           </Tooltip>
-          {/* {edit} */}
+          {edit}
           <Modal size="lg" open={this.state.open}>
             <ModalBody>
               <UpdateMaterielModal id={this.state.id} toggle={this.toggle} />

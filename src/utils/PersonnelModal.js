@@ -38,8 +38,58 @@ class PersonnelModal extends React.Component {
     });
   };
 
-  handleSubmit = async e => {
+  createAdministratif = async data => {
+    const res = await fetchApi({
+      method: "POST",
+
+      url: "/api/personnel/administratif/create",
+      token: window.localStorage.getItem("token"),
+      body: data
+    });
+    console.log(res);
+  };
+  createPermanent = async data => {
+    const res = await fetchApi({
+      method: "POST",
+
+      url: "/api/personnel/permanent/create",
+      token: window.localStorage.getItem("token"),
+      body: data
+    });
+    console.log(res);
+  };
+  createSaisonier = async data => {
+    const res = await fetchApi({
+      method: "POST",
+
+      url: "/api/personnel/saisonier/create",
+      token: window.localStorage.getItem("token"),
+      body: data
+    });
+    console.log(res);
+  };
+
+  handleSubmit = async () => {
     // your submit logic
+    let data = this.state;
+    switch (data.type_personnel) {
+      case "Administratif":
+        delete data.type_personnel;
+        delete data.coutParJour;
+        this.createAdministratif(data);
+        break;
+      case "Permanent":
+        delete data.type_personnel;
+        delete data.coutParJour;
+        this.createPermanent(data);
+        break;
+      case "Saisonier":
+        delete data.cnss;
+        delete data.salaire;
+        delete data.dateEmbauche;
+        this.createSaisonier(data);
+        break;
+    }
 
     Dispatcher.dispatch({
       //   actionType: Constants.TABLE_CHEQUE_UPDATED
@@ -56,16 +106,16 @@ class PersonnelModal extends React.Component {
       cin,
       nom,
       prenom,
-      date_naissance,
+      dateDeNaissance,
       diplome,
       qualite,
       email,
-      telephone,
+      tel,
       type_personnel,
-      cout_par_jour,
+      coutParJour,
       salaire,
       cnss,
-      date_embauche,
+      dateEmbauche,
       date_debut,
       date_fin
     } = this.state;
@@ -107,8 +157,8 @@ class PersonnelModal extends React.Component {
                   onChange={this.handleOnChange}
                   defaultValue="2019-01-01"
                   style={{ width: "100%" }}
-                  name="date_embauche"
-                  value={date_embauche}
+                  name="dateEmbauche"
+                  value={dateEmbauche}
                   validators={["required"]}
                   errorMessages={["Ce Champ est Obligatoire : "]}
                 />
@@ -152,8 +202,8 @@ class PersonnelModal extends React.Component {
                   onChange={this.handleOnChange}
                   defaultValue="2019-01-01"
                   style={{ width: "100%" }}
-                  name="date_embauche"
-                  value={date_embauche}
+                  name="dateEmbauche"
+                  value={dateEmbauche}
                   validators={["required"]}
                   errorMessages={["Ce Champ est Obligatoire : "]}
                 />
@@ -171,14 +221,14 @@ class PersonnelModal extends React.Component {
                   label="Cout par jour"
                   onChange={this.handleOnChange}
                   style={{ width: "100%" }}
-                  name="cout_par_jour"
-                  value={cout_par_jour}
+                  name="coutParJour"
+                  value={coutParJour}
                   validators={["required"]}
                   errorMessages={["Ce Champ est Obligatoire : "]}
                 />
               </Col>
             </Row>
-            <Row form>
+            {/* <Row form>
               <Col md="6" className="form-group">
                 <TextField
                   type="date"
@@ -205,7 +255,7 @@ class PersonnelModal extends React.Component {
                   errorMessages={["Ce Champ est Obligatoire : "]}
                 />
               </Col>
-            </Row>
+            </Row> */}
           </div>
         );
         break;
@@ -284,8 +334,8 @@ class PersonnelModal extends React.Component {
               label="N° Telephone"
               onChange={this.handleOnChange}
               style={{ width: "100%" }}
-              name="telephone"
-              value={telephone}
+              name="tel"
+              value={tel}
               validators={["required"]}
               errorMessages={["Ce champ est obligatoire : "]}
             />
@@ -314,8 +364,8 @@ class PersonnelModal extends React.Component {
               onChange={this.handleOnChange}
               defaultValue="1990-01-01"
               style={{ width: "100%" }}
-              name="date_naissance"
-              value={date_naissance}
+              name="dateDeNaissance"
+              value={dateDeNaissance}
               validators={["required"]}
               errorMessages={["Ce champ est obligatoire : "]}
             />
