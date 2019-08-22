@@ -97,18 +97,21 @@ class ChequeModal extends React.Component {
           >
             <Row form>
               <Col md="2" className="form-group">
-                <SelectValidator
+                <TextField
+                  id="outlined-select-currency-native"
+                  select
+                  label="Etat"
+                  style={{ width: "100%" }}
                   value={etat}
                   onChange={this.handleOnChange}
-                  style={{ width: "100%" }}
+                  SelectProps={{
+                    native: true
+                  }}
                   name="etat"
-                  label="Etat"
-                  validators={["required"]}
-                  errorMessages={["Ce Champ est Obligatoir : "]}
                 >
-                  <MenuItem value={"Entrant"}>Entrant</MenuItem>
-                  <MenuItem value={"Sortant"}>Sortant </MenuItem>
-                </SelectValidator>
+                  <option value="Entrant">Entrant</option>
+                  <option value="Sortant">Sortant</option>
+                </TextField>
               </Col>
               <Col md="5" className="form-group">
                 <TextValidator

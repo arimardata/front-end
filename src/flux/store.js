@@ -8,6 +8,7 @@ let _store = {
   menuVisible: false,
   navItems: getSidebarNavItems(),
   typeStock: "Consomable",
+  typePersonnel: "Permanent",
   userData: {
     id: window.localStorage.getItem("id"),
     username: window.localStorage.getItem("username"),
@@ -54,7 +55,16 @@ class Store extends EventEmitter {
         this.cleareUserData();
         break;
       case Constants.TABLE_CHEQUE_UPDATED:
-        this.reloadTable();
+        this.reloadTable(Constants.TABLE_CHEQUE_UPDATED);
+        break;
+      case Constants.TABLE_ADMINISTRATIF_UPDATED:
+        this.reloadTable(Constants.TABLE_ADMINISTRATIF_UPDATED);
+        break;
+      case Constants.TABLE_PERMANENT_UPDATED:
+        this.reloadTable(Constants.TABLE_PERMANENT_UPDATED);
+        break;
+      case Constants.TABLE_SAISONIER_UPDATED:
+        this.reloadTable(Constants.TABLE_SAISONIER_UPDATED);
         break;
       case Constants.TABLE_CONSOMABLE_UPDATED:
         this.reloadConsomable();
@@ -64,12 +74,18 @@ class Store extends EventEmitter {
         break;
       case Constants.TYPE_STOCK_SELECT:
         this.selectStockChanget();
+      case Constants.TYPE_PERSONNEL_SELECT:
+        this.selectPersonnelChanged(payload);
       default:
     }
   }
 
   getTypeStock = () => {
     return _store.typeStock;
+  };
+
+  getTypePersonnel = () => {
+    return _store.typePersonnel;
   };
   selectStockChanget = () => {
     switch (_store.typeStock) {
@@ -81,9 +97,12 @@ class Store extends EventEmitter {
         break;
     }
   };
+  selectPersonnelChanged = payload => {
+    _store.typePersonnel = payload;
+  };
 
-  reloadTable = () => {
-    this.emit(Constants.TABLE_CHEQUE_UPDATED);
+  reloadTable = action => {
+    this.emit(action);
   };
 
   reloadConsomable = () => {

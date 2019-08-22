@@ -32,7 +32,7 @@ class Personnel extends React.Component {
   }
 
   onChange() {
-    // this.fetchCheques();
+    this.fetchData();
   }
 
   fetchAdministratif = async () => {
@@ -51,7 +51,8 @@ class Personnel extends React.Component {
         elmnt.tel,
         elmnt.email,
         elmnt.diplome,
-        elmnt.dateNaissance,
+        elmnt.qualite,
+        elmnt.dateDeNaissance,
         elmnt.salaire,
         elmnt.dateEmbauche,
         elmnt.cnss
@@ -75,7 +76,8 @@ class Personnel extends React.Component {
         elmnt.tel,
         elmnt.email,
         elmnt.diplome,
-        elmnt.dateNaissance,
+        elmnt.qualite,
+        elmnt.dateDeNaissance,
         elmnt.salaire,
         elmnt.dateEmbauche,
         elmnt.cnss
@@ -90,6 +92,8 @@ class Personnel extends React.Component {
       token: window.localStorage.getItem("token")
     });
     let rows = [];
+
+    console.log(data);
     data.map(elmnt =>
       rows.push([
         elmnt.id,
@@ -99,7 +103,8 @@ class Personnel extends React.Component {
         elmnt.tel,
         elmnt.email,
         elmnt.diplome,
-        elmnt.dateNaissance,
+        elmnt.qualite,
+        elmnt.dateDeNaissance,
         elmnt.coutParJour
       ])
     );
@@ -123,11 +128,27 @@ class Personnel extends React.Component {
 
   async componentWillMount() {
     this.fetchData();
-    Store.addChangeListener(Constants.TABLE_CHEQUE_UPDATED, this.onChange);
+    Store.addChangeListener(
+      Constants.TABLE_ADMINISTRATIF_UPDATED,
+      this.onChange
+    );
+    Store.addChangeListener(Constants.TABLE_PERMANENT_UPDATED, this.onChange);
+    Store.addChangeListener(Constants.TABLE_SAISONIER_UPDATED, this.onChange);
   }
 
   componentWillUnmount() {
-    Store.removeChangeListener(Constants.TABLE_CHEQUE_UPDATED, this.onChange);
+    Store.removeChangeListener(
+      Constants.TABLE_ADMINISTRATIF_UPDATED,
+      this.onChange
+    );
+    Store.removeChangeListener(
+      Constants.TABLE_PERMANENT_UPDATED,
+      this.onChange
+    );
+    Store.removeChangeListener(
+      Constants.TABLE_SAISONIER_UPDATED,
+      this.onChange
+    );
   }
 
   handleChange = e => {
@@ -135,17 +156,27 @@ class Personnel extends React.Component {
     switch (value) {
       case "Administratif":
         this.fetchAdministratif();
+        Dispatcher.dispatch({
+          actionType: Constants.TYPE_PERSONNEL_SELECT,
+          payload: "Administratif"
+        });
         break;
       case "Permanent":
         this.fetchPermanent();
+        Dispatcher.dispatch({
+          actionType: Constants.TYPE_PERSONNEL_SELECT,
+          payload: "Permanent"
+        });
         break;
       case "Saisonier":
         this.fetchSaisonier();
+        Dispatcher.dispatch({
+          actionType: Constants.TYPE_PERSONNEL_SELECT,
+          payload: "Saisonier"
+        });
         break;
     }
-    Dispatcher.dispatch({
-      // actionType: Constants.TYPE_STOCK_SELECT
-    });
+
     this.setState({ [name]: value });
   };
 

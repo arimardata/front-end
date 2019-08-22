@@ -135,16 +135,21 @@ class CreerMaterielModal extends React.Component {
 
         <Row>
           <Col md="4" className="form-group">
-            <SelectValidator
+            <TextField
+              id="outlined-select-currency-native"
+              select
+              label="Type"
+              style={{ width: "100%" }}
               value={type}
               onChange={this.handleOnChange}
-              style={{ width: "100%" }}
+              SelectProps={{
+                native: true
+              }}
               name="type"
-              label="Type"
             >
-              <MenuItem value={"Consomable"}>Consomable</MenuItem>
-              <MenuItem value={"Non consomable"}>Non consomable </MenuItem>
-            </SelectValidator>
+              <option value="Consomable">Consomable</option>
+              <option value="Non consomable">Non consomable</option>
+            </TextField>
           </Col>
         </Row>
 

@@ -70,7 +70,6 @@ class UpdateMaterielModal extends React.Component {
         actionType = Constants.TABLE_NON_CONSOMABLE_UPDATED;
         break;
     }
-    console.log(body);
     const data = await fetchApi({
       method: "POST",
       url,
@@ -86,6 +85,27 @@ class UpdateMaterielModal extends React.Component {
     this.setState({});
     this.props.toggle();
   };
+
+  componentWillMount() {
+    switch (Store.getTypeStock()) {
+      case "Consomable":
+        this.setState({
+          materiel: this.props.data[1],
+          quantite: this.props.data[2],
+          prix_unite: this.props.data[3]
+        });
+        break;
+      case "Non consomable":
+        this.setState({
+          materiel: this.props.data[1],
+          quantite: this.props.data[2],
+          cout_par_heure: this.props.data[3],
+          prix_dachat: this.props.data[4],
+          date_dachat: this.props.data[5]
+        });
+        break;
+    }
+  }
 
   render() {
     const {
