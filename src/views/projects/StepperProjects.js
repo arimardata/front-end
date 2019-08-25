@@ -12,10 +12,12 @@ import Switch from "@material-ui/core/Switch";
 import Typography from "@material-ui/core/Typography";
 import { Container } from "shards-react";
 import Base from "./Steps/Base";
+import Materiels from "./Steps/Materiels";
 
 const styles = theme => ({
   root: {
-    width: "100%"
+    width: "100%",
+    marginBottom: theme.spacing(1)
   },
   button: {
     marginRight: theme.spacing(1)
@@ -41,7 +43,7 @@ function getStepContent(step) {
     case 0:
       return <Base />;
     case 1:
-      return "Step 2: What is an ad group anyways?";
+      return <Materiels />;
     case 2:
       return "Step 3: This is the bit I really care about!";
     default:

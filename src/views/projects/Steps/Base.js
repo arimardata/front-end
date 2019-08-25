@@ -20,6 +20,7 @@ import {
 import MenuItem from "@material-ui/core/MenuItem";
 
 import TextField from "@material-ui/core/TextField";
+import ProjectSteps from "./tables/ProjectSteps";
 
 const styles = theme => ({
   root: {}
@@ -28,15 +29,38 @@ const styles = theme => ({
 class Base extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      etapes: [
+        { id: 1, designation: "", duree: 0, responsable: "" },
+        { id: 2, designation: "", duree: 0, responsable: "" },
+        { id: 3, designation: "", duree: 0, responsable: "" },
+        { id: 4, designation: "", duree: 0, responsable: "" },
+        { id: 5, designation: "", duree: 0, responsable: "" }
+      ]
+    };
   }
 
   handleSubmit = () => {};
-  handleOnChange = () => {};
+  handleOnChange = e => {
+    const { name, value } = e.target;
+    console.log(name, value);
+    this.setState({ ...this.state, [name]: value });
+  };
+  handleOnChangeSteps = id => e => {
+    const { name, value } = e.target;
+    const { etapes } = this.state;
+    etapes.map(etape => {
+      if (etape.id === id) {
+        etape[name] = value;
+      }
+    });
+    this.setState({ etapes });
+  };
   render() {
+    const { projet, date_debut, date_fin, etapes } = this.state;
+
     return (
       <ValidatorForm
-        autoComplete="off"
         ref="form"
         onSubmit={this.handleSubmit}
         onError={errors => console.log(errors)}
@@ -46,7 +70,7 @@ class Base extends React.Component {
             <SelectValidator
               label="Projet"
               style={{ width: "100%" }}
-              //   value={projet}
+              value={projet}
               onChange={this.handleOnChange}
               name="projet"
             >
@@ -65,7 +89,7 @@ class Base extends React.Component {
               style={{ width: "100%" }}
               name="prenom"
               defaultValue="2019-01-01"
-              //   value={prenom}
+              value={date_debut}
               validators={["required"]}
               errorMessages={["Ce champ est obligatoire : "]}
             />
@@ -80,12 +104,16 @@ class Base extends React.Component {
               style={{ width: "100%" }}
               name="prenom"
               defaultValue="2019-12-31"
-              //   value={prenom}
+              value={date_fin}
               validators={["required"]}
               errorMessages={["Ce champ est obligatoire : "]}
             />
           </Col>
         </Row>
+        <ProjectSteps
+          etapes={etapes}
+          handleOnChangeSteps={this.handleOnChangeSteps}
+        />
       </ValidatorForm>
     );
   }
