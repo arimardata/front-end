@@ -14,50 +14,36 @@ import {
   FormInput,
   FormGroup,
   FormCheckbox,
-  FormSelect,
-  Button
+  FormSelect
 } from "shards-react";
 import MenuItem from "@material-ui/core/MenuItem";
+import Button from "@material-ui/core/Button";
 
 import TextField from "@material-ui/core/TextField";
 import ProjectSteps from "./tables/ProjectSteps";
 
 const styles = theme => ({
-  root: {}
+  root: {},
+  addDelete: { marginTop: 20 }
 });
 
 class Base extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      etapes: [
-        { id: 1, designation: "", duree: 0, responsable: "" },
-        { id: 2, designation: "", duree: 0, responsable: "" },
-        { id: 3, designation: "", duree: 0, responsable: "" },
-        { id: 4, designation: "", duree: 0, responsable: "" },
-        { id: 5, designation: "", duree: 0, responsable: "" }
-      ]
-    };
+    this.state = {};
   }
 
   handleSubmit = () => {};
-  handleOnChange = e => {
-    const { name, value } = e.target;
-    console.log(name, value);
-    this.setState({ ...this.state, [name]: value });
-  };
-  handleOnChangeSteps = id => e => {
-    const { name, value } = e.target;
-    const { etapes } = this.state;
-    etapes.map(etape => {
-      if (etape.id === id) {
-        etape[name] = value;
-      }
-    });
-    this.setState({ etapes });
-  };
+
   render() {
-    const { projet, date_debut, date_fin, etapes } = this.state;
+    const {
+      classes,
+      addRow,
+      deleteRow,
+      handleOnChangeSteps,
+      handleOnChange
+    } = this.props;
+    const { etapes, projet, date_debut, date_fin } = this.props.state;
 
     return (
       <ValidatorForm
@@ -71,7 +57,7 @@ class Base extends React.Component {
               label="Projet"
               style={{ width: "100%" }}
               value={projet}
-              onChange={this.handleOnChange}
+              onChange={handleOnChange}
               name="projet"
             >
               <MenuItem value="Sample1">Sample1</MenuItem>
@@ -85,7 +71,7 @@ class Base extends React.Component {
             <TextValidator
               label="Date début"
               type="date"
-              onChange={this.handleOnChange}
+              onChange={handleOnChange}
               style={{ width: "100%" }}
               name="prenom"
               defaultValue="2019-01-01"
@@ -100,7 +86,7 @@ class Base extends React.Component {
             <TextValidator
               label="Date fin"
               type="date"
-              onChange={this.handleOnChange}
+              onChange={handleOnChange}
               style={{ width: "100%" }}
               name="prenom"
               defaultValue="2019-12-31"
@@ -110,10 +96,25 @@ class Base extends React.Component {
             />
           </Col>
         </Row>
-        <ProjectSteps
-          etapes={etapes}
-          handleOnChangeSteps={this.handleOnChangeSteps}
-        />
+        <Row>
+          <ProjectSteps
+            etapes={etapes}
+            handleOnChangeSteps={handleOnChangeSteps}
+          />
+        </Row>
+        <Row className={classes.addDelete}>
+          <Col md="1">
+            <Button onClick={addRow}>Ajouter</Button>
+          </Col>
+          <Col md="1">
+            <Button
+              disabled={etapes.length > 1 ? false : true}
+              onClick={deleteRow}
+            >
+              Supprimer
+            </Button>
+          </Col>
+        </Row>
       </ValidatorForm>
     );
   }

@@ -7,6 +7,7 @@ import getSidebarNavItems from "../data/sidebar-nav-items";
 let _store = {
   menuVisible: false,
   navItems: getSidebarNavItems(),
+  materielSelectedRow: [],
   typeStock: "Consomable",
   typePersonnel: "Permanent",
   userData: {
@@ -29,6 +30,13 @@ class Store extends EventEmitter {
 
     Dispatcher.register(this.registerToActions.bind(this));
   }
+
+  setMaterielSelectedRow = data => {
+    _store.materielSelectedRow = data;
+  };
+  getMaterielSelectedRow = () => {
+    return _store.materielSelectedRow;
+  };
 
   toggleSidebar() {
     _store.menuVisible = !_store.menuVisible;

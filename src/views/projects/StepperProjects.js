@@ -27,7 +27,7 @@ const styles = theme => ({
   },
   instructions: {
     marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1)
+    marginBottom: 40
   },
   stepItem: {
     whiteSpace: "inherit"
@@ -38,26 +38,70 @@ function getSteps() {
   return ["Données de base", "Matériels", "Ressources humains"];
 }
 
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return <Base />;
-    case 1:
-      return <Materiels />;
-    case 2:
-      return "Step 3: This is the bit I really care about!";
-    default:
-      return "Unknown step";
-  }
-}
-
 class StepperProjects extends React.Component {
   state = {
     activeStep: 0,
-    completed: {}
+    completed: {},
+    etapes: [{ id: 1, designation: "", duree: 0, responsable: "" }]
   };
 
   totalSteps = () => getSteps().length;
+  getStepContent = step => {
+    switch (step) {
+      case 0:
+        return (
+          <Base
+            state={this.state}
+            addRow={this.addRow}
+            deleteRow={this.deleteRow}
+            handleOnChangeSteps={this.handleOnChangeSteps}
+            handleOnChange={this.handleOnChange}
+          />
+        );
+      case 1:
+        return <Materiels />;
+      case 2:
+        return "Step 3: This is the bit I really care about!";
+      default:
+        return "Unknown step";
+    }
+  };
+  handleOnChange = e => {
+    const { name, value } = e.target;
+    console.log(name, value);
+    this.setState({ ...this.state, [name]: value });
+  };
+
+  handleOnChangeSteps = id => e => {
+    const { name, value } = e.target;
+    const { etapes } = this.state;
+    etapes.map(etape => {
+      if (etape.id === id) {
+        etape[name] = value;
+      }
+    });
+    this.setState({ etapes });
+  };
+
+  addRow = () => {
+    const size = this.state.etapes.length + 1;
+    let etapes = this.state.etapes;
+    etapes.push({
+      id: size,
+      designation: "",
+      duree: 0,
+      responsable: ""
+    });
+    this.setState({ etapes });
+  };
+
+  deleteRow = () => {
+    const size = this.state.etapes.length + 1;
+
+    let etapes = this.state.etapes;
+    etapes.pop();
+    this.setState({ etapes });
+  };
 
   handleNext = () => {
     const { completed, activeStep } = this.state;
@@ -156,7 +200,7 @@ class StepperProjects extends React.Component {
             ) : (
               <div>
                 <Typography className={classes.instructions}>
-                  {getStepContent(activeStep)}
+                  {this.getStepContent(activeStep)}
                 </Typography>
                 <div>
                   <Button

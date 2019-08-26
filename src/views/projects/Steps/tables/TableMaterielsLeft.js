@@ -6,39 +6,11 @@ import MUIDataTable from "mui-datatables";
 import { createMuiTheme } from "@material-ui/core";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import fetchApi from "../../../../utils/fetchApi";
+import { Store } from "../../../../flux";
 
 const styles = theme => ({
   root: {}
 });
-
-const columns = [
-  {
-    name: "Identifiant",
-    label: "Identifiant",
-    options: {
-      filter: false,
-      sort: true,
-      display: false
-    }
-  },
-  {
-    name: "Materiel",
-    label: "Materiel",
-    options: {
-      filter: true,
-      sort: true
-    }
-  },
-  {
-    name: "Quantite",
-    label: "Quantité",
-    options: {
-      filter: true,
-      sort: true
-    }
-  }
-];
-const options = [];
 
 class TableMaterielsLeft extends React.Component {
   constructor(props) {
@@ -87,6 +59,64 @@ class TableMaterielsLeft extends React.Component {
         MUIDataTableToolbar: { root: { display: "none" } }
       }
     });
+    const columns = [
+      {
+        name: "Identifiant",
+        label: "Identifiant",
+        options: {
+          filter: false,
+          sort: true,
+          display: false
+        }
+      },
+      {
+        name: "Materiel",
+        label: "Materiel",
+        options: {
+          filter: true,
+          sort: true
+        }
+      },
+      {
+        name: "Quantite",
+        label: "Quantité",
+        options: {
+          filter: true,
+          sort: true
+        }
+      }
+    ];
+    const options = {
+      textLabels: {
+        body: {
+          noMatch: "Desolé, Aucune Résultat à Afficher",
+          toolTip: "Trier"
+        },
+        pagination: {
+          next: "Page Suivante",
+          previous: "Page Précedente",
+          rowsPerPage: "Lines par page:",
+          displayRows: "sur"
+        }
+      },
+      responsive: "scroll",
+      selectableRows: false,
+
+      customToolbarSelect: (selectedRows, displayData) => {
+        const newSelectedRow = selectedRows.data[selectedRows.data.length - 1]; // selectedRows.data.length > 1 ? selectedRows.data[1] : selectedRows.data[0];
+        const newSelectedIndex = parseInt(newSelectedRow.index);
+        const temp = {
+          data: newSelectedRow,
+          lookup: {}
+        };
+        temp.lookup[`${newSelectedIndex}`] = true;
+        selectedRows.data = [];
+        selectedRows.lookup = temp.lookup;
+
+        const data = displayData[newSelectedIndex].data;
+        Store.setMaterielSelectedRow(data);
+      }
+    };
     return (
       <MuiThemeProvider theme={theme}>
         <MUIDataTable
@@ -96,6 +126,13 @@ class TableMaterielsLeft extends React.Component {
         />
       </MuiThemeProvider>
     );
+  }
+}
+
+class CustomToolbarSelect extends React.Component {
+  render() {
+    console.log(this.props);
+    return <div />;
   }
 }
 
