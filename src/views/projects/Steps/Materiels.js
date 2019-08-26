@@ -18,6 +18,7 @@ import ProjectSteps from "./tables/ProjectSteps";
 import TableMaterielsLeft from "./tables/TableMaterielsLeft";
 import TableMaterielsRight from "./tables/TableMaterielsRight";
 import { Store } from "../../../flux";
+import fetchApi from "../../../utils/fetchApi";
 
 const styles = theme => ({
   root: {},
@@ -29,34 +30,25 @@ const styles = theme => ({
 class Materiels extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { data: [], quantite: 1 };
+    this.state = {};
   }
 
-  handleClick = () => {
-    const selectedRow = Store.getMaterielSelectedRow();
-    if (selectedRow.length > 0) {
-      selectedRow[2] = this.state.quantite;
-      const data = this.state.data;
-      data.push(selectedRow);
-      this.setState({ data });
-      Store.setMaterielSelectedRow([]);
-    }
-  };
-
   handleSubmit = () => {};
-  handleOnChange = e => {
-    const { name, value } = e.target;
-    this.setState({ [name]: value });
-  };
+
   render() {
-    const { quantite } = this.state;
-    const { classes } = this.props;
+    const { quantite, materiels, data } = this.props.state;
+    const {
+      classes,
+      handleClickForward,
+      handleClickRewind,
+      handleOnChange
+    } = this.props;
 
     return (
       <div>
         <Row>
           <Col md="5" className="form-group">
-            <TableMaterielsLeft />
+            <TableMaterielsLeft materiels={materiels} />
           </Col>
           <Col md="2" className="form-group">
             <Row className={classes.col}>
@@ -64,8 +56,8 @@ class Materiels extends React.Component {
                 <TextField
                   label="Quantité"
                   type="number"
-                  onChange={this.handleOnChange}
-                  style={{ width: "90%" }}
+                  onChange={handleOnChange}
+                  style={{ width: "100%" }}
                   name="quantite"
                   value={quantite}
                 />
@@ -74,7 +66,7 @@ class Materiels extends React.Component {
             <Row className={classes.col}>
               <Col md="4" />
               <Col md="4">
-                <Button onClick={this.handleClick}>
+                <Button onClick={handleClickForward}>
                   <i className="material-icons mr-1">fast_forward</i>
                 </Button>
               </Col>
@@ -84,7 +76,7 @@ class Materiels extends React.Component {
             <Row className={classes.col}>
               <Col md="4" />
               <Col md="4">
-                <Button>
+                <Button onClick={handleClickRewind}>
                   <i className="material-icons md-48">fast_rewind</i>
                 </Button>
               </Col>
@@ -92,7 +84,7 @@ class Materiels extends React.Component {
             </Row>
           </Col>
           <Col md="5" className="form-group">
-            <TableMaterielsRight data={this.state.data} />
+            <TableMaterielsRight data={data} />
           </Col>
         </Row>
       </div>

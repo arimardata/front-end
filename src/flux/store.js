@@ -8,6 +8,7 @@ let _store = {
   menuVisible: false,
   navItems: getSidebarNavItems(),
   materielSelectedRow: [],
+  materielSelectedRowRewind: [],
   typeStock: "Consomable",
   typePersonnel: "Permanent",
   userData: {
@@ -35,6 +36,12 @@ class Store extends EventEmitter {
     _store.materielSelectedRow = data;
   };
   getMaterielSelectedRow = () => {
+    return _store.materielSelectedRow;
+  };
+  setMaterielSelectedRowRewind = data => {
+    _store.materielSelectedRow = data;
+  };
+  getMaterielSelectedRowRewind = () => {
     return _store.materielSelectedRow;
   };
 

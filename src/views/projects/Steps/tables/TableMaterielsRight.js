@@ -4,6 +4,7 @@ import { withStyles } from "@material-ui/styles";
 import MUIDataTable from "mui-datatables";
 import { createMuiTheme } from "@material-ui/core";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
+import { Store } from "../../../../flux";
 
 const styles = theme => ({
   root: {}
@@ -56,9 +57,47 @@ class TableMaterielsRight extends React.Component {
           filter: true,
           sort: true
         }
+      },
+      {
+        name: "Type",
+        label: "Type",
+        options: {
+          filter: true,
+          sort: true
+        }
       }
     ];
-    const options = [];
+    const options = {
+      textLabels: {
+        body: {
+          noMatch: "Aucun materiel a été affecté",
+          toolTip: "Trier"
+        },
+        pagination: {
+          next: "Page Suivante",
+          previous: "Page Précedente",
+          rowsPerPage: "Lines par page:",
+          displayRows: "sur"
+        }
+      },
+      responsive: "scroll",
+      selectableRows: false,
+
+      customToolbarSelect: (selectedRows, displayData) => {
+        const newSelectedRow = selectedRows.data[selectedRows.data.length - 1]; // selectedRows.data.length > 1 ? selectedRows.data[1] : selectedRows.data[0];
+        const newSelectedIndex = parseInt(newSelectedRow.index);
+        const temp = {
+          data: newSelectedRow,
+          lookup: {}
+        };
+        temp.lookup[`${newSelectedIndex}`] = true;
+        selectedRows.data = [];
+        selectedRows.lookup = temp.lookup;
+
+        const data = displayData[newSelectedIndex].data;
+        Store.setMaterielSelectedRowRewind(data);
+      }
+    };
     return (
       <MuiThemeProvider theme={theme}>
         {" "}

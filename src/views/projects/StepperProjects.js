@@ -13,6 +13,8 @@ import Typography from "@material-ui/core/Typography";
 import { Container } from "shards-react";
 import Base from "./Steps/Base";
 import Materiels from "./Steps/Materiels";
+import { Store } from "../../flux";
+import fetchApi from "../../utils/fetchApi";
 
 const styles = theme => ({
   root: {
@@ -42,6 +44,8 @@ class StepperProjects extends React.Component {
   state = {
     activeStep: 0,
     completed: {},
+    data: [],
+    quantite: 1,
     etapes: [{ id: 1, designation: "", duree: 0, responsable: "" }]
   };
 
@@ -59,16 +63,118 @@ class StepperProjects extends React.Component {
           />
         );
       case 1:
-        return <Materiels />;
+        return (
+          <Materiels
+            state={this.state}
+            handleClickForward={this.handleClickForward}
+            handleClickRewind={this.handleClickRewind}
+            handleOnChange={this.handleOnChange}
+          />
+        );
       case 2:
         return "Step 3: This is the bit I really care about!";
       default:
         return "Unknown step";
     }
   };
+
+  handleClickForward = () => {
+    const selectedRow = Store.getMaterielSelectedRow();
+    if (selectedRow.length > 0) {
+      selectedRow[2] = this.state.quantite;
+      const data = this.state.data;
+      const materiels = this.state.materiels;
+
+      //soustract the quantity added to the right table
+      materiels.map(materiel => {
+        if (materiel[0] === selectedRow[0]) {
+          if (parseInt(selectedRow[2]) > parseInt(materiel[2]))
+            selectedRow[2] = materiel[2];
+          materiel[2] = parseInt(materiel[2]) - parseInt(selectedRow[2]);
+        }
+      });
+
+      // check if the materiel already exist in the right table
+      const materiel = data.filter(materiel => materiel[0] === selectedRow[0]);
+      if (materiel.length === 1) {
+        data.map(materiel => {
+          if (materiel[0] === selectedRow[0]) {
+            materiel[2] = parseInt(materiel[2]) + parseInt(selectedRow[2]);
+          }
+        });
+      } else {
+        //if not add the whole row
+        data.push(selectedRow);
+      }
+
+      this.setState({ data });
+      Store.setMaterielSelectedRow([]);
+    }
+  };
+  handleClickRewind = () => {
+    const selectedRow = Store.getMaterielSelectedRowRewind();
+    if (selectedRow.length > 0) {
+      selectedRow[2] =
+        parseInt(this.state.quantite) > parseInt(selectedRow[2])
+          ? selectedRow[2]
+          : this.state.quantite;
+      const data = this.state.data;
+      const materiels = this.state.materiels;
+
+      data.map((materiel, index) => {
+        if (materiel[0] === selectedRow[0]) {
+          materiel[2] = parseInt(materiel[2]) - parseInt(selectedRow[2]);
+          if (parseInt(materiel[2]) === 0) {
+            data.splice(index, 1);
+          }
+        }
+      });
+
+      materiels.map(materiel => {
+        if (materiel[0] === selectedRow[0]) {
+          materiel[2] = parseInt(materiel[2]) + parseInt(selectedRow[2]);
+        }
+      });
+
+      this.setState({ data });
+      Store.setMaterielSelectedRow([]);
+    }
+  };
+  fetchMateriels = async () => {
+    const consomable = await fetchApi({
+      method: "GET",
+      url: "/api/stock/consomable/find",
+      token: window.localStorage.getItem("token")
+    });
+    let consomables = [];
+    consomable.map(elmnt =>
+      consomables.push([elmnt.id, elmnt.id_mat, elmnt.quantite, "Consomable"])
+    );
+
+    const nonconsomable = await fetchApi({
+      method: "GET",
+      url: "/api/stock/nonconsomable/find",
+      token: window.localStorage.getItem("token")
+    });
+    let nonconsomables = [];
+    nonconsomable.map(elmnt =>
+      nonconsomables.push([
+        elmnt.id,
+        elmnt.id_mat,
+        elmnt.quantite,
+        "Non consomable"
+      ])
+    );
+    console.log("fetched");
+    this.setState({ materiels: [...consomables, ...nonconsomables] });
+  };
+
+  async componentWillMount() {
+    this.fetchMateriels();
+  }
+
   handleOnChange = e => {
     const { name, value } = e.target;
-    console.log(name, value);
     this.setState({ ...this.state, [name]: value });
   };
 

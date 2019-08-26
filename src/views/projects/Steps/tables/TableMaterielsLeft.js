@@ -18,39 +18,9 @@ class TableMaterielsLeft extends React.Component {
     this.state = {};
   }
 
-  fetchMateriels = async () => {
-    const consomable = await fetchApi({
-      method: "GET",
-      url: "/api/stock/consomable/find",
-      token: window.localStorage.getItem("token")
-    });
-    let consomables = [];
-    consomable.map(elmnt =>
-      consomables.push([elmnt.id, elmnt.id_mat, elmnt.quantite])
-    );
-
-    const nonconsomable = await fetchApi({
-      method: "GET",
-      url: "/api/stock/nonconsomable/find",
-      token: window.localStorage.getItem("token")
-    });
-    let nonconsomables = [];
-    nonconsomable.map(elmnt =>
-      nonconsomables.push([elmnt.id, elmnt.id_mat, elmnt.quantite])
-    );
-    this.setState({ materiels: [...consomables, ...nonconsomables] });
-  };
-
-  async componentWillMount() {
-    this.fetchMateriels();
-    // Store.addChangeListener(
-    //   Constants.TABLE_CONSOMABLE_UPDATED,
-    //   this.onChangeConsomable
-    // );
-    // Store.addChangeListener(
-    //   Constants.TABLE_NON_CONSOMABLE_UPDATED,
-    //   this.onChangeNonConsomable
-    // );
+  componentWillReceiveProps(newProps) {
+    const materiels = newProps.materiels;
+    this.setState({ materiels });
   }
 
   render() {
@@ -80,6 +50,14 @@ class TableMaterielsLeft extends React.Component {
       {
         name: "Quantite",
         label: "Quantité",
+        options: {
+          filter: true,
+          sort: true
+        }
+      },
+      {
+        name: "Type",
+        label: "Type",
         options: {
           filter: true,
           sort: true
