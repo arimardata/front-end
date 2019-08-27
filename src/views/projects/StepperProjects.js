@@ -165,7 +165,7 @@ class StepperProjects extends React.Component {
         "Non consomable"
       ])
     );
-    console.log("fetched");
+    console.log(consomables);
     this.setState({ materiels: [...consomables, ...nonconsomables] });
   };
 

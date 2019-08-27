@@ -23,12 +23,17 @@ class TableMaterielsLeft extends React.Component {
     this.setState({ materiels });
   }
 
+  componentWillMount() {
+    const materiels = this.props.materiels;
+    this.setState({ materiels });
+  }
+
   render() {
-    const theme = createMuiTheme({
-      overrides: {
-        MUIDataTableToolbar: { root: { display: "none" } }
-      }
-    });
+    // const theme = createMuiTheme({
+    //   overrides: {
+    //     MUIDataTableToolbar: { root: { display: "none" } }
+    //   }
+    // });
     const columns = [
       {
         name: "Identifiant",
@@ -70,6 +75,9 @@ class TableMaterielsLeft extends React.Component {
           noMatch: "Desolé, Aucune Résultat à Afficher",
           toolTip: "Trier"
         },
+        toolbar: {
+          search: "Rechercher"
+        },
         pagination: {
           next: "Page Suivante",
           previous: "Page Précedente",
@@ -77,8 +85,12 @@ class TableMaterielsLeft extends React.Component {
           displayRows: "sur"
         }
       },
+      download: false,
+      filter: false,
+      viewColumns: false,
+      print: false,
       responsive: "scroll",
-      selectableRows: false,
+      // selectableRows: false,
 
       customToolbarSelect: (selectedRows, displayData) => {
         const newSelectedRow = selectedRows.data[selectedRows.data.length - 1]; // selectedRows.data.length > 1 ? selectedRows.data[1] : selectedRows.data[0];
@@ -96,13 +108,13 @@ class TableMaterielsLeft extends React.Component {
       }
     };
     return (
-      <MuiThemeProvider theme={theme}>
-        <MUIDataTable
-          data={this.state.materiels}
-          columns={columns}
-          options={options}
-        />
-      </MuiThemeProvider>
+      // <MuiThemeProvider theme={theme}>
+      <MUIDataTable
+        data={this.state.materiels}
+        columns={columns}
+        options={options}
+      />
+      // </MuiThemeProvider>
     );
   }
 }
