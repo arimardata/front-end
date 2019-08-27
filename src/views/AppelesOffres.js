@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PageTitle from "../components/common/PageTitle";
 import fetchApi from "../utils/fetchApi";
 import AoModal from "../utils/AoModal";
+import AddModal from "../utils/AddModal";
 import SelectModal from "../utils/SelectModal";
 import DialogModal from "../utils/DialogModal";
 import {
@@ -27,7 +28,7 @@ import { Store, Constants } from "../flux";
 import DownIcon from "@material-ui/icons/KeyboardArrowDown";
 import Fab from "@material-ui/core/Fab";
 import { withStyles } from "@material-ui/core/styles";
-import { green,blue } from "@material-ui/core/colors";
+import { green,blue,red } from "@material-ui/core/colors";
 import Icon from "@material-ui/core/Icon";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
@@ -57,10 +58,21 @@ const styles = theme => ({
     "&:hover": {
       backgroundColor: blue[600]
     }
+  },
+  fab3: {
+    position: "absolute",
+    top: theme.spacing(2),
+    right: theme.spacing(18),
+    backgroundColor: red[500],
+    color: theme.palette.common.white,
+    "&:hover": {
+      backgroundColor: red[600]
+    }
   }
 });
 
 class AppelsOffres extends Component {
+
   constructor(props) {
     super(props);
 
@@ -68,6 +80,7 @@ class AppelsOffres extends Component {
       dragend: {},
       openDialog: false,
       openSelect: false,
+      openAdd: false,
       aos: [],
       open: false,
       clicked: {},
@@ -182,7 +195,9 @@ class AppelsOffres extends Component {
     };
     this.handleDragEnd = this.handleDragEnd.bind(this);
     this.toggle = this.toggle.bind(this);
+    this.toggleAdd =this.toggleAdd.bind(this);
     this.onCardClick = this.onCardClick.bind(this);
+    this.OnAddClick =this.OnAddClick.bind(this);
   }
 
   handleChange = e => {
@@ -249,10 +264,22 @@ class AppelsOffres extends Component {
     this.toggle();
     console.log(ao[0]);
   }
+  OnAddClick = () => {
+    this.setState({ ...this.state, openAdd: !this.state.openAdd });
+    this.toggleAdd();
+    
+  };
   toggle() {
     this.setState({
       open: !this.state.open
     });
+  }
+  toggleAdd() {
+    this.setState({
+      openAdd: !this.state.openAdd
+    });
+    console.log("addcklicked");
+    
   }
   handleDragEnd(cardId, sourceLaneId, targetLaneId, position, cardDetails) {
     let source = parseInt(sourceLaneId.substr(sourceLaneId.length - 1));
@@ -273,6 +300,9 @@ class AppelsOffres extends Component {
   handleClickOpen = () => {
     this.setState({ ...this.state, openSelect: true });
   };
+  //button add
+  
+
 
   handleAgree = async () => {
     const {
@@ -334,7 +364,7 @@ class AppelsOffres extends Component {
     window.location.reload();
     
   }
-
+ 
 
   render() {
     const { classes } = this.props;
@@ -362,6 +392,7 @@ class AppelsOffres extends Component {
       );
     }
     const { open } = this.state;
+    const { openAdd } = this.state;
     return (
       <div className={classes.root}>
         <Container fluid className="main-content-container px-4">
@@ -373,6 +404,8 @@ class AppelsOffres extends Component {
               className="text-sm-left"
             />
           </Row>
+          
+            
           <Row>
             <DialogModal
               openDialog={openDialog}
@@ -398,6 +431,13 @@ class AppelsOffres extends Component {
               <AoModal data={this.state.clicked} />
             </ModalBody>
           </Modal>
+          <Modal  size="lg" open={openAdd} toggle={this.toggleAdd}>
+            <ModalBody>
+              <AddModal />
+            </ModalBody>
+          
+          
+          </Modal>
           
           <Fab
             onClick={this.handleClickOpen}
@@ -415,7 +455,14 @@ class AppelsOffres extends Component {
           >
             <Icon>autorenew</Icon>
           </Fab>
-          
+          <Fab
+            onClick={this.OnAddClick}
+            aria-label={"Expand"}
+            className={classes.fab3}
+            color="inherit"
+          >
+            <Icon>add_icon</Icon>
+          </Fab>
         </Container>
       </div>
     );
