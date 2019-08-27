@@ -15,6 +15,7 @@ import Errors from "./views/Errors";
 import ComponentsOverview from "./views/ComponentsOverview";
 // import Tables from "./views/Tables";
 import AppelesOffres from "./views/AppelesOffres";
+import StepperProjects from "./views/projects/StepperProjects";
 
 export default [
   {
@@ -28,11 +29,7 @@ export default [
     layout: DefaultLayout,
     component: BlogOverview
   },
-  // {
-  //   path: "/user-profile-lite",
-  //   layout: DefaultLayout,
-  //   component: UserProfileLite
-  // },
+
   {
     path: "/cheques",
     layout: DefaultLayout,
@@ -48,21 +45,11 @@ export default [
     layout: DefaultLayout,
     component: Stock
   },
-  // {
-  //   path: "/errors",
-  //   layout: DefaultLayout,
-  //   component: Errors
-  // },
-  // {
-  //   path: "/components-overview",
-  //   layout: DefaultLayout,
-  //   component: ComponentsOverview
-  // },
-  // {
-  //   path: "/tables",
-  //   layout: DefaultLayout,
-  //   component: Tables
-  // },
+  {
+    path: "/projets",
+    layout: DefaultLayout,
+    component: StepperProjects
+  },
   {
     path: "/AppelesOffres",
     layout: DefaultLayout,

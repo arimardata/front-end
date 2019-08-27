@@ -9,18 +9,25 @@ import { Store, Constants, Dispatcher } from "../../../flux";
 import fetchApi from "../../../utils/fetchApi";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
-import ChequeModalUpdate from "../../../utils/ChequeModalUpdate";
+import UpdatePersonnelModal from "../../../utils/UpdatePersonnelModal";
+import ConfirmDeleteModal from "../../../utils/ConfirmDeleteModal";
 
 import { Modal, ModalBody } from "shards-react";
 
 const defaultToolbarSelectStyles = {
   iconContainer: {
     marginRight: "24px"
+  },
+  modalTop: {
+    top: "10%"
+  },
+  deleteDialogTop: {
+    top: "30%"
   }
 };
 
 class CustomToolbarSelect extends React.Component {
-  state = { open: false };
+  state = { open: false, openDeleteDialog: false };
   handleClickInverseSelection = () => {
     const nextSelectedRows = this.props.displayData.reduce(
       (nextSelectedRows, _, index) => {
@@ -41,19 +48,33 @@ class CustomToolbarSelect extends React.Component {
   };
 
   delete = () => {
-    //console.log(this.props.displayData)
-
     let data = this.props.selectedRows.data;
-    data.map(el => {
+    data.map(async el => {
       let index = el.index;
       let id = this.props.displayData[index].data[0];
-      fetchApi({
+      let url, actionType;
+
+      switch (Store.getTypePersonnel()) {
+        case "Permanent":
+          url = "/api/personnel/permanent/delete/" + id;
+          actionType = Constants.TABLE_PERMANENT_UPDATED;
+          break;
+        case "Administratif":
+          url = "/api/personnel/administratif/delete/" + id;
+          actionType = Constants.TABLE_ADMINISTRATIF_UPDATED;
+          break;
+        case "Saisonier":
+          url = "/api/personnel/saisonier/delete/" + id;
+          actionType = Constants.TABLE_SAISONIER_UPDATED;
+          break;
+      }
+      await fetchApi({
         method: "DELETE",
-        url: "/api/Cheques/delete/" + id,
+        url,
         token: window.localStorage.getItem("token")
-      }).then(data => {});
+      });
       Dispatcher.dispatch({
-        actionType: Constants.TABLE_CHEQUE_UPDATED
+        actionType
       });
     });
   };
@@ -65,10 +86,18 @@ class CustomToolbarSelect extends React.Component {
   toggle = () => {
     let index = this.props.selectedRows.data[0].index;
     let id = this.props.displayData[index].data[0];
+    let data = this.props.displayData[index].data;
 
     this.setState({
       open: !this.state.open,
-      id: id
+      id: id,
+      data
+    });
+  };
+
+  toggleDeleteDialog = () => {
+    this.setState({
+      openDeleteDialog: !this.state.openDeleteDialog
     });
   };
 
@@ -89,14 +118,30 @@ class CustomToolbarSelect extends React.Component {
       <div className={classes.iconContainer}>
         <React.Fragment>
           <Tooltip title={"Tous supprimer"}>
-            <IconButton onClick={this.delete}>
+            <IconButton onClick={this.toggleDeleteDialog}>
               <DeleteIcon />
             </IconButton>
           </Tooltip>
           {edit}
-          <Modal size="lg" open={this.state.open}>
+          <Modal size="lg" open={this.state.open} className={classes.modalTop}>
             <ModalBody>
-              <ChequeModalUpdate id={this.state.id} toggle={this.toggle} />
+              <UpdatePersonnelModal
+                id={this.state.id}
+                toggle={this.toggle}
+                data={this.state.data}
+              />
+            </ModalBody>
+          </Modal>
+          <Modal
+            open={this.state.openDeleteDialog}
+            className={classes.deleteDialogTop}
+          >
+            <ModalBody>
+              <p>Est-vous sure ?</p>
+              <ConfirmDeleteModal
+                handleAgree={this.delete}
+                toggle={this.toggleDeleteDialog}
+              />
             </ModalBody>
           </Modal>
         </React.Fragment>

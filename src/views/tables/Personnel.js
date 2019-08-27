@@ -32,59 +32,151 @@ class Personnel extends React.Component {
   }
 
   onChange() {
-    // this.fetchCheques();
+    this.fetchData();
   }
 
-  // fetchCheques = async () => {
-  //   const data = await fetchApi({
-  //     method: "GET",
-  //     url: "/api/Cheques/find",
-  //     token: window.localStorage.getItem("token")
-  //   });
-  //   let cheques = [];
-  //   data.map(elmnt =>
-  //     cheques.push([
-  //       elmnt.id,
-  //       elmnt.etat,
-  //       elmnt.emetteur,
-  //       elmnt.recepteur,
-  //       elmnt.banque,
-  //       elmnt.somme,
-  //       elmnt.date,
-  //       elmnt.alerte,
-  //       elmnt.compte,
-  //       elmnt.email,
-  //       elmnt.telephone
-  //     ])
-  //   );
-  //   this.setState({ cheques });
-  // };
+  fetchAdministratif = async () => {
+    const data = await fetchApi({
+      method: "GET",
+      url: "/api/personnel/administratif/find",
+      token: window.localStorage.getItem("token")
+    });
+    let rows = [];
+    data.map(elmnt =>
+      rows.push([
+        elmnt.id,
+        elmnt.cin,
+        elmnt.nom,
+        elmnt.prenom,
+        elmnt.tel,
+        elmnt.email,
+        elmnt.diplome,
+        elmnt.qualite,
+        elmnt.dateDeNaissance,
+        elmnt.salaire,
+        elmnt.dateEmbauche,
+        elmnt.cnss
+      ])
+    );
+    this.setState({ rows });
+  };
+  fetchPermanent = async () => {
+    const data = await fetchApi({
+      method: "GET",
+      url: "/api/personnel/permanent/find",
+      token: window.localStorage.getItem("token")
+    });
+    let rows = [];
+    data.map(elmnt =>
+      rows.push([
+        elmnt.id,
+        elmnt.cin,
+        elmnt.nom,
+        elmnt.prenom,
+        elmnt.tel,
+        elmnt.email,
+        elmnt.diplome,
+        elmnt.qualite,
+        elmnt.dateDeNaissance,
+        elmnt.salaire,
+        elmnt.dateEmbauche,
+        elmnt.cnss
+      ])
+    );
+    this.setState({ rows });
+  };
+  fetchSaisonier = async () => {
+    const data = await fetchApi({
+      method: "GET",
+      url: "/api/personnel/saisonier/find",
+      token: window.localStorage.getItem("token")
+    });
+    let rows = [];
+
+    console.log(data);
+    data.map(elmnt =>
+      rows.push([
+        elmnt.id,
+        elmnt.cin,
+        elmnt.nom,
+        elmnt.prenom,
+        elmnt.tel,
+        elmnt.email,
+        elmnt.diplome,
+        elmnt.qualite,
+        elmnt.dateDeNaissance,
+        elmnt.coutParJour
+      ])
+    );
+    this.setState({ rows });
+  };
+
+  fetchData = () => {
+    let data = this.state;
+    switch (data.type_personnel) {
+      case "Administratif":
+        this.fetchAdministratif();
+        break;
+      case "Permanent":
+        this.fetchPermanent();
+        break;
+      case "Saisonier":
+        this.fetchSaisonier();
+        break;
+    }
+  };
 
   async componentWillMount() {
-    // this.fetchCheques();
-    Store.addChangeListener(Constants.TABLE_CHEQUE_UPDATED, this.onChange);
+    this.fetchData();
+    Store.addChangeListener(
+      Constants.TABLE_ADMINISTRATIF_UPDATED,
+      this.onChange
+    );
+    Store.addChangeListener(Constants.TABLE_PERMANENT_UPDATED, this.onChange);
+    Store.addChangeListener(Constants.TABLE_SAISONIER_UPDATED, this.onChange);
   }
 
   componentWillUnmount() {
-    Store.removeChangeListener(Constants.TABLE_CHEQUE_UPDATED, this.onChange);
+    Store.removeChangeListener(
+      Constants.TABLE_ADMINISTRATIF_UPDATED,
+      this.onChange
+    );
+    Store.removeChangeListener(
+      Constants.TABLE_PERMANENT_UPDATED,
+      this.onChange
+    );
+    Store.removeChangeListener(
+      Constants.TABLE_SAISONIER_UPDATED,
+      this.onChange
+    );
   }
 
   handleChange = e => {
     const { name, value } = e.target;
     switch (value) {
       case "Administratif":
-        // this.fetchConsomable();
+        this.fetchAdministratif();
+        Dispatcher.dispatch({
+          actionType: Constants.TYPE_PERSONNEL_SELECT,
+          payload: "Administratif"
+        });
         break;
       case "Permanent":
-        // this.fetchNonConsomable();
+        this.fetchPermanent();
+        Dispatcher.dispatch({
+          actionType: Constants.TYPE_PERSONNEL_SELECT,
+          payload: "Permanent"
+        });
         break;
       case "Saisonier":
-        // this.fetchNonConsomable();
+        this.fetchSaisonier();
+        Dispatcher.dispatch({
+          actionType: Constants.TYPE_PERSONNEL_SELECT,
+          payload: "Saisonier"
+        });
         break;
     }
-    Dispatcher.dispatch({
-      // actionType: Constants.TYPE_STOCK_SELECT
-    });
+
     this.setState({ [name]: value });
   };
 
@@ -126,7 +218,7 @@ class Personnel extends React.Component {
             <MUIDataTable
               key={Math.random()}
               title={""}
-              // data={this.state.cheques}
+              data={this.state.rows}
               columns={columns}
               options={Options}
             />

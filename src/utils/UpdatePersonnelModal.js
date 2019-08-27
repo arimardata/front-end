@@ -21,15 +21,60 @@ import {
 } from "react-material-ui-form-validator";
 import TextField from "@material-ui/core/TextField";
 
-class PersonnelModal extends React.Component {
+class UpdatePersonnelModal extends React.Component {
   constructor() {
     super();
 
-    this.state = {
-      type_personnel: "Permanent",
-      dateDeNaissance: "1990-01-01",
-      dateEmbauche: "2019-01-01"
-    };
+    this.state = {};
+  }
+
+  componentWillMount() {
+    console.log(this.props.data);
+    switch (Store.getTypePersonnel()) {
+      case "Administratif":
+        this.setState({
+          cin: this.props.data[1],
+          nom: this.props.data[2],
+          prenom: this.props.data[3],
+          tel: this.props.data[4],
+          email: this.props.data[5],
+          diplome: this.props.data[6],
+          qualite: this.props.data[7],
+          dateDeNaissance: this.props.data[8],
+          salaire: this.props.data[9],
+          dateEmbauche: this.props.data[10],
+          cnss: this.props.data[11]
+        });
+        break;
+      case "Permanent":
+        this.setState({
+          cin: this.props.data[1],
+          nom: this.props.data[2],
+          prenom: this.props.data[3],
+          tel: this.props.data[4],
+          email: this.props.data[5],
+          diplome: this.props.data[6],
+          qualite: this.props.data[7],
+          dateDeNaissance: this.props.data[8],
+          salaire: this.props.data[9],
+          dateEmbauche: this.props.data[10],
+          cnss: this.props.data[11]
+        });
+        break;
+      case "Saisonier":
+        this.setState({
+          cin: this.props.data[1],
+          nom: this.props.data[2],
+          prenom: this.props.data[3],
+          tel: this.props.data[4],
+          email: this.props.data[5],
+          diplome: this.props.data[6],
+          qualite: this.props.data[7],
+          dateDeNaissance: this.props.data[8],
+          coutParJour: this.props.data[9]
+        });
+        break;
+    }
   }
 
   handleOnChange = e => {
@@ -42,11 +87,11 @@ class PersonnelModal extends React.Component {
     });
   };
 
-  createAdministratif = async data => {
+  updateAdministratif = async (id, data) => {
     const res = await fetchApi({
       method: "POST",
 
-      url: "/api/personnel/administratif/create",
+      url: "/api/personnel/administratif/update/" + id,
       token: window.localStorage.getItem("token"),
       body: data
     });
@@ -55,11 +100,11 @@ class PersonnelModal extends React.Component {
     });
     console.log(res);
   };
-  createPermanent = async data => {
+  updatePermanent = async (id, data) => {
     const res = await fetchApi({
       method: "POST",
 
-      url: "/api/personnel/permanent/create",
+      url: "/api/personnel/permanent/update/" + id,
       token: window.localStorage.getItem("token"),
       body: data
     });
@@ -68,11 +113,11 @@ class PersonnelModal extends React.Component {
     });
     console.log(res);
   };
-  createSaisonier = async data => {
+  updateSaisonier = async (id, data) => {
     const res = await fetchApi({
       method: "POST",
 
-      url: "/api/personnel/saisonier/create",
+      url: "/api/personnel/saisonier/update/" + id,
       token: window.localStorage.getItem("token"),
       body: data
     });
@@ -85,23 +130,21 @@ class PersonnelModal extends React.Component {
   handleSubmit = async () => {
     // your submit logic
     let data = this.state;
-    switch (data.type_personnel) {
+    let id = this.props.id;
+    switch (Store.getTypePersonnel()) {
       case "Administratif":
-        delete data.type_personnel;
         delete data.coutParJour;
-        this.createAdministratif(data);
+        this.updateAdministratif(id, data);
         break;
       case "Permanent":
-        delete data.type_personnel;
         delete data.coutParJour;
-        this.createPermanent(data);
+        this.updatePermanent(id, data);
         break;
       case "Saisonier":
-        delete data.type_personnel;
         delete data.cnss;
         delete data.salaire;
         delete data.dateEmbauche;
-        this.createSaisonier(data);
+        this.updateSaisonier(id, data);
         break;
     }
 
@@ -126,11 +169,13 @@ class PersonnelModal extends React.Component {
       coutParJour,
       salaire,
       cnss,
-      dateEmbauche
+      dateEmbauche,
+      date_debut,
+      date_fin
     } = this.state;
 
     let fields;
-    switch (type_personnel) {
+    switch (Store.getTypePersonnel()) {
       case "Permanent":
         fields = (
           <div>
@@ -237,41 +282,11 @@ class PersonnelModal extends React.Component {
                 />
               </Col>
             </Row>
-            {/* <Row form>
-              <Col md="6" className="form-group">
-                <TextField
-                  type="date"
-                  label="Date debut"
-                  onChange={this.handleOnChange}
-                  defaultValue="2019-01-01"
-                  style={{ width: "100%" }}
-                  name="date_debut"
-                  value={date_debut}
-                  validators={["required"]}
-                  errorMessages={["Ce Champ est Obligatoire : "]}
-                />
-              </Col>
-              <Col md="6" className="form-group">
-                <TextField
-                  type="date"
-                  label="Date fin"
-                  onChange={this.handleOnChange}
-                  defaultValue="2020-01-01"
-                  style={{ width: "100%" }}
-                  name="date_fin"
-                  value={date_fin}
-                  validators={["required"]}
-                  errorMessages={["Ce Champ est Obligatoire : "]}
-                />
-              </Col>
-            </Row> */}
           </div>
         );
         break;
     }
     return (
-      //   <ListGroup flush>
-      //     <ListGroupItem className="p-3">
       <ValidatorForm
         autoComplete="off"
         ref="form"
@@ -381,26 +396,6 @@ class PersonnelModal extends React.Component {
           </Col>
         </Row>
 
-        <Row form>
-          <Col md="6" className="form-group">
-            <TextField
-              id="outlined-select-currency-native"
-              select
-              label="Type"
-              style={{ width: "100%" }}
-              value={type_personnel}
-              onChange={this.handleOnChange}
-              SelectProps={{
-                native: true
-              }}
-              name="type_personnel"
-            >
-              <option value="Saisonier">Saisonier</option>
-              <option value="Administratif">Administratif</option>
-              <option value="Permanent">Permanent</option>
-            </TextField>
-          </Col>
-        </Row>
         {fields}
         <Button type="submit" /*onClick={this.handleResult}*/>
           Enrengistrer
@@ -409,10 +404,8 @@ class PersonnelModal extends React.Component {
           Annuler
         </Button>
       </ValidatorForm>
-      //     </ListGroupItem>
-      //   </ListGroup>
     );
   }
 }
 
-export default PersonnelModal;
+export default UpdatePersonnelModal;

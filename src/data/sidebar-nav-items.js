@@ -25,6 +25,11 @@ export default function() {
       title: "Gestion des cheques",
       htmlBefore: '<i class="material-icons">payment</i>',
       to: "/cheques"
+    },
+    {
+      title: "Gestion des projets",
+      htmlBefore: '<i class="material-icons">gavel</i>',
+      to: "/projets"
     }
     // {
     //   title: "Forms & Components",
