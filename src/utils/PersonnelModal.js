@@ -28,7 +28,9 @@ class PersonnelModal extends React.Component {
     this.state = {
       type_personnel: "Permanent",
       dateDeNaissance: "1990-01-01",
-      dateEmbauche: "2019-01-01"
+      dateEmbauche: "2019-01-01",
+      dateDebut: "2019-01-01",
+      dateFin: "2020-01-01"
     };
   }
 
@@ -89,11 +91,15 @@ class PersonnelModal extends React.Component {
       case "Administratif":
         delete data.type_personnel;
         delete data.coutParJour;
+        delete data.dateDebut;
+        delete data.dateFin;
         this.createAdministratif(data);
         break;
       case "Permanent":
         delete data.type_personnel;
         delete data.coutParJour;
+        delete data.dateDebut;
+        delete data.dateFin;
         this.createPermanent(data);
         break;
       case "Saisonier":
@@ -126,7 +132,9 @@ class PersonnelModal extends React.Component {
       coutParJour,
       salaire,
       cnss,
-      dateEmbauche
+      dateEmbauche,
+      dateDebut,
+      dateFin
     } = this.state;
 
     let fields;
@@ -237,16 +245,15 @@ class PersonnelModal extends React.Component {
                 />
               </Col>
             </Row>
-            {/* <Row form>
+            <Row form>
               <Col md="6" className="form-group">
                 <TextField
                   type="date"
                   label="Date debut"
                   onChange={this.handleOnChange}
-                  defaultValue="2019-01-01"
                   style={{ width: "100%" }}
-                  name="date_debut"
-                  value={date_debut}
+                  name="dateDebut"
+                  value={dateDebut}
                   validators={["required"]}
                   errorMessages={["Ce Champ est Obligatoire : "]}
                 />
@@ -256,15 +263,14 @@ class PersonnelModal extends React.Component {
                   type="date"
                   label="Date fin"
                   onChange={this.handleOnChange}
-                  defaultValue="2020-01-01"
                   style={{ width: "100%" }}
-                  name="date_fin"
-                  value={date_fin}
+                  name="dateFin"
+                  value={dateFin}
                   validators={["required"]}
                   errorMessages={["Ce Champ est Obligatoire : "]}
                 />
               </Col>
-            </Row> */}
+            </Row>
           </div>
         );
         break;
