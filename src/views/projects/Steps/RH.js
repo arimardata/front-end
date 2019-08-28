@@ -15,11 +15,11 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import ProjectSteps from "./tables/ProjectSteps";
-import TableMaterielsLeft from "./tables/materiels/TableMaterielsLeft";
-import TableMaterielsRight from "./tables/materiels/TableMaterielsRight";
+import TableRHLeft from "./tables/RH/TableRHLeft";
+import TableRHRight from "./tables/RH/TableRHRight";
 import { Store } from "../../../flux";
-import { ArrowForward, ArrowBack } from "@material-ui/icons";
 import fetchApi from "../../../utils/fetchApi";
+import { ArrowForward, ArrowBack } from "@material-ui/icons";
 
 const styles = theme => ({
   root: {},
@@ -28,7 +28,7 @@ const styles = theme => ({
   }
 });
 
-class Materiels extends React.Component {
+class RH extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -37,12 +37,11 @@ class Materiels extends React.Component {
   handleSubmit = () => {};
 
   render() {
-    const { quantite, materiels, data, activeStep } = this.props.state;
+    const { personnels, personnelAffecter, activeStep } = this.props.state;
     const {
       classes,
       handleClickForward,
       handleClickRewind,
-      handleOnChange,
       handleComplete,
       handleBack,
       steps
@@ -52,22 +51,10 @@ class Materiels extends React.Component {
       <div>
         <Row>
           <Col md="5" className="form-group">
-            <TableMaterielsLeft materiels={materiels} />
+            <TableRHLeft personnels={personnels} />
           </Col>
-
           <Col md="2" className="form-group">
-            <Row className={classes.col}>
-              <Col>
-                <TextField
-                  label="Quantité"
-                  type="number"
-                  onChange={handleOnChange}
-                  style={{ width: "100%" }}
-                  name="quantite"
-                  value={quantite}
-                />
-              </Col>
-            </Row>
+            <Row className={classes.col} />
             <Row className={classes.col}>
               <Col md="4" />
               <Col md="4">
@@ -89,7 +76,7 @@ class Materiels extends React.Component {
             </Row>
           </Col>
           <Col md="5" className="form-group">
-            <TableMaterielsRight data={data} />
+            <TableRHRight personnelAffecter={personnelAffecter} />
           </Col>
         </Row>
         <Row>
@@ -109,4 +96,4 @@ class Materiels extends React.Component {
   }
 }
 
-export default withStyles(styles)(Materiels);
+export default withStyles(styles)(RH);

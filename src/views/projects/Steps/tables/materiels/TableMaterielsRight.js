@@ -2,38 +2,31 @@ import React from "react";
 import { withStyles } from "@material-ui/styles";
 
 import MUIDataTable from "mui-datatables";
-
 import { createMuiTheme } from "@material-ui/core";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
-import fetchApi from "../../../../utils/fetchApi";
-import { Store } from "../../../../flux";
+import { Store } from "../../../../../flux";
 
 const styles = theme => ({
   root: {}
 });
 
-class TableMaterielsLeft extends React.Component {
+class TableMaterielsRight extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { data: [] };
   }
 
   componentWillReceiveProps(newProps) {
-    const materiels = newProps.materiels;
-    this.setState({ materiels });
-  }
+    const comingData = newProps.data;
 
+    this.setState({ data: comingData });
+  }
   componentWillMount() {
-    const materiels = this.props.materiels;
-    this.setState({ materiels });
-  }
+    const comingData = this.props.data;
 
+    this.setState({ data: comingData });
+  }
   render() {
-    // const theme = createMuiTheme({
-    //   overrides: {
-    //     MUIDataTableToolbar: { root: { display: "none" } }
-    //   }
-    // });
     const columns = [
       {
         name: "Identifiant",
@@ -72,7 +65,7 @@ class TableMaterielsLeft extends React.Component {
     const options = {
       textLabels: {
         body: {
-          noMatch: "Desolé, Aucune Résultat à Afficher",
+          noMatch: "Aucun materiel a été affecté",
           toolTip: "Trier"
         },
         toolbar: {
@@ -90,7 +83,6 @@ class TableMaterielsLeft extends React.Component {
       viewColumns: false,
       print: false,
       responsive: "scroll",
-      // selectableRows: false,
 
       customToolbarSelect: (selectedRows, displayData) => {
         const newSelectedRow = selectedRows.data[selectedRows.data.length - 1]; // selectedRows.data.length > 1 ? selectedRows.data[1] : selectedRows.data[0];
@@ -104,26 +96,17 @@ class TableMaterielsLeft extends React.Component {
         selectedRows.lookup = temp.lookup;
 
         const data = displayData[newSelectedIndex].data;
-        Store.setMaterielSelectedRow(data);
+        Store.setMaterielSelectedRowRewind(data);
       }
     };
     return (
-      // <MuiThemeProvider theme={theme}>
       <MUIDataTable
-        data={this.state.materiels}
+        data={this.state.data}
         columns={columns}
         options={options}
       />
-      // </MuiThemeProvider>
     );
   }
 }
 
-class CustomToolbarSelect extends React.Component {
-  render() {
-    console.log(this.props);
-    return <div />;
-  }
-}
-
-export default withStyles(styles)(TableMaterielsLeft);
+export default withStyles(styles)(TableMaterielsRight);

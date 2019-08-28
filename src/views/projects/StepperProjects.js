@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
-import StepButton from "@material-ui/core/StepButton";
+import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import FormGroup from "@material-ui/core/FormGroup";
@@ -13,6 +13,8 @@ import Typography from "@material-ui/core/Typography";
 import { Container } from "shards-react";
 import Base from "./Steps/Base";
 import Materiels from "./Steps/Materiels";
+import RH from "./Steps/RH";
+import Validation from "./Steps/Validation";
 import { Store } from "../../flux";
 import fetchApi from "../../utils/fetchApi";
 
@@ -27,17 +29,22 @@ const styles = theme => ({
   completed: {
     display: "inline-block"
   },
-  instructions: {
-    marginTop: theme.spacing(1),
-    marginBottom: 40
-  },
   stepItem: {
     whiteSpace: "inherit"
+  },
+  instructions: {
+    marginTop: 40,
+    marginBottom: 40
   }
 });
 
 function getSteps() {
-  return ["Données de base", "Matériels", "Ressources humains"];
+  return [
+    "Données de base",
+    "Matériels",
+    "Ressources humains",
+    "Validation du projet"
+  ];
 }
 
 class StepperProjects extends React.Component {
@@ -45,16 +52,23 @@ class StepperProjects extends React.Component {
     activeStep: 0,
     completed: {},
     data: [],
+    personnelAffecter: [],
     quantite: 1,
-    etapes: [{ id: 1, designation: "", duree: 0, responsable: "" }]
+    etapes: [{ id: 1, designation: "", duree: 0, responsable: "" }],
+    date_debut: "2019-01-01",
+    date_fin: "2019-12-31"
   };
 
   totalSteps = () => getSteps().length;
   getStepContent = step => {
+    const steps = getSteps();
     switch (step) {
       case 0:
         return (
           <Base
+            handleComplete={this.handleComplete}
+            handleBack={this.handleBack}
+            steps={steps}
             state={this.state}
             addRow={this.addRow}
             deleteRow={this.deleteRow}
@@ -65,6 +79,9 @@ class StepperProjects extends React.Component {
       case 1:
         return (
           <Materiels
+            handleComplete={this.handleComplete}
+            handleBack={this.handleBack}
+            steps={steps}
             state={this.state}
             handleClickForward={this.handleClickForward}
             handleClickRewind={this.handleClickRewind}
@@ -72,7 +89,25 @@ class StepperProjects extends React.Component {
           />
         );
       case 2:
-        return "Step 3: This is the bit I really care about!";
+        return (
+          <RH
+            handleComplete={this.handleComplete}
+            handleBack={this.handleBack}
+            steps={steps}
+            state={this.state}
+            handleClickForward={this.handleClickForwardRH}
+            handleClickRewind={this.handleClickRewindRH}
+          />
+        );
+      case 3:
+        return (
+          <Validation
+            handleComplete={this.handleComplete}
+            handleBack={this.handleBack}
+            steps={steps}
+            state={this.state}
+          />
+        );
       default:
         return "Unknown step";
     }
@@ -140,6 +175,42 @@ class StepperProjects extends React.Component {
       Store.setMaterielSelectedRow([]);
     }
   };
+  handleClickForwardRH = () => {
+    const selectedRow = Store.getRHSelectedRow();
+    if (selectedRow.length > 0) {
+      const personnelAffecter = this.state.personnelAffecter;
+      const personnels = this.state.personnels;
+
+      personnels.map((personnel, index) => {
+        if (personnel[0] === selectedRow[0]) {
+          personnels.splice(index, 1);
+        }
+      });
+
+      personnelAffecter.push(selectedRow);
+
+      this.setState({ personnelAffecter });
+      Store.setRHSelectedRow([]);
+    }
+  };
+  handleClickRewindRH = () => {
+    const selectedRow = Store.getRHSelectedRowRewind();
+    if (selectedRow.length > 0) {
+      const personnelAffecter = this.state.personnelAffecter;
+      const personnels = this.state.personnels;
+
+      personnelAffecter.map((personnel, index) => {
+        if (personnel[0] === selectedRow[0]) {
+          personnelAffecter.splice(index, 1);
+        }
+      });
+
+      personnels.push(selectedRow);
+
+      this.setState({ personnelAffecter });
+      Store.getRHSelectedRowRewind([]);
+    }
+  };
   fetchMateriels = async () => {
     const consomable = await fetchApi({
       method: "GET",
@@ -165,12 +236,66 @@ class StepperProjects extends React.Component {
         "Non consomable"
       ])
     );
-    console.log(consomables);
     this.setState({ materiels: [...consomables, ...nonconsomables] });
+  };
+
+  fetchPersonnels = async () => {
+    const administratif = await fetchApi({
+      method: "GET",
+      url: "/api/personnel/administratif/find",
+      token: window.localStorage.getItem("token")
+    });
+    let administratifs = [];
+    administratif.map(elmnt =>
+      administratifs.push([
+        elmnt.id,
+        elmnt.cin,
+        elmnt.diplome,
+        elmnt.qualite,
+        "Administratif"
+      ])
+    );
+
+    const permanent = await fetchApi({
+      method: "GET",
+      url: "/api/personnel/permanent/find",
+      token: window.localStorage.getItem("token")
+    });
+    let permanents = [];
+    permanent.map(elmnt =>
+      permanents.push([
+        elmnt.id,
+        elmnt.cin,
+        elmnt.diplome,
+        elmnt.qualite,
+        "Permanent"
+      ])
+    );
+
+    const saisonier = await fetchApi({
+      method: "GET",
+      url: "/api/personnel/saisonier/find",
+      token: window.localStorage.getItem("token")
+    });
+    let saisoniers = [];
+    saisonier.map(elmnt =>
+      saisoniers.push([
+        elmnt.id,
+        elmnt.cin,
+        elmnt.diplome,
+        elmnt.qualite,
+        "Saisonier"
+      ])
+    );
+
+    this.setState({
+      personnels: [...administratifs, ...permanents, ...saisoniers]
+    });
   };
 
   async componentWillMount() {
     this.fetchMateriels();
+    this.fetchPersonnels();
   }
 
   handleOnChange = e => {
@@ -211,23 +336,15 @@ class StepperProjects extends React.Component {
 
   handleNext = () => {
     const { completed, activeStep } = this.state;
-    let activeStepLet;
 
-    if (this.isLastStep() && !this.allStepsCompleted()) {
-      // It's the last step, but not all steps have been completed,
-      // find the first step that has been completed
-      const steps = getSteps();
-      activeStepLet = steps.findIndex((step, i) => !(i in completed));
-    } else {
-      activeStepLet = activeStep + 1;
-    }
     this.setState({
-      activeStep: activeStepLet
+      activeStep: activeStep + 1
     });
   };
 
   handleBack = () => {
-    const { activeStep } = this.state;
+    const { completed, activeStep } = this.state;
+    completed[activeStep - 1] = false;
     this.setState({
       activeStep: activeStep - 1
     });
@@ -251,7 +368,14 @@ class StepperProjects extends React.Component {
   handleReset = () => {
     this.setState({
       activeStep: 0,
-      completed: {}
+      completed: {},
+      projet: "",
+      date_debut: "2019-01-01",
+      date_fin: "2019-12-31",
+      data: [],
+      personnelAffecter: [],
+      quantite: 1,
+      etapes: [{ id: 1, designation: "", duree: 0, responsable: "" }]
     });
   };
 
@@ -284,68 +408,37 @@ class StepperProjects extends React.Component {
           <Stepper nonLinear activeStep={activeStep} alternativeLabel={true}>
             {steps.map((label, index) => (
               <Step key={label}>
-                <StepButton
+                <StepLabel
                   className={classes.stepItem}
-                  onClick={this.handleStep(index)}
                   completed={completed[index]}
                 >
                   {label}
-                </StepButton>
+                </StepLabel>
               </Step>
             ))}
           </Stepper>
           <Divider />
           <div>
-            {this.allStepsCompleted() ? (
+            {activeStep === steps.length ? (
               <div>
-                <Typography className={classes.instructions}>
-                  Tous les étapes sont finis
+                <Typography variant="h5" className={classes.instructions}>
+                  Projet créer avec succes
                 </Typography>
-                <Button onClick={this.handleReset}>Reset</Button>
+                <div className={classes.instructions}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={this.handleReset}
+                  >
+                    Créer un nouveau projet
+                  </Button>
+                </div>
               </div>
             ) : (
               <div>
                 <Typography className={classes.instructions}>
                   {this.getStepContent(activeStep)}
                 </Typography>
-                <div>
-                  <Button
-                    disabled={activeStep === 0}
-                    onClick={this.handleBack}
-                    className={classes.button}
-                  >
-                    Precedent
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={this.handleNext}
-                    className={classes.button}
-                  >
-                    Suivant
-                  </Button>
-                  {activeStep !== steps.length &&
-                    (completed[activeStep] ? (
-                      <Typography
-                        variant="caption"
-                        className={classes.completed}
-                      >
-                        Step&nbsp;
-                        {activeStep + 1}
-                        &nbsp;Déja complet
-                      </Typography>
-                    ) : (
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={this.handleComplete}
-                      >
-                        {this.completedSteps() === this.totalSteps() - 1
-                          ? "Finir"
-                          : "Finir L'Etape"}
-                      </Button>
-                    ))}
-                </div>
               </div>
             )}
           </div>

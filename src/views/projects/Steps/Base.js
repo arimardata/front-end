@@ -24,7 +24,11 @@ import ProjectSteps from "./tables/ProjectSteps";
 
 const styles = theme => ({
   root: {},
-  addDelete: { marginTop: 20 }
+  addDelete: { marginTop: 20 },
+  instructions: {
+    marginTop: 40,
+    marginBottom: 40
+  }
 });
 
 class Base extends React.Component {
@@ -41,14 +45,23 @@ class Base extends React.Component {
       addRow,
       deleteRow,
       handleOnChangeSteps,
-      handleOnChange
+      handleOnChange,
+      handleComplete,
+      handleBack,
+      steps
     } = this.props;
-    const { etapes, projet, date_debut, date_fin } = this.props.state;
+    const {
+      etapes,
+      projet,
+      date_debut,
+      date_fin,
+      activeStep
+    } = this.props.state;
 
     return (
       <ValidatorForm
         ref="form"
-        onSubmit={this.handleSubmit}
+        onSubmit={handleComplete}
         onError={errors => console.log(errors)}
       >
         <Row form>
@@ -59,6 +72,8 @@ class Base extends React.Component {
               value={projet}
               onChange={handleOnChange}
               name="projet"
+              validators={["required"]}
+              errorMessages={["Ce champ est obligatoire : "]}
             >
               <MenuItem value="Sample1">Sample1</MenuItem>
               <MenuItem value="Sample2">Sample2</MenuItem>
@@ -73,7 +88,7 @@ class Base extends React.Component {
               type="date"
               onChange={handleOnChange}
               style={{ width: "100%" }}
-              name="prenom"
+              name="date_debut"
               defaultValue="2019-01-01"
               value={date_debut}
               validators={["required"]}
@@ -88,7 +103,7 @@ class Base extends React.Component {
               type="date"
               onChange={handleOnChange}
               style={{ width: "100%" }}
-              name="prenom"
+              name="date_fin"
               defaultValue="2019-12-31"
               value={date_fin}
               validators={["required"]}
@@ -114,6 +129,23 @@ class Base extends React.Component {
               Supprimer
             </Button>
           </Col>
+        </Row>
+        <Row className={classes.instructions}>
+          <Button
+            disabled={activeStep === 0}
+            onClick={handleBack}
+            // className={classes.backButton}
+          >
+            Précedent
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            // onClick={handleSubmitBase}
+            type="submit"
+          >
+            {activeStep === steps.length - 1 ? "Finir" : "Suivant"}
+          </Button>
         </Row>
       </ValidatorForm>
     );

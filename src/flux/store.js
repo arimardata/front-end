@@ -9,6 +9,8 @@ let _store = {
   navItems: getSidebarNavItems(),
   materielSelectedRow: [],
   materielSelectedRowRewind: [],
+  RHSelectedRow: [],
+  RHSelectedRowRewind: [],
   typeStock: "Consomable",
   typePersonnel: "Permanent",
   userData: {
@@ -39,10 +41,23 @@ class Store extends EventEmitter {
     return _store.materielSelectedRow;
   };
   setMaterielSelectedRowRewind = data => {
-    _store.materielSelectedRow = data;
+    _store.materielSelectedRowRewind = data;
   };
   getMaterielSelectedRowRewind = () => {
-    return _store.materielSelectedRow;
+    return _store.materielSelectedRowRewind;
+  };
+
+  setRHSelectedRow = data => {
+    _store.RHSelectedRow = data;
+  };
+  getRHSelectedRow = () => {
+    return _store.RHSelectedRow;
+  };
+  setRHSelectedRowRewind = data => {
+    _store.RHSelectedRowRewind = data;
+  };
+  getRHSelectedRowRewind = () => {
+    return _store.RHSelectedRowRewind;
   };
 
   toggleSidebar() {
