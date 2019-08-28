@@ -66,6 +66,7 @@ class ChequeModal extends React.Component {
     Dispatcher.dispatch({
       actionType: Constants.TABLE_CHEQUE_UPDATED
     });
+    console.log(data);
     this.props.toggle();
   };
   HandleAnnuler = () => {
@@ -90,7 +91,7 @@ class ChequeModal extends React.Component {
       <ListGroup flush>
         <ListGroupItem className="p-3">
           <ValidatorForm
-            autoComplete="off"
+            autoComplete="on"
             ref="form"
             onSubmit={this.handleSubmit}
             onError={errors => console.log(errors)}
@@ -225,10 +226,15 @@ class ChequeModal extends React.Component {
 
               <Col md="6" className="form-group">
                 <TextField
+                id="date"
                   type="date"
                   label=" "
                   onChange={this.handleOnChange}
                   style={{ width: "100%" }}
+                  //defaultValue="2017-05-24"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   name="date"
                   value={date}
                   validators={["required"]}
