@@ -426,14 +426,14 @@ class AppelsOffres extends Component {
           <Card className="mt-1">
             <CardBody className="p-0 pb-3">{baord}</CardBody>
           </Card>
-          <Modal size="lg" open={open} toggle={this.toggle}>
+          <Modal size="lg" open={open} toggle={this.toggle} op={this.componentWillMount}>
             <ModalBody>
-              <AoModal data={this.state.clicked} />
+              <AoModal data={this.state.clicked} toggle={this.toggle} op={this.fetchAos}/>
             </ModalBody>
           </Modal>
-          <Modal  size="lg" open={openAdd} toggle={this.toggleAdd}>
+          <Modal  size="lg" open={openAdd} toggle={this.toggleAdd} op={this.fetchAos} >
             <ModalBody>
-              <AddModal />
+              <AddModal toggle={this.toggleAdd} op={this.componentWillMount} />
             </ModalBody>
           
           

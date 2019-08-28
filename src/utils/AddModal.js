@@ -19,27 +19,26 @@ class AddModal extends React.Component {
 
 
   handleOnChange = e => {
-    const {
-      target: { value, name }
-    } = e;
+    const  { value, name }
+     = e.target;
     this.setState({
       
       [name]: value
     });
-    console.log();
+    console.log(name);
   }
 
   handleSubmit = async e => {
     // your submit logic
-
-    const data = await fetchApi({
+    console.log(this.state);
+     await fetchApi({
       method: "POST",
 
       url: "/api/projects/ajouter",
       token: window.localStorage.getItem("token"),
       body: this.state
     });
-    console.log(data);
+    
     this.props.toggle();
   };
   HandleAnnuler = () => {
@@ -50,17 +49,16 @@ class AddModal extends React.Component {
 
   render() {
     const {
-      Num_Ordre,
+      num_Ordre,
       chef_ouvrage,
-      Num_AO,
-      Caution,
-      Mise_en_ligne,
-      Date_Limite,
-      Type,
-      Ville,
-      Estimation,
-      Autres_details,
-      etat
+      num_AO,
+      caution,
+      mise_en_ligne,
+      date_limite,
+      type,
+      ville,
+      estimation,
+      autres_details
     } = this.state;
     return (
       <div>
@@ -102,8 +100,8 @@ class AddModal extends React.Component {
                 label="N° AO :"
                 onChange={this.handleOnChange}
                 style={{ width: "100%" }}
-                name="Num_AO"
-                value={Num_AO}
+                name="num_AO"
+                value={num_AO}
                 validators={["required"]}
                 errorMessages={["Ce Champ est Obligatoir : "]}
               />
@@ -113,8 +111,8 @@ class AddModal extends React.Component {
                 label="Mise en ligne :"
                 onChange={this.handleOnChange}
                 style={{ width: "100%" }}
-                name="Mise_en_ligne"
-                value={Mise_en_ligne}
+                name="mise_en_ligne"
+                value={mise_en_ligne}
                 validators={["required"]}
                 errorMessages={["Ce Champ est Obligatoir : "]}
               />
@@ -124,8 +122,8 @@ class AddModal extends React.Component {
                 label="Type :"
                 onChange={this.handleOnChange}
                 style={{ width: "100%" }}
-                name="Type"
-                value={Type}
+                name="type"
+                value={type}
                 validators={["required"]}
                 errorMessages={["Ce Champ est Obligatoir : "]}
               />
@@ -137,8 +135,8 @@ class AddModal extends React.Component {
                 label="N° d'ordre :"
                 onChange={this.handleOnChange}
                 style={{ width: "100%" }}
-                name="Num_Ordre"
-                value={Num_Ordre}
+                name="num_Ordre"
+                value={num_Ordre}
                 validators={["required"]}
                 errorMessages={["Ce Champ est Obligatoir : "]}
               />
@@ -148,8 +146,8 @@ class AddModal extends React.Component {
                 label="Date limite :"
                 onChange={this.handleOnChange}
                 style={{ width: "100%" }}
-                name="Date_Limite"
-                value={Date_Limite}
+                name="date_limite"
+                value={date_limite}
                 validators={["required"]}
                 errorMessages={["Ce Champ est Obligatoir : "]}
               />
@@ -159,8 +157,8 @@ class AddModal extends React.Component {
                 label="Ville :"
                 onChange={this.handleOnChange}
                 style={{ width: "50%" }}
-                name="Ville"
-                value={Ville}
+                name="ville"
+                value={ville}
                 validators={["required"]}
                 errorMessages={["Ce Champ est Obligatoir : "]}
               />
@@ -171,8 +169,8 @@ class AddModal extends React.Component {
             label="Autre details :"
             onChange={this.handleOnChange}
             style={{ width: "100%" }}
-            name="Autres_details"
-            value={Autres_details}
+            name="autres_details"
+            value={autres_details}
             validators={["required"]}
             errorMessages={["Ce Champ est Obligatoir : "]}
           /> </div>
@@ -181,8 +179,8 @@ class AddModal extends React.Component {
             label="Estimation :"
             onChange={this.handleOnChange}
             style={{ width: "50%" }}
-            name="Estimation"
-            value={Estimation}
+            name="estimation"
+            value={estimation}
             validators={["required"]}
             errorMessages={["Ce Champ est Obligatoir : "]}
           /> </div>
@@ -195,8 +193,8 @@ class AddModal extends React.Component {
                 label="Caution provisoire(CP) :"
                 onChange={this.handleOnChange}
                 style={{ width: "50%" }}
-                name="Caution"
-                value={Caution}
+                name="caution"
+                value={caution}
                 validators={["required"]}
                 errorMessages={["Ce Champ est Obligatoir : "]}
               /> </div>
