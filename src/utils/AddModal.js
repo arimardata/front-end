@@ -10,24 +10,20 @@ import {
   SelectValidator
 } from "react-material-ui-form-validator";
 
-
 class AddModal extends React.Component {
   constructor() {
     super();
     this.state = {};
   }
 
-
   handleOnChange = e => {
     const {
       target: { value, name }
     } = e;
     this.setState({
-      
       [name]: value
     });
-    console.log();
-  }
+  };
 
   handleSubmit = async e => {
     // your submit logic
@@ -39,14 +35,12 @@ class AddModal extends React.Component {
       token: window.localStorage.getItem("token"),
       body: this.state
     });
-    console.log(data);
     this.props.toggle();
   };
   HandleAnnuler = () => {
     this.setState({});
     this.props.toggle();
   };
-
 
   render() {
     const {
@@ -72,18 +66,20 @@ class AddModal extends React.Component {
         >
           <div className="row">
             <div className="col-10">
-              <p><TextValidator
-                label="Chef ouvrage :"
-                onChange={this.handleOnChange}
-                style={{ width: "100%" }}
-                name="chef_ouvrage"
-                value={chef_ouvrage}
-                validators={["required"]}
-                errorMessages={["Ce Champ est Obligatoir : "]}
-              /></p>
+              <p>
+                <TextValidator
+                  label="Chef ouvrage :"
+                  onChange={this.handleOnChange}
+                  style={{ width: "100%" }}
+                  name="chef_ouvrage"
+                  value={chef_ouvrage}
+                  validators={["required"]}
+                  errorMessages={["Ce Champ est Obligatoir : "]}
+                />
+              </p>
             </div>
             <div className="col-1">
-              <IconButton >
+              <IconButton>
                 <i className="material-icons">picture_as_pdf</i>
               </IconButton>
             </div>
@@ -97,7 +93,6 @@ class AddModal extends React.Component {
           <hr />
           <div className="row">
             <div className="col">
-
               <TextValidator
                 label="N° AO :"
                 onChange={this.handleOnChange}
@@ -167,56 +162,57 @@ class AddModal extends React.Component {
             </div>
           </div>
           <hr />
-          <div><TextValidator
-            label="Autre details :"
-            onChange={this.handleOnChange}
-            style={{ width: "100%" }}
-            name="Autres_details"
-            value={Autres_details}
-            validators={["required"]}
-            errorMessages={["Ce Champ est Obligatoir : "]}
-          /> </div>
+          <div>
+            <TextValidator
+              label="Autre details :"
+              onChange={this.handleOnChange}
+              style={{ width: "100%" }}
+              name="Autres_details"
+              value={Autres_details}
+              validators={["required"]}
+              errorMessages={["Ce Champ est Obligatoir : "]}
+            />{" "}
+          </div>
           <hr />
-          <div><TextValidator
-            label="Estimation :"
-            onChange={this.handleOnChange}
-            style={{ width: "50%" }}
-            name="Estimation"
-            value={Estimation}
-            validators={["required"]}
-            errorMessages={["Ce Champ est Obligatoir : "]}
-          /> </div>
+          <div>
+            <TextValidator
+              label="Estimation :"
+              onChange={this.handleOnChange}
+              style={{ width: "50%" }}
+              name="Estimation"
+              value={Estimation}
+              validators={["required"]}
+              errorMessages={["Ce Champ est Obligatoir : "]}
+            />{" "}
+          </div>
           <br />
           <div></div>
           <hr />
           <div className="row">
             <div className="col">
-              <div><TextValidator
-                label="Caution provisoire(CP) :"
-                onChange={this.handleOnChange}
-                style={{ width: "50%" }}
-                name="Caution"
-                value={Caution}
-                validators={["required"]}
-                errorMessages={["Ce Champ est Obligatoir : "]}
-              /> </div>
+              <div>
+                <TextValidator
+                  label="Caution provisoire(CP) :"
+                  onChange={this.handleOnChange}
+                  style={{ width: "50%" }}
+                  name="Caution"
+                  value={Caution}
+                  validators={["required"]}
+                  errorMessages={["Ce Champ est Obligatoir : "]}
+                />{" "}
+              </div>
               <br />
               <div></div>
             </div>
-
-
           </div>
 
           <hr />
-          <Button type="submit" >
-            Enrengistrer Appel d'offre
-            </Button>
+          <Button type="submit">Enrengistrer Appel d'offre</Button>
           <Button theme="danger" onClick={this.HandleAnnuler}>
             Annuler
-            </Button>
+          </Button>
         </ValidatorForm>
       </div>
-
     );
   }
 }

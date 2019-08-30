@@ -28,7 +28,7 @@ import { Store, Constants } from "../flux";
 import DownIcon from "@material-ui/icons/KeyboardArrowDown";
 import Fab from "@material-ui/core/Fab";
 import { withStyles } from "@material-ui/core/styles";
-import { green,blue,red } from "@material-ui/core/colors";
+import { green, blue, red } from "@material-ui/core/colors";
 import Icon from "@material-ui/core/Icon";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
@@ -72,7 +72,6 @@ const styles = theme => ({
 });
 
 class AppelsOffres extends Component {
-
   constructor(props) {
     super(props);
 
@@ -195,15 +194,14 @@ class AppelsOffres extends Component {
     };
     this.handleDragEnd = this.handleDragEnd.bind(this);
     this.toggle = this.toggle.bind(this);
-    this.toggleAdd =this.toggleAdd.bind(this);
+    this.toggleAdd = this.toggleAdd.bind(this);
     this.onCardClick = this.onCardClick.bind(this);
-    this.OnAddClick =this.OnAddClick.bind(this);
+    this.OnAddClick = this.OnAddClick.bind(this);
   }
 
   handleChange = e => {
     const name = e.target.name;
     const value = e.target.value === "true";
-    console.log(name, value);
     let lanesLayout = this.state.lanesLayout;
     let index;
     for (let i = 0; i < lanesLayout.lanes.length; i++) {
@@ -262,12 +260,10 @@ class AppelsOffres extends Component {
       clicked: ao[0]
     });
     this.toggle();
-    console.log(ao[0]);
   }
   OnAddClick = () => {
     this.setState({ ...this.state, openAdd: !this.state.openAdd });
     this.toggleAdd();
-    
   };
   toggle() {
     this.setState({
@@ -278,20 +274,22 @@ class AppelsOffres extends Component {
     this.setState({
       openAdd: !this.state.openAdd
     });
-    console.log("addcklicked");
-    
   }
   handleDragEnd(cardId, sourceLaneId, targetLaneId, position, cardDetails) {
     let source = parseInt(sourceLaneId.substr(sourceLaneId.length - 1));
     let target = parseInt(targetLaneId.substr(targetLaneId.length - 1));
-    // if (source > target) return false;
-    // else {
-    this.setState({
-      ...this.state,
-      openDialog: true,
-      dragend: { cardId, sourceLaneId, targetLaneId, position, cardDetails }
-    });
-    // }
+    if (targetLaneId == "lane4") {
+      return false;
+    } else {
+      // if (source > target) return false;
+      // else {
+      this.setState({
+        ...this.state,
+        openDialog: true,
+        dragend: { cardId, sourceLaneId, targetLaneId, position, cardDetails }
+      });
+      // }
+    }
   }
 
   handleClose = () => {
@@ -301,8 +299,6 @@ class AppelsOffres extends Component {
     this.setState({ ...this.state, openSelect: true });
   };
   //button add
-  
-
 
   handleAgree = async () => {
     const {
@@ -348,23 +344,18 @@ class AppelsOffres extends Component {
     this.setState({ ...this.state, baord });
   };
 
-  handleScript= async()=>{
-
+  handleScript = async () => {
     try {
       await fetchApi({
         method: "GET",
         url: "/api/projects/runscript",
         token: window.localStorage.getItem("token")
       });
-      
-    }
-    catch(error) {
+    } catch (error) {
       console.error(error);
     }
     window.location.reload();
-    
-  }
- 
+  };
 
   render() {
     const { classes } = this.props;
@@ -404,8 +395,7 @@ class AppelsOffres extends Component {
               className="text-sm-left"
             />
           </Row>
-          
-            
+
           <Row>
             <DialogModal
               openDialog={openDialog}
@@ -431,14 +421,12 @@ class AppelsOffres extends Component {
               <AoModal data={this.state.clicked} />
             </ModalBody>
           </Modal>
-          <Modal  size="lg" open={openAdd} toggle={this.toggleAdd}>
+          <Modal size="lg" open={openAdd} toggle={this.toggleAdd}>
             <ModalBody>
               <AddModal />
             </ModalBody>
-          
-          
           </Modal>
-          
+
           <Fab
             onClick={this.handleClickOpen}
             aria-label={"Expand"}

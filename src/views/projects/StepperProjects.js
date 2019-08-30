@@ -124,6 +124,23 @@ class StepperProjects extends React.Component {
     return id;
   };
 
+  affecterPersonnelFromSteps = id => {
+    const personnels = this.state.personnels;
+    let Personnel;
+    personnels.map(personnel => {
+      if (personnel[0] === id) {
+        Personnel = {
+          personnelId: personnel[0],
+          cin: personnel[1],
+          diplome: personnel[2],
+          qualite: personnel[3],
+          type: personnel[4]
+        };
+      }
+    });
+    return Personnel;
+  };
+
   handleCreate = () => {
     const numAo = this.state.projet;
     const chefDuProjet = this.getResponsableId(this.state.chefProjet);
@@ -131,6 +148,7 @@ class StepperProjects extends React.Component {
     const dateFin = this.state.date_fin;
     const steps = this.state.etapes;
     let etapes = [];
+    const personnels = [];
     let i = 1;
     steps.map(step => {
       etapes.push({
@@ -139,8 +157,14 @@ class StepperProjects extends React.Component {
         duree: step.duree,
         responsable: this.getResponsableId(step.responsable)
       });
+
+      personnels.push(
+        this.affecterPersonnelFromSteps(this.getResponsableId(step.responsable))
+      );
       i++;
     });
+    //chef du projet
+    personnels.push(this.affecterPersonnelFromSteps(chefDuProjet));
 
     const materielAffecter = this.state.data;
 
@@ -153,16 +177,18 @@ class StepperProjects extends React.Component {
         type: materiel[3]
       });
     });
-    const personnels = [];
+
     const personnelAffecter = this.state.personnelAffecter;
     personnelAffecter.map(personnel => {
-      personnels.push({
-        personnelId: personnel[0],
-        cin: personnel[1],
-        diplome: personnel[2],
-        qualite: personnel[3],
-        type: personnel[4]
-      });
+      if (personnels.filter(p => p[0] === personnel[0]).length !== 0) {
+        personnels.push({
+          personnelId: personnel[0],
+          cin: personnel[1],
+          diplome: personnel[2],
+          qualite: personnel[3],
+          type: personnel[4]
+        });
+      }
     });
     const data = {
       numAo,
@@ -180,7 +206,6 @@ class StepperProjects extends React.Component {
       token: window.localStorage.getItem("token")
     })
       .then(data => {
-        console.log(data);
         this.handleComplete();
       })
       .catch(err => {
@@ -349,8 +374,10 @@ class StepperProjects extends React.Component {
         elmnt.qualite,
         "Permanent"
       ]);
-      let nom = elmnt.nom + " " + elmnt.prenom;
-      permanentSelect.push([elmnt.id, nom]);
+      if (elmnt.disponible) {
+        let nom = elmnt.nom + " " + elmnt.prenom;
+        permanentSelect.push([elmnt.id, nom]);
+      }
     });
 
     const saisonier = await fetchApi({
@@ -368,10 +395,11 @@ class StepperProjects extends React.Component {
         elmnt.qualite,
         "Saisonier"
       ]);
-      let nom = elmnt.nom + " " + elmnt.prenom;
-      saisonierSelect.push([elmnt.id, nom]);
+      if (elmnt.disponible) {
+        let nom = elmnt.nom + " " + elmnt.prenom;
+        saisonierSelect.push([elmnt.id, nom]);
+      }
     });
-
     this.setState({
       personnels: [...administratifs, ...permanents, ...saisoniers],
       personnelSelect: [

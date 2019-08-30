@@ -20,7 +20,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 
 function ProjectSteps(props) {
   const { classes, etapes, handleOnChangeSteps, personnelSelect } = props;
-  console.log(personnelSelect);
 
   return (
     <div className={classes.rootTable}>
@@ -63,13 +62,6 @@ function ProjectSteps(props) {
                 />
               </TableCell>
               <TableCell align="left">
-                {/* <TextValidator
-                  onChange={handleOnChangeSteps(etape.id)}
-                  name="responsable"
-                  value={etape.responsable}
-                  validators={["required"]}
-                  errorMessages={["Ce champ est obligatoire : "]}
-                /> */}
                 <SelectValidator
                   onChange={handleOnChangeSteps(etape.id)}
                   style={{ width: "80%" }}

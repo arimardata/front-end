@@ -66,7 +66,6 @@ class ChequeModal extends React.Component {
     Dispatcher.dispatch({
       actionType: Constants.TABLE_CHEQUE_UPDATED
     });
-    console.log(data);
     this.props.toggle();
   };
   HandleAnnuler = () => {
@@ -226,14 +225,14 @@ class ChequeModal extends React.Component {
 
               <Col md="6" className="form-group">
                 <TextField
-                id="date"
+                  id="date"
                   type="date"
                   label=" "
                   onChange={this.handleOnChange}
                   style={{ width: "100%" }}
                   //defaultValue="2017-05-24"
                   InputLabelProps={{
-                    shrink: true,
+                    shrink: true
                   }}
                   name="date"
                   value={date}

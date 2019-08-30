@@ -34,7 +34,7 @@ export default function CautionFinal({
       url: "/api/projects/AjouterCaution/" + dragend.cardId,
       token: window.localStorage.getItem("token"),
       body: { cautionFinal }
-    }).then(data => console.log(data));
+    });
     handleAgree();
   }
   return (

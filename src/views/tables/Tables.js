@@ -46,7 +46,6 @@ class Tables extends React.Component {
         elmnt.telephone
       ])
     );
-    console.log(cheques);
     this.setState({ cheques });
   };
 

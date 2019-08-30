@@ -74,7 +74,7 @@ class TableRHRight extends React.Component {
     const options = {
       textLabels: {
         body: {
-          noMatch: "Aucun materiel a été affecté",
+          noMatch: "Aucun personnel a été affecté",
           toolTip: "Trier"
         },
         toolbar: {

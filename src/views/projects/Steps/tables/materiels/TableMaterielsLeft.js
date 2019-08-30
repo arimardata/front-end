@@ -121,7 +121,6 @@ class TableMaterielsLeft extends React.Component {
 
 class CustomToolbarSelect extends React.Component {
   render() {
-    console.log(this.props);
     return <div />;
   }
 }

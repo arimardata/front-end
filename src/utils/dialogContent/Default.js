@@ -10,7 +10,6 @@ export default function Default({ handleAgree, handleDisagree, aos, dragend }) {
   function handleSubmit() {
     aos.map(ao => {
       if (ao.id === dragend.cardId) {
-        console.log(ao);
         ao.moinsDisant = "";
         ao.montant = "";
         ao.cautionFinal = "";

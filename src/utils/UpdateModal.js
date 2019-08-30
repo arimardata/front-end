@@ -53,7 +53,6 @@ class UpdateModal extends React.Component {
 
             [name]: value
         });
-        console.log();
     }
     handleSubmit = async e => {
         // your submit logic

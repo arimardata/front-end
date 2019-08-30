@@ -47,7 +47,7 @@ export default function MoinsDisant({
       url: "/api/projects/moinsDisant/" + dragend.cardId,
       token: window.localStorage.getItem("token"),
       body: { moinsDisant, montant }
-    }).then(data => console.log(data));
+    });
     handleAgree();
   }
   return (

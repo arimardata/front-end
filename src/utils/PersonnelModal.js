@@ -55,7 +55,6 @@ class PersonnelModal extends React.Component {
     Dispatcher.dispatch({
       actionType: Constants.TABLE_ADMINISTRATIF_UPDATED
     });
-    console.log(res);
   };
   createPermanent = async data => {
     const res = await fetchApi({
@@ -68,7 +67,6 @@ class PersonnelModal extends React.Component {
     Dispatcher.dispatch({
       actionType: Constants.TABLE_PERMANENT_UPDATED
     });
-    console.log(res);
   };
   createSaisonier = async data => {
     const res = await fetchApi({
@@ -81,7 +79,6 @@ class PersonnelModal extends React.Component {
     Dispatcher.dispatch({
       actionType: Constants.TABLE_SAISONIER_UPDATED
     });
-    console.log(res);
   };
 
   handleSubmit = async () => {

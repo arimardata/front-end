@@ -29,7 +29,6 @@ class UpdatePersonnelModal extends React.Component {
   }
 
   componentWillMount() {
-    console.log(this.props.data);
     switch (Store.getTypePersonnel()) {
       case "Administratif":
         this.setState({
@@ -98,7 +97,6 @@ class UpdatePersonnelModal extends React.Component {
     Dispatcher.dispatch({
       actionType: Constants.TABLE_ADMINISTRATIF_UPDATED
     });
-    console.log(res);
   };
   updatePermanent = async (id, data) => {
     const res = await fetchApi({
@@ -111,7 +109,6 @@ class UpdatePersonnelModal extends React.Component {
     Dispatcher.dispatch({
       actionType: Constants.TABLE_PERMANENT_UPDATED
     });
-    console.log(res);
   };
   updateSaisonier = async (id, data) => {
     const res = await fetchApi({
@@ -124,7 +121,6 @@ class UpdatePersonnelModal extends React.Component {
     Dispatcher.dispatch({
       actionType: Constants.TABLE_SAISONIER_UPDATED
     });
-    console.log(res);
   };
 
   handleSubmit = async () => {
