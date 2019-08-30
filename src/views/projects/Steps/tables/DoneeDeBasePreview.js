@@ -12,7 +12,7 @@ import TableRow from "@material-ui/core/TableRow";
 import styles from "./styles";
 
 function DoneeDeBasePreview(props) {
-  const { classes, projet, date_debut, date_fin } = props;
+  const { classes, projet, date_debut, date_fin, chefProjet } = props;
 
   return (
     <div className={classes.rootTable}>
@@ -27,6 +27,7 @@ function DoneeDeBasePreview(props) {
             <TableCell align="left">Projet</TableCell>
             <TableCell align="left">Date debut</TableCell>
             <TableCell align="left">Date fin </TableCell>
+            <TableCell align="left">Chef du projet </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -34,6 +35,7 @@ function DoneeDeBasePreview(props) {
             <TableCell align="left">{projet}</TableCell>
             <TableCell align="left"> {date_debut}</TableCell>
             <TableCell align="left">{date_fin}</TableCell>
+            <TableCell align="left">{chefProjet}</TableCell>
           </TableRow>
         </TableBody>
       </Table>

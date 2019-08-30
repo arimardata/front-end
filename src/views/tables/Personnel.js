@@ -93,7 +93,6 @@ class Personnel extends React.Component {
     });
     let rows = [];
 
-    console.log(data);
     data.map(elmnt =>
       rows.push([
         elmnt.id,
@@ -105,7 +104,9 @@ class Personnel extends React.Component {
         elmnt.diplome,
         elmnt.qualite,
         elmnt.dateDeNaissance,
-        elmnt.coutParJour
+        elmnt.coutParJour,
+        elmnt.dateDebut,
+        elmnt.dateFin
       ])
     );
     this.setState({ rows });

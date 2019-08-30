@@ -26,9 +26,10 @@ class Validation extends React.Component {
       date_fin,
       activeStep,
       data,
-      personnelAffecter
+      personnelAffecter,
+      chefProjet
     } = this.props.state;
-    const { classes, handleComplete, handleBack, steps } = this.props;
+    const { classes, handleCreate, handleBack, steps } = this.props;
     return (
       <Container fluid className="main-con tent-container px-4">
         <Row>
@@ -36,6 +37,7 @@ class Validation extends React.Component {
             date_debut={date_debut}
             projet={projet}
             date_fin={date_fin}
+            chefProjet={chefProjet}
           />
         </Row>
         <Row>
@@ -56,7 +58,7 @@ class Validation extends React.Component {
           >
             Précedent
           </Button>
-          <Button variant="contained" color="primary" onClick={handleComplete}>
+          <Button variant="contained" color="primary" onClick={handleCreate}>
             {activeStep === steps.length - 1 ? "Finir" : "Suivant"}
           </Button>
         </Row>

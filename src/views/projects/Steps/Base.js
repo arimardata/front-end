@@ -55,7 +55,10 @@ class Base extends React.Component {
       projet,
       date_debut,
       date_fin,
-      activeStep
+      activeStep,
+      aos,
+      personnelSelect,
+      chefProjet
     } = this.props.state;
 
     return (
@@ -67,7 +70,7 @@ class Base extends React.Component {
         <Row form>
           <Col md="5" className="form-group">
             <SelectValidator
-              label="Projet"
+              label="Appel d'offre"
               style={{ width: "100%" }}
               value={projet}
               onChange={handleOnChange}
@@ -75,9 +78,28 @@ class Base extends React.Component {
               validators={["required"]}
               errorMessages={["Ce champ est obligatoire : "]}
             >
-              <MenuItem value="Sample1">Sample1</MenuItem>
-              <MenuItem value="Sample2">Sample2</MenuItem>
-              <MenuItem value="Sample3">Sample3</MenuItem>
+              {aos.map(ao => (
+                <MenuItem value={ao}>{ao}</MenuItem>
+              ))}
+            </SelectValidator>
+          </Col>
+        </Row>
+        <Row form>
+          <Col md="5" className="form-group">
+            <SelectValidator
+              style={{ width: "100%" }}
+              label="Chef du projet"
+              onChange={handleOnChange}
+              style={{ width: "100%" }}
+              name="chefProjet"
+              value={chefProjet}
+              validators={["required"]}
+              errorMessages={["Ce champ est obligatoire : "]}
+            >
+              {personnelSelect &&
+                personnelSelect.map(personnel => (
+                  <MenuItem value={personnel[1]}>{personnel[1]}</MenuItem>
+                ))}
             </SelectValidator>
           </Col>
         </Row>
@@ -114,6 +136,7 @@ class Base extends React.Component {
         <Row>
           <ProjectSteps
             etapes={etapes}
+            personnelSelect={personnelSelect}
             handleOnChangeSteps={handleOnChangeSteps}
           />
         </Row>

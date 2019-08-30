@@ -52,7 +52,9 @@ class StepperProjects extends React.Component {
     activeStep: 0,
     completed: {},
     data: [],
+    aos: [],
     personnelAffecter: [],
+    personnelSelect: [],
     quantite: 1,
     etapes: [{ id: 1, designation: "", duree: 0, responsable: "" }],
     date_debut: "2019-01-01",
@@ -102,7 +104,7 @@ class StepperProjects extends React.Component {
       case 3:
         return (
           <Validation
-            handleComplete={this.handleComplete}
+            handleCreate={this.handleCreate}
             handleBack={this.handleBack}
             steps={steps}
             state={this.state}
@@ -111,6 +113,79 @@ class StepperProjects extends React.Component {
       default:
         return "Unknown step";
     }
+  };
+
+  getResponsableId = name => {
+    const personnelSelect = this.state.personnelSelect;
+    let id;
+    personnelSelect.map(personne => {
+      if (personne[1] === name) id = personne[0];
+    });
+    return id;
+  };
+
+  handleCreate = () => {
+    const numAo = this.state.projet;
+    const chefDuProjet = this.getResponsableId(this.state.chefProjet);
+    const dateDebut = this.state.date_debut;
+    const dateFin = this.state.date_fin;
+    const steps = this.state.etapes;
+    let etapes = [];
+    let i = 1;
+    steps.map(step => {
+      etapes.push({
+        etape: i,
+        designation: step.designation,
+        duree: step.duree,
+        responsable: this.getResponsableId(step.responsable)
+      });
+      i++;
+    });
+
+    const materielAffecter = this.state.data;
+
+    const materiels = [];
+    materielAffecter.map(materiel => {
+      materiels.push({
+        materielId: materiel[0],
+        materiel: materiel[1],
+        quantite: materiel[2],
+        type: materiel[3]
+      });
+    });
+    const personnels = [];
+    const personnelAffecter = this.state.personnelAffecter;
+    personnelAffecter.map(personnel => {
+      personnels.push({
+        personnelId: personnel[0],
+        cin: personnel[1],
+        diplome: personnel[2],
+        qualite: personnel[3],
+        type: personnel[4]
+      });
+    });
+    const data = {
+      numAo,
+      chefDuProjet,
+      dateDebut,
+      dateFin,
+      etapes,
+      personnels,
+      materiels
+    };
+    fetchApi({
+      url: `/api/projets/ajouter`,
+      body: data,
+      method: "POST",
+      token: window.localStorage.getItem("token")
+    })
+      .then(data => {
+        console.log(data);
+        this.handleComplete();
+      })
+      .catch(err => {
+        this.setState({ error: "Erreur de connexion" });
+      });
   };
 
   handleClickForward = () => {
@@ -246,15 +321,18 @@ class StepperProjects extends React.Component {
       token: window.localStorage.getItem("token")
     });
     let administratifs = [];
-    administratif.map(elmnt =>
+    let administratifSelect = [];
+    administratif.map(elmnt => {
       administratifs.push([
         elmnt.id,
         elmnt.cin,
         elmnt.diplome,
         elmnt.qualite,
         "Administratif"
-      ])
-    );
+      ]);
+      let nom = elmnt.nom + " " + elmnt.prenom;
+      administratifSelect.push([elmnt.id, nom]);
+    });
 
     const permanent = await fetchApi({
       method: "GET",
@@ -262,15 +340,18 @@ class StepperProjects extends React.Component {
       token: window.localStorage.getItem("token")
     });
     let permanents = [];
-    permanent.map(elmnt =>
+    let permanentSelect = [];
+    permanent.map(elmnt => {
       permanents.push([
         elmnt.id,
         elmnt.cin,
         elmnt.diplome,
         elmnt.qualite,
         "Permanent"
-      ])
-    );
+      ]);
+      let nom = elmnt.nom + " " + elmnt.prenom;
+      permanentSelect.push([elmnt.id, nom]);
+    });
 
     const saisonier = await fetchApi({
       method: "GET",
@@ -278,25 +359,43 @@ class StepperProjects extends React.Component {
       token: window.localStorage.getItem("token")
     });
     let saisoniers = [];
-    saisonier.map(elmnt =>
+    let saisonierSelect = [];
+    saisonier.map(elmnt => {
       saisoniers.push([
         elmnt.id,
         elmnt.cin,
         elmnt.diplome,
         elmnt.qualite,
         "Saisonier"
-      ])
-    );
+      ]);
+      let nom = elmnt.nom + " " + elmnt.prenom;
+      saisonierSelect.push([elmnt.id, nom]);
+    });
 
     this.setState({
-      personnels: [...administratifs, ...permanents, ...saisoniers]
+      personnels: [...administratifs, ...permanents, ...saisoniers],
+      personnelSelect: [
+        ...administratifSelect,
+        ...permanentSelect,
+        ...saisonierSelect
+      ]
     });
   };
 
   async componentWillMount() {
     this.fetchMateriels();
     this.fetchPersonnels();
+    this.fetchAosRetenu();
   }
+
+  fetchAosRetenu = async () => {
+    const aos = await fetchApi({
+      method: "GET",
+      url: "/api/projects/findByetat/Retenu",
+      token: window.localStorage.getItem("token")
+    });
+    this.setState({ aos });
+  };
 
   handleOnChange = e => {
     const { name, value } = e.target;
