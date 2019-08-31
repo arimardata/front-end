@@ -37,7 +37,12 @@ class RH extends React.Component {
   handleSubmit = () => {};
 
   render() {
-    const { personnels, personnelAffecter, activeStep } = this.props.state;
+    const {
+      personnels,
+      personnelAffecter,
+      etapes,
+      activeStep
+    } = this.props.state;
     const {
       classes,
       handleClickForward,
@@ -51,7 +56,7 @@ class RH extends React.Component {
       <div>
         <Row>
           <Col md="5" className="form-group">
-            <TableRHLeft personnels={personnels} />
+            <TableRHLeft etapes={etapes} personnels={personnels} />
           </Col>
           <Col md="2" className="form-group">
             <Row className={classes.col} />

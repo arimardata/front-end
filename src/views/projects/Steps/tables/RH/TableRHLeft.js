@@ -19,12 +19,13 @@ class TableRHLeft extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    const personnels = newProps.personnels;
+    const { personnels } = newProps;
     this.setState({ personnels });
   }
 
   componentWillMount() {
-    const personnels = this.props.personnels;
+    const { personnels } = this.props;
+
     this.setState({ personnels });
   }
 

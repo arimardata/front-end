@@ -126,8 +126,8 @@ class StepperProjects extends React.Component {
   };
 
   affecterPersonnelFromSteps = id => {
-    const personnels = this.state.personnels;
-    let Personnel;
+    const personnels = this.state.touspersonnels;
+    let Personnel = {};
     personnels.map(personnel => {
       if (personnel[0] === id) {
         Personnel = {
@@ -152,6 +152,9 @@ class StepperProjects extends React.Component {
     let etapes = [];
     const personnels = [];
     let i = 1;
+    //chef du projet
+    personnels.push(this.affecterPersonnelFromSteps(chefDuProjet));
+    let dejaexist = [];
     steps.map(step => {
       etapes.push({
         etape: i,
@@ -160,13 +163,18 @@ class StepperProjects extends React.Component {
         responsable: this.getResponsableId(step.responsable)
       });
 
-      personnels.push(
-        this.affecterPersonnelFromSteps(this.getResponsableId(step.responsable))
+      dejaexist = personnels.filter(
+        p => p[0] === this.getResponsableId(step.responsable)
       );
+      if (dejaexist.length !== 0) {
+        personnels.push(
+          this.affecterPersonnelFromSteps(
+            this.getResponsableId(step.responsable)
+          )
+        );
+      }
       i++;
     });
-    //chef du projet
-    personnels.push(this.affecterPersonnelFromSteps(chefDuProjet));
 
     const materielAffecter = this.state.data;
 
@@ -181,8 +189,10 @@ class StepperProjects extends React.Component {
     });
 
     const personnelAffecter = this.state.personnelAffecter;
+
     personnelAffecter.map(personnel => {
-      if (personnels.filter(p => p[0] === personnel[0]).length !== 0) {
+      dejaexist = personnels.filter(p => p[0] === personnel[0]);
+      if (dejaexist.length !== 0) {
         personnels.push({
           personnelId: personnel[0],
           cin: personnel[1],
@@ -406,6 +416,7 @@ class StepperProjects extends React.Component {
     });
     this.setState({
       personnels: [...administratifs, ...permanents, ...saisoniers],
+      touspersonnels: [...administratifs, ...permanents, ...saisoniers],
       personnelSelect: [
         ...administratifSelect,
         ...permanentSelect,
