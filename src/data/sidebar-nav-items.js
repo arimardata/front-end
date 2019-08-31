@@ -28,28 +28,13 @@ export default function() {
     },
     {
       title: "Gestion des projets",
-      htmlBefore: '<i class="material-icons">gavel</i>',
+      htmlBefore: '<i class="material-icons">next_week</i>',
       to: "/projets"
+    },
+    {
+      title: "Lister des projets",
+      htmlBefore: '<i class="material-icons">list</i>',
+      to: "/lister-projets"
     }
-    // {
-    //   title: "Forms & Components",
-    //   htmlBefore: '<i class="material-icons">view_module</i>',
-    //   to: "/components-overview"
-    // },
-    // {
-    //   title: "Tables",
-    //   htmlBefore: '<i class="material-icons">table_chart</i>',
-    //   to: "/tables"
-    // },
-    // {
-    //   title: "User Profile",
-    //   htmlBefore: '<i class="material-icons">person</i>',
-    //   to: "/user-profile-lite"
-    // },
-    // {
-    //   title: "Errors",
-    //   htmlBefore: '<i class="material-icons">error</i>',
-    //   to: "/errors"
-    // }
   ];
 }

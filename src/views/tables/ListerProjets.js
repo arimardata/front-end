@@ -3,59 +3,63 @@ import { Grid } from "@material-ui/core";
 import MUIDataTable from "mui-datatables";
 
 import fetchApi from "../../utils/fetchApi";
-import { Store, Constants } from "../../flux";
 
-import Options from "./cheque/Options";
-import Columns from "./cheque/Columns";
+import Options from "./listerProjets/Options";
+import Columns from "./listerProjets/Columns";
 
 import { Container, Row } from "shards-react";
 import PageTitle from "../../components/common/PageTitle";
 
-// import { Store, Constants, Dispatcher } from "../../flux";
-class Tables extends React.Component {
+class ListerProjets extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {};
-    this.onChange = this.onChange.bind(this);
   }
 
-  onChange() {
-    this.fetchCheques();
-  }
+  getNomPrenom = id => {
+    const nomPrenom = this.state.nomPrenom;
+    let name;
+    nomPrenom.map(object => {
+      if (object.id === id) {
+        name = object.nom;
+        return;
+      }
+    });
+    return name;
+  };
 
-  fetchCheques = async () => {
-    const data = await fetchApi({
+  fetchProjets = async () => {
+    const nomPrenom = await fetchApi({
       method: "GET",
-      url: "/api/Cheques/find",
+      url: "/api/personnel/administratif/findNomPrenom",
       token: window.localStorage.getItem("token")
     });
-    let cheques = [];
+
+    this.setState({ nomPrenom });
+    const data = await fetchApi({
+      method: "GET",
+      url: "/api/projets/find",
+      token: window.localStorage.getItem("token")
+    });
+    let projets = [];
     data.map(elmnt =>
-      cheques.push([
+      projets.push([
         elmnt.id,
-        elmnt.etat,
-        elmnt.emetteur,
-        elmnt.recepteur,
-        elmnt.banque,
-        elmnt.somme,
-        elmnt.date,
-        elmnt.alerte,
-        elmnt.compte,
-        elmnt.email,
-        elmnt.telephone
+        elmnt.numAo,
+        this.getNomPrenom(elmnt.chefDuProjet),
+        elmnt.dateDebut,
+        elmnt.dateFin,
+        elmnt.etapes,
+        elmnt.materiels,
+        elmnt.personnels
       ])
     );
-    this.setState({ cheques });
+    this.setState({ projets });
   };
 
   async componentWillMount() {
-    this.fetchCheques();
-    Store.addChangeListener(Constants.TABLE_CHEQUE_UPDATED, this.onChange);
-  }
-
-  componentWillUnmount() {
-    Store.removeChangeListener(Constants.TABLE_CHEQUE_UPDATED, this.onChange);
+    this.fetchProjets();
   }
 
   render() {
@@ -64,8 +68,8 @@ class Tables extends React.Component {
         <Row noGutters className="page-header py-4">
           <PageTitle
             sm="4"
-            title="Gestion Des Cheques "
-            subtitle="Lister et gerer les  Cheques"
+            title="Liste des projets "
+            subtitle="Lister projets"
             className="text-sm-left"
           />
         </Row>
@@ -74,7 +78,7 @@ class Tables extends React.Component {
             <MUIDataTable
               key={Math.random()}
               title={""}
-              data={this.state.cheques}
+              data={this.state.projets}
               columns={Columns}
               options={Options}
             />
@@ -85,4 +89,4 @@ class Tables extends React.Component {
   }
 }
 
-export default Tables;
+export default ListerProjets;

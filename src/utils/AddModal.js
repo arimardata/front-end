@@ -1,5 +1,5 @@
 import React from "react";
-import { ListGroup, ListGroupItem, Row, Col, Button } from "shards-react";
+import { ListGroup, ListGroupItem, Row, Col } from "shards-react";
 import lanesLayout from "./lanesLayout";
 import IconButton from "@material-ui/core/IconButton";
 import fetchApi from "./fetchApi";
@@ -9,6 +9,8 @@ import {
   TextValidator,
   SelectValidator
 } from "react-material-ui-form-validator";
+
+import { Button } from "@material-ui/core";
 
 class AddModal extends React.Component {
   constructor() {
@@ -43,6 +45,7 @@ class AddModal extends React.Component {
   };
 
   render() {
+    console.log(this.props);
     const {
       Num_Ordre,
       chef_ouvrage,
@@ -207,10 +210,10 @@ class AddModal extends React.Component {
           </div>
 
           <hr />
-          <Button type="submit">Enrengistrer Appel d'offre</Button>
-          <Button theme="danger" onClick={this.HandleAnnuler}>
-            Annuler
+          <Button variant="contained" color="primary" type="submit">
+            Enrengistrer Appel d'offre
           </Button>
+          <Button onClick={this.HandleAnnuler}>Annuler</Button>
         </ValidatorForm>
       </div>
     );

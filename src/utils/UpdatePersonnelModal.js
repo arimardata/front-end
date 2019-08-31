@@ -8,9 +8,9 @@ import {
   FormInput,
   FormGroup,
   FormCheckbox,
-  FormSelect,
-  Button
+  FormSelect
 } from "shards-react";
+import Button from "@material-ui/core/Button";
 import fetchApi from "./fetchApi";
 import { Constants, Store, Dispatcher } from "../flux";
 import { TableBody, MenuItem } from "@material-ui/core";
@@ -393,12 +393,14 @@ class UpdatePersonnelModal extends React.Component {
         </Row>
 
         {fields}
-        <Button type="submit" /*onClick={this.handleResult}*/>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary" /*onClick={this.handleResult}*/
+        >
           Enrengistrer
         </Button>
-        <Button theme="danger" onClick={this.HandleAnnuler}>
-          Annuler
-        </Button>
+        <Button onClick={this.HandleAnnuler}>Annuler</Button>
       </ValidatorForm>
     );
   }

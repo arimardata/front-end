@@ -62,7 +62,7 @@ export default function CautionFinal({
         <Button onClick={handleDisagree} color="primary">
           Annuler
         </Button>
-        <Button type="submit" color="primary">
+        <Button type="submit" variant="contained" color="primary">
           Confirmer
         </Button>
       </DialogActions>

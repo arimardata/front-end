@@ -104,9 +104,12 @@ class Store extends EventEmitter {
         break;
       case Constants.TYPE_STOCK_SELECT:
         this.selectStockChanget();
+        break;
       case Constants.TYPE_PERSONNEL_SELECT:
         this.selectPersonnelChanged(payload);
+        break;
       default:
+        break;
     }
   }
 

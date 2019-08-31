@@ -120,6 +120,7 @@ class StepperProjects extends React.Component {
     let id;
     personnelSelect.map(personne => {
       if (personne[1] === name) id = personne[0];
+      return true;
     });
     return id;
   };
@@ -137,6 +138,7 @@ class StepperProjects extends React.Component {
           type: personnel[4]
         };
       }
+      return true;
     });
     return Personnel;
   };
@@ -378,6 +380,7 @@ class StepperProjects extends React.Component {
         let nom = elmnt.nom + " " + elmnt.prenom;
         permanentSelect.push([elmnt.id, nom]);
       }
+      return true;
     });
 
     const saisonier = await fetchApi({
@@ -399,6 +402,7 @@ class StepperProjects extends React.Component {
         let nom = elmnt.nom + " " + elmnt.prenom;
         saisonierSelect.push([elmnt.id, nom]);
       }
+      return true;
     });
     this.setState({
       personnels: [...administratifs, ...permanents, ...saisoniers],
@@ -437,6 +441,7 @@ class StepperProjects extends React.Component {
       if (etape.id === id) {
         etape[name] = value;
       }
+      return true;
     });
     this.setState({ etapes });
   };
@@ -454,15 +459,13 @@ class StepperProjects extends React.Component {
   };
 
   deleteRow = () => {
-    const size = this.state.etapes.length + 1;
-
     let etapes = this.state.etapes;
     etapes.pop();
     this.setState({ etapes });
   };
 
   handleNext = () => {
-    const { completed, activeStep } = this.state;
+    const { activeStep } = this.state;
 
     this.setState({
       activeStep: activeStep + 1

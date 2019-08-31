@@ -30,7 +30,7 @@ export default function Default({ handleAgree, handleDisagree, aos, dragend }) {
         <Button onClick={handleDisagree} color="primary">
           Annuler
         </Button>
-        <Button type="submit" color="primary">
+        <Button type="submit" variant="contained" color="primary">
           Confirmer
         </Button>
       </DialogActions>

@@ -423,7 +423,7 @@ class AppelsOffres extends Component {
           </Modal>
           <Modal size="lg" open={openAdd} toggle={this.toggleAdd}>
             <ModalBody>
-              <AddModal />
+              <AddModal toggle={this.toggleAdd} />
             </ModalBody>
           </Modal>
 

@@ -8,7 +8,9 @@ import { DefaultLayout } from "./layouts";
 import BlogOverview from "./views/BlogOverview";
 import UserProfileLite from "./views/UserProfileLite";
 // import GestionDeCheques from "./views/Cheques";
-import Tables from "./views/tables/Tables";
+import Cheques from "./views/tables/Cheques";
+import ListerProjets from "./views/tables/ListerProjets";
+
 import Personnel from "./views/tables/Personnel";
 import Stock from "./views/tables/Stock";
 import Errors from "./views/Errors";
@@ -33,7 +35,7 @@ export default [
   {
     path: "/cheques",
     layout: DefaultLayout,
-    component: Tables
+    component: Cheques
   },
   {
     path: "/personnels",
@@ -54,5 +56,10 @@ export default [
     path: "/AppelesOffres",
     layout: DefaultLayout,
     component: AppelesOffres
+  },
+  {
+    path: "/lister-projets",
+    layout: DefaultLayout,
+    component: ListerProjets
   }
 ];

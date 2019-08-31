@@ -8,8 +8,7 @@ import {
   FormInput,
   FormGroup,
   FormCheckbox,
-  FormSelect,
-  Button
+  FormSelect
 } from "shards-react";
 import fetchApi from "./fetchApi";
 import { Constants, Store, Dispatcher } from "../flux";
@@ -19,6 +18,7 @@ import {
   TextValidator,
   SelectValidator
 } from "react-material-ui-form-validator";
+import { Button } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 
 class ChequeModal extends React.Component {
@@ -242,12 +242,14 @@ class ChequeModal extends React.Component {
               </Col>
             </Row>
 
-            <Button type="submit" /*onClick={this.handleResult}*/>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary" /*onClick={this.handleResult}*/
+            >
               Enrengistrer Cheque
             </Button>
-            <Button theme="danger" onClick={this.HandleAnnuler}>
-              Annuler
-            </Button>
+            <Button onClick={this.HandleAnnuler}>Annuler</Button>
           </ValidatorForm>
         </ListGroupItem>
       </ListGroup>
