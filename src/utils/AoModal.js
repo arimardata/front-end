@@ -5,6 +5,8 @@ import IconButton from "@material-ui/core/IconButton";
 import fetchApi from "./fetchApi";
 import FileSaver from "file-saver";
 
+
+
 const downloadPdf = num_Ordre => async () => {
   const options = {
     method: "GET",
@@ -14,13 +16,13 @@ const downloadPdf = num_Ordre => async () => {
     responseType: "blob"
   };
   let response = await fetch(
-    "http://localhost:8080/api/files/PDF" + num_Ordre,
+    "http://localhost:8090/api/files/PDF" + num_Ordre,
     options
   );
 
-  var downloadBlob, downloadURL;
+  var downloadBlob, downloadURL, handledelete, handleedit;
 
-  downloadBlob = function(data, fileName, mimeType) {
+  downloadBlob = function (data, fileName, mimeType) {
     var blob, url;
 
     blob = new Blob([data], {
@@ -28,12 +30,12 @@ const downloadPdf = num_Ordre => async () => {
     });
     url = window.URL.createObjectURL(blob);
     downloadURL(url, fileName);
-    setTimeout(function() {
+    setTimeout(function () {
       return window.URL.revokeObjectURL(url);
     }, 1000);
   };
 
-  downloadURL = function(data, fileName) {
+  downloadURL = function (data, fileName) {
     var a;
     a = document.createElement("a");
     a.href = data;
@@ -145,6 +147,30 @@ const downloadPdf = num_Ordre => async () => {
 // };
 
 const AoModal = props => {
+
+
+
+
+  const handledelete = id => async () => {
+    console.log(props)
+
+
+    fetchApi({
+      method: "DELETE",
+      url: "/api/projects/delete/" + id,
+      token: window.localStorage.getItem("token")
+    });
+
+    props.toggle();
+
+
+  };
+
+  
+  const handleedit = id => async() =>{
+  
+  };
+  
   let data = props.data;
   return (
     <div>
@@ -155,6 +181,11 @@ const AoModal = props => {
         <div className="col-1">
           <IconButton onClick={downloadPdf(data.num_Ordre)}>
             <i className="material-icons">picture_as_pdf</i>
+          </IconButton>
+        </div>
+        <div className="col-1">
+          <IconButton onClick={handledelete(data.id)}>
+            <i className="material-icons">delete</i>
           </IconButton>
         </div>
         {/* <div className="col-1">
