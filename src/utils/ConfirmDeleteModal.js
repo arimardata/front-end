@@ -23,7 +23,7 @@ export default function Default({ handleAgree, toggle }) {
         <Button onClick={toggle} color="primary">
           Annuler
         </Button>
-        <Button type="submit" color="primary">
+        <Button type="submit" variant="contained" color="primary">
           Confirmer
         </Button>
       </DialogActions>

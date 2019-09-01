@@ -237,6 +237,7 @@ class AppelsOffres extends Component {
         draggable: true
       });
     });
+    console.log(data);
 
     this.setState({
       aos: data,

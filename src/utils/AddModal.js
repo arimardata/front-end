@@ -35,6 +35,8 @@ class AddModal extends React.Component {
       body: this.state
     });
     this.props.toggle();
+
+    window.location.reload();
   };
   HandleAnnuler = () => {
     this.setState({});

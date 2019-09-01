@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { ListGroup, ListGroupItem, Row, Col } from "shards-react";
 import lanesLayout from "./lanesLayout";
 import IconButton from "@material-ui/core/IconButton";
 import fetchApi from "./fetchApi";
 import FileSaver from "file-saver";
-
-
+import ConfirmDeleteModal from "./ConfirmDeleteModal";
+import { Modal, ModalBody } from "shards-react";
 
 const downloadPdf = num_Ordre => async () => {
   const options = {
@@ -22,7 +22,7 @@ const downloadPdf = num_Ordre => async () => {
 
   var downloadBlob, downloadURL, handledelete, handleedit;
 
-  downloadBlob = function (data, fileName, mimeType) {
+  downloadBlob = function(data, fileName, mimeType) {
     var blob, url;
 
     blob = new Blob([data], {
@@ -30,12 +30,12 @@ const downloadPdf = num_Ordre => async () => {
     });
     url = window.URL.createObjectURL(blob);
     downloadURL(url, fileName);
-    setTimeout(function () {
+    setTimeout(function() {
       return window.URL.revokeObjectURL(url);
     }, 1000);
   };
 
-  downloadURL = function (data, fileName) {
+  downloadURL = function(data, fileName) {
     var a;
     a = document.createElement("a");
     a.href = data;
@@ -147,14 +147,8 @@ const downloadPdf = num_Ordre => async () => {
 // };
 
 const AoModal = props => {
-
-
-
-
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const handledelete = id => async () => {
-    console.log(props)
-
-
     fetchApi({
       method: "DELETE",
       url: "/api/projects/delete/" + id,
@@ -162,18 +156,23 @@ const AoModal = props => {
     });
 
     props.toggle();
-
-
+    window.location.reload();
   };
 
-  
-  const handleedit = id => async() =>{
-  
-  };
-  
+  const handleedit = id => async () => {};
+
   let data = props.data;
   return (
     <div>
+      <Modal open={openDeleteDialog}>
+        <ModalBody>
+          <p>Est-vous sure ?</p>
+          <ConfirmDeleteModal
+            handleAgree={handledelete(data.id)}
+            toggle={() => setOpenDeleteDialog(!openDeleteDialog)}
+          />
+        </ModalBody>
+      </Modal>
       <div className="row">
         <div className="col-10">
           <p>{data.chef_ouvrage}</p>
@@ -184,7 +183,7 @@ const AoModal = props => {
           </IconButton>
         </div>
         <div className="col-1">
-          <IconButton onClick={handledelete(data.id)}>
+          <IconButton onClick={() => setOpenDeleteDialog(!openDeleteDialog)}>
             <i className="material-icons">delete</i>
           </IconButton>
         </div>

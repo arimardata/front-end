@@ -5,16 +5,13 @@ import { Redirect } from "react-router-dom";
 import { DefaultLayout } from "./layouts";
 
 // Route Views
-import BlogOverview from "./views/BlogOverview";
-import UserProfileLite from "./views/UserProfileLite";
+import Statistiques from "./views/Statistiques";
 // import GestionDeCheques from "./views/Cheques";
 import Cheques from "./views/tables/Cheques";
 import ListerProjets from "./views/tables/ListerProjets";
 
 import Personnel from "./views/tables/Personnel";
 import Stock from "./views/tables/Stock";
-import Errors from "./views/Errors";
-import ComponentsOverview from "./views/ComponentsOverview";
 // import Tables from "./views/Tables";
 import AppelesOffres from "./views/AppelesOffres";
 import StepperProjects from "./views/projects/StepperProjects";
@@ -29,7 +26,7 @@ export default [
   {
     path: "/statistiques",
     layout: DefaultLayout,
-    component: BlogOverview
+    component: Statistiques
   },
 
   {
