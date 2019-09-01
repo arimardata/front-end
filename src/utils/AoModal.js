@@ -16,7 +16,8 @@ const downloadPdf = num_Ordre => async () => {
     responseType: "blob"
   };
   let response = await fetch(
-    "http://localhost:8090/api/files/PDF" + num_Ordre,
+    "https://cors-anywhere.herokuapp.com/http://51.77.157.16:8090/api/files/PDF" +
+      num_Ordre,
     options
   );
 
