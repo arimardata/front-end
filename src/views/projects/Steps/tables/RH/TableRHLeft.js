@@ -54,6 +54,14 @@ class TableRHLeft extends React.Component {
         }
       },
       {
+        name: "Nom",
+        label: "Nom",
+        options: {
+          filter: true,
+          sort: true
+        }
+      },
+      {
         name: "Diplome",
         label: "Diplome",
         options: {
@@ -61,7 +69,6 @@ class TableRHLeft extends React.Component {
           sort: true
         }
       },
-
       {
         name: "Qualité",
         label: "Qualité",

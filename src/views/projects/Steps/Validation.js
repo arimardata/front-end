@@ -26,7 +26,7 @@ class Validation extends React.Component {
       date_fin,
       activeStep,
       data,
-      personnelAffecter,
+      personnelConstructor,
       chefProjet
     } = this.props.state;
     const { classes, handleCreate, handleBack, steps } = this.props;
@@ -47,7 +47,7 @@ class Validation extends React.Component {
           <MaterielsPreview data={data} />
         </Row>
         <Row>
-          <PersonnelsPreview personnelAffecter={personnelAffecter} />
+          <PersonnelsPreview personnels={personnelConstructor} />
         </Row>
 
         <Row className={classes.instructions}>

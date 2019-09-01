@@ -12,8 +12,7 @@ import TableRow from "@material-ui/core/TableRow";
 import styles from "./styles";
 
 function PersonnelsPreview(props) {
-  const { classes, personnelAffecter } = props;
-
+  const { classes, personnels } = props;
   return (
     <div className={classes.rootTable}>
       <Toolbar className={classes.toolbar}>
@@ -25,18 +24,20 @@ function PersonnelsPreview(props) {
         <TableHead>
           <TableRow>
             <TableCell align="left">CIN</TableCell>
+            <TableCell align="left">Nom</TableCell>
             <TableCell align="left">Diplome</TableCell>
             <TableCell align="left">Qualité </TableCell>
             <TableCell align="left">Type</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {personnelAffecter.map(personnel => [
-            <TableRow key={personnel[0]}>
-              <TableCell align="left"> {personnel[1]}</TableCell>
-              <TableCell align="left">{personnel[2]}</TableCell>
-              <TableCell align="left">{personnel[3]}</TableCell>
-              <TableCell align="left">{personnel[4]}</TableCell>
+          {personnels.map(personnel => [
+            <TableRow key={personnel.personnelId}>
+              <TableCell align="left"> {personnel.cin}</TableCell>
+              <TableCell align="left"> {personnel.nom}</TableCell>
+              <TableCell align="left">{personnel.diplome}</TableCell>
+              <TableCell align="left">{personnel.qualite}</TableCell>
+              <TableCell align="left">{personnel.type}</TableCell>
             </TableRow>
           ])}
         </TableBody>

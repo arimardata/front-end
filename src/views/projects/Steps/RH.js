@@ -47,9 +47,9 @@ class RH extends React.Component {
       classes,
       handleClickForward,
       handleClickRewind,
-      handleComplete,
       handleBack,
-      steps
+      steps,
+      personnelsConstructor
     } = this.props;
 
     return (
@@ -92,7 +92,11 @@ class RH extends React.Component {
           >
             Précedent
           </Button>
-          <Button variant="contained" color="primary" onClick={handleComplete}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={personnelsConstructor}
+          >
             {activeStep === steps.length - 1 ? "Finir" : "Suivant"}
           </Button>
         </Row>

@@ -24,7 +24,7 @@ function DoneeDeBasePreview(props) {
       <Table className={classNames(classes.table, classes.hover)}>
         <TableHead>
           <TableRow>
-            <TableCell align="left">Projet</TableCell>
+            <TableCell align="left">Appel d'offre</TableCell>
             <TableCell align="left">Date debut</TableCell>
             <TableCell align="left">Date fin </TableCell>
             <TableCell align="left">Chef du projet </TableCell>
