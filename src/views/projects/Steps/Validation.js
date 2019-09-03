@@ -8,6 +8,8 @@ import ProjectStepsPreview from "./tables/ProjectStepsPreview";
 import PersonnelsPreview from "./tables/PersonnelsPreview";
 import MaterielsPreview from "./tables/MaterielsPreview";
 import DoneeDeBasePreview from "./tables/DoneeDeBasePreview";
+import ChargesFixesTablePreview from "./tables/ChargesFixesTablePreview";
+import CoutsPreview from "./tables/CoutsPreview";
 
 const styles = theme => ({
   root: {},
@@ -27,7 +29,8 @@ class Validation extends React.Component {
       activeStep,
       data,
       personnelConstructor,
-      chefProjet
+      chefProjet,
+      chargesFixes
     } = this.props.state;
     const { classes, handleCreate, handleBack, steps } = this.props;
     return (
@@ -48,6 +51,12 @@ class Validation extends React.Component {
         </Row>
         <Row>
           <PersonnelsPreview personnels={personnelConstructor} />
+        </Row>
+        <Row>
+          <ChargesFixesTablePreview chargesFixes={chargesFixes} />
+        </Row>
+        <Row>
+          <CoutsPreview chargesFixes={chargesFixes} />
         </Row>
 
         <Row className={classes.instructions}>

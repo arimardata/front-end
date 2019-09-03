@@ -15,6 +15,7 @@ import Base from "./Steps/Base";
 import Materiels from "./Steps/Materiels";
 import RH from "./Steps/RH";
 import Validation from "./Steps/Validation";
+import ChargesFixes from "./Steps/ChargesFixes";
 import { Store } from "../../flux";
 import fetchApi from "../../utils/fetchApi";
 
@@ -43,6 +44,7 @@ function getSteps() {
     "Données de base",
     "Matériels",
     "Ressources humains",
+    "Charges fixes",
     "Validation du projet"
   ];
 }
@@ -57,6 +59,7 @@ class StepperProjects extends React.Component {
     personnelSelect: [],
     quantite: 1,
     etapes: [{ id: 1, designation: "", duree: 0, responsable: "" }],
+    chargesFixes: [{ id: 1, note: "", montant: 0 }],
     date_debut: "2019-01-01",
     date_fin: "2019-12-31"
   };
@@ -103,6 +106,18 @@ class StepperProjects extends React.Component {
           />
         );
       case 3:
+        return (
+          <ChargesFixes
+            handleComplete={this.handleComplete}
+            handleBack={this.handleBack}
+            steps={steps}
+            state={this.state}
+            addRowCharges={this.addRowCharges}
+            deleteRowCharges={this.deleteRowCharges}
+            handleOnChangeStepsCharges={this.handleOnChangeStepsCharges}
+          />
+        );
+      case 4:
         return (
           <Validation
             handleCreate={this.handleCreate}
@@ -493,6 +508,17 @@ class StepperProjects extends React.Component {
     });
     this.setState({ etapes });
   };
+  handleOnChangeStepsCharges = id => e => {
+    const { name, value } = e.target;
+    const { chargesFixes } = this.state;
+    chargesFixes.map(chargesFixe => {
+      if (chargesFixe.id === id) {
+        chargesFixe[name] = value;
+      }
+      return true;
+    });
+    this.setState({ chargesFixes });
+  };
 
   addRow = () => {
     const size = this.state.etapes.length + 1;
@@ -510,6 +536,23 @@ class StepperProjects extends React.Component {
     let etapes = this.state.etapes;
     etapes.pop();
     this.setState({ etapes });
+  };
+  addRowCharges = () => {
+    const size = this.state.chargesFixes.length + 1;
+    let chargesFixes = this.state.chargesFixes;
+    chargesFixes.push({
+      id: size,
+      designation: "",
+      duree: 0,
+      responsable: ""
+    });
+    this.setState({ chargesFixes });
+  };
+
+  deleteRowCharges = () => {
+    let chargesFixes = this.state.chargesFixes;
+    chargesFixes.pop();
+    this.setState({ chargesFixes });
   };
 
   handleNext = () => {
