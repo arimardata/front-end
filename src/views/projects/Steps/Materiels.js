@@ -11,7 +11,10 @@ import {
   FormCheckbox,
   FormSelect
 } from "shards-react";
+
 import MenuItem from "@material-ui/core/MenuItem";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import ProjectSteps from "./tables/ProjectSteps";
@@ -20,6 +23,10 @@ import TableMaterielsRight from "./tables/materiels/TableMaterielsRight";
 import { Store } from "../../../flux";
 import { ArrowForward, ArrowBack } from "@material-ui/icons";
 import fetchApi from "../../../utils/fetchApi";
+import {
+  ValidatorForm,
+  SelectValidator
+} from "react-material-ui-form-validator";
 
 const styles = theme => ({
   root: {},
@@ -37,7 +44,14 @@ class Materiels extends React.Component {
   handleSubmit = () => {};
 
   render() {
-    const { quantite, materiels, data, activeStep } = this.props.state;
+    const {
+      quantite,
+      materiels,
+      data,
+      activeStep,
+      etapes,
+      etape
+    } = this.props.state;
     const {
       classes,
       handleClickForward,
@@ -47,9 +61,8 @@ class Materiels extends React.Component {
       handleBack,
       steps
     } = this.props;
-
     return (
-      <div>
+      <ValidatorForm ref="form" onError={errors => console.log(errors)}>
         <Row>
           <Col md="5" className="form-group">
             <TableMaterielsLeft materiels={materiels} />
@@ -66,6 +79,25 @@ class Materiels extends React.Component {
                   name="quantite"
                   value={quantite}
                 />
+              </Col>
+            </Row>
+            <Row className={classes.col}>
+              <Col>
+                <InputLabel htmlFor="age-simple">Etape</InputLabel>
+                <Select
+                  label="Etape"
+                  onChange={handleOnChange}
+                  style={{ width: "100%" }}
+                  name="etape"
+                  value={etape}
+                  validators={["required"]}
+                  errorMessages={["Ce champ est obligatoire : "]}
+                >
+                  {etapes &&
+                    etapes.map(etape => (
+                      <MenuItem value={etape.id}>{etape.id}</MenuItem>
+                    ))}
+                </Select>
               </Col>
             </Row>
             <Row className={classes.col}>
@@ -104,7 +136,7 @@ class Materiels extends React.Component {
             {activeStep === steps.length - 1 ? "Finir" : "Suivant"}
           </Button>
         </Row>
-      </div>
+      </ValidatorForm>
     );
   }
 }

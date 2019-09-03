@@ -61,7 +61,8 @@ class StepperProjects extends React.Component {
     etapes: [{ id: 1, designation: "", duree: 0, responsable: "" }],
     chargesFixes: [{ id: 1, note: "", montant: 0 }],
     date_debut: "2019-01-01",
-    date_fin: "2019-12-31"
+    date_fin: "2019-12-31",
+    etape: 1
   };
 
   totalSteps = () => getSteps().length;
@@ -103,6 +104,7 @@ class StepperProjects extends React.Component {
             handleClickForward={this.handleClickForwardRH}
             handleClickRewind={this.handleClickRewindRH}
             personnelsConstructor={this.personnelsConstructor}
+            handleOnChange={this.handleOnChange}
           />
         );
       case 3:
@@ -277,6 +279,7 @@ class StepperProjects extends React.Component {
       selectedRow[2] = this.state.quantite;
       const data = this.state.data;
       const materiels = this.state.materiels;
+      const etape = this.state.etape;
 
       //soustract the quantity added to the right table
       materiels.map(materiel => {
@@ -288,15 +291,18 @@ class StepperProjects extends React.Component {
       });
 
       // check if the materiel already exist in the right table
-      const materiel = data.filter(materiel => materiel[0] === selectedRow[0]);
+      const materiel = data.filter(
+        materiel => materiel[0] === selectedRow[0] && materiel[4] === etape
+      );
       if (materiel.length === 1) {
         data.map(materiel => {
-          if (materiel[0] === selectedRow[0]) {
+          if (materiel[0] === selectedRow[0] && materiel[4] === etape) {
             materiel[2] = parseInt(materiel[2]) + parseInt(selectedRow[2]);
           }
         });
       } else {
         //if not add the whole row
+        selectedRow[4] = etape;
         data.push(selectedRow);
       }
 
@@ -338,13 +344,14 @@ class StepperProjects extends React.Component {
     if (selectedRow.length > 0) {
       const personnelAffecter = this.state.personnelAffecter;
       const personnels = this.state.personnels;
+      const etape = this.state.etape;
 
       personnels.map((personnel, index) => {
         if (personnel[0] === selectedRow[0]) {
           personnels.splice(index, 1);
         }
       });
-
+      selectedRow[6] = etape;
       personnelAffecter.push(selectedRow);
 
       this.setState({ personnelAffecter });

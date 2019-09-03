@@ -121,7 +121,12 @@ class TableRHLeft extends React.Component {
         selectedRows.lookup = temp.lookup;
 
         const data = displayData[newSelectedIndex].data;
-        Store.setRHSelectedRow(data);
+        const newData = [];
+        data.map(el => {
+          newData.push(el);
+        });
+        newData.push(1);
+        Store.setRHSelectedRow(newData);
       }
     };
     return (

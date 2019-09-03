@@ -146,7 +146,7 @@ class Base extends React.Component {
           </Col>
           <Col md="1">
             <Button
-              disabled={etapes.length > 0 ? false : true}
+              disabled={etapes.length > 1 ? false : true}
               onClick={deleteRow}
             >
               Supprimer

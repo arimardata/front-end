@@ -77,6 +77,15 @@ class TableRHRight extends React.Component {
           filter: true,
           sort: true
         }
+      },
+      {
+        name: "Etape",
+        label: "Etape",
+        options: {
+          filter: true,
+          sort: true,
+          display: true
+        }
       }
     ];
     const options = {
@@ -113,7 +122,12 @@ class TableRHRight extends React.Component {
         selectedRows.lookup = temp.lookup;
 
         const data = displayData[newSelectedIndex].data;
-        Store.setRHSelectedRowRewind(data);
+        const newData = [];
+        data.map(el => {
+          newData.push(el);
+        });
+        newData.pop();
+        Store.setRHSelectedRowRewind(newData);
       }
     };
     return (

@@ -60,6 +60,15 @@ class TableMaterielsRight extends React.Component {
           filter: true,
           sort: true
         }
+      },
+      {
+        name: "Etape",
+        label: "Etape",
+        options: {
+          filter: true,
+          sort: true,
+          display: true
+        }
       }
     ];
     const options = {
@@ -96,7 +105,12 @@ class TableMaterielsRight extends React.Component {
         selectedRows.lookup = temp.lookup;
 
         const data = displayData[newSelectedIndex].data;
-        Store.setMaterielSelectedRowRewind(data);
+        const newData = [];
+        data.map(el => {
+          newData.push(el);
+        });
+        newData.pop();
+        Store.setMaterielSelectedRowRewind(newData);
       }
     };
     return (

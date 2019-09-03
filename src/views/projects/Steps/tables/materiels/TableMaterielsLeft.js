@@ -104,7 +104,12 @@ class TableMaterielsLeft extends React.Component {
         selectedRows.lookup = temp.lookup;
 
         const data = displayData[newSelectedIndex].data;
-        Store.setMaterielSelectedRow(data);
+        const newData = [];
+        data.map(el => {
+          newData.push(el);
+        });
+        newData.push(1);
+        Store.setMaterielSelectedRow(newData);
       }
     };
     return (

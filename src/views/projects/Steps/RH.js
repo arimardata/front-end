@@ -11,7 +11,11 @@ import {
   FormCheckbox,
   FormSelect
 } from "shards-react";
+
 import MenuItem from "@material-ui/core/MenuItem";
+import InputLabel from "@material-ui/core/InputLabel";
+
+import Select from "@material-ui/core/Select";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import ProjectSteps from "./tables/ProjectSteps";
@@ -41,7 +45,8 @@ class RH extends React.Component {
       personnels,
       personnelAffecter,
       etapes,
-      activeStep
+      activeStep,
+      etape
     } = this.props.state;
     const {
       classes,
@@ -49,7 +54,8 @@ class RH extends React.Component {
       handleClickRewind,
       handleBack,
       steps,
-      personnelsConstructor
+      personnelsConstructor,
+      handleOnChange
     } = this.props;
 
     return (
@@ -59,7 +65,24 @@ class RH extends React.Component {
             <TableRHLeft etapes={etapes} personnels={personnels} />
           </Col>
           <Col md="2" className="form-group">
-            <Row className={classes.col} />
+            <Row className={classes.col}>
+              <Col>
+                <InputLabel htmlFor="age-simple">Etape</InputLabel>
+                <Select
+                  onChange={handleOnChange}
+                  style={{ width: "100%" }}
+                  name="etape"
+                  value={etape}
+                  validators={["required"]}
+                  errorMessages={["Ce champ est obligatoire : "]}
+                >
+                  {etapes &&
+                    etapes.map(etape => (
+                      <MenuItem value={etape.id}>{etape.id}</MenuItem>
+                    ))}
+                </Select>
+              </Col>
+            </Row>
             <Row className={classes.col}>
               <Col md="4" />
               <Col md="4">
