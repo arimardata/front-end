@@ -28,18 +28,23 @@ function PersonnelsPreview(props) {
             <TableCell align="left">Diplome</TableCell>
             <TableCell align="left">Qualité </TableCell>
             <TableCell align="left">Type</TableCell>
+
+            <TableCell align="left">Etape</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {personnels.map(personnel => [
-            <TableRow key={personnel.personnelId}>
-              <TableCell align="left"> {personnel.cin}</TableCell>
-              <TableCell align="left"> {personnel.nom}</TableCell>
-              <TableCell align="left">{personnel.diplome}</TableCell>
-              <TableCell align="left">{personnel.qualite}</TableCell>
-              <TableCell align="left">{personnel.type}</TableCell>
-            </TableRow>
-          ])}
+          {personnels &&
+            personnels.map(personnel => [
+              <TableRow key={personnel.personnelId}>
+                <TableCell align="left"> {personnel.cin}</TableCell>
+                <TableCell align="left"> {personnel.nom}</TableCell>
+                <TableCell align="left">{personnel.diplome}</TableCell>
+                <TableCell align="left">{personnel.qualite}</TableCell>
+                <TableCell align="left">{personnel.type}</TableCell>
+
+                <TableCell align="left">{personnel.etape}</TableCell>
+              </TableRow>
+            ])}
         </TableBody>
       </Table>
     </div>

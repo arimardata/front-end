@@ -57,8 +57,20 @@ class StepperProjects extends React.Component {
     aos: [],
     personnelAffecter: [],
     personnelSelect: [],
+    tousmateriels: [],
     quantite: 1,
-    etapes: [{ id: 1, designation: "", duree: 0, responsable: "" }],
+    etapes: [
+      {
+        id: 1,
+        designation: "",
+        duree: 0,
+        responsable: "",
+        coutConsomable: 0,
+        coutNonConsomable: 0,
+        coutPermanent: 0,
+        coutSaisonier: 0
+      }
+    ],
     chargesFixes: [{ id: 1, note: "", montant: 0 }],
     date_debut: "2019-01-01",
     date_fin: "2019-12-31",
@@ -103,19 +115,18 @@ class StepperProjects extends React.Component {
             state={this.state}
             handleClickForward={this.handleClickForwardRH}
             handleClickRewind={this.handleClickRewindRH}
-            personnelsConstructor={this.personnelsConstructor}
             handleOnChange={this.handleOnChange}
           />
         );
       case 3:
         return (
           <ChargesFixes
-            handleComplete={this.handleComplete}
             handleBack={this.handleBack}
             steps={steps}
             state={this.state}
             addRowCharges={this.addRowCharges}
             deleteRowCharges={this.deleteRowCharges}
+            personnelsConstructor={this.validate}
             handleOnChangeStepsCharges={this.handleOnChangeStepsCharges}
           />
         );
@@ -153,7 +164,7 @@ class StepperProjects extends React.Component {
     return name;
   };
 
-  affecterPersonnelFromSteps = id => {
+  affecterPersonnelFromSteps = (id, etape) => {
     const personnels = this.state.touspersonnels;
     let Personnel = {};
     personnels.map(personnel => {
@@ -164,7 +175,8 @@ class StepperProjects extends React.Component {
           nom: this.getNameFromId(id),
           diplome: personnel[3],
           qualite: personnel[4],
-          type: personnel[5]
+          type: personnel[5],
+          etape: etape
         };
       }
       return true;
@@ -172,23 +184,28 @@ class StepperProjects extends React.Component {
     return Personnel;
   };
 
-  personnelsConstructor = () => {
+  validate = () => {
     const chefDuProjet = this.getResponsableId(this.state.chefProjet);
     const personnels = [];
+
     //chef du projet
-    personnels.push(this.affecterPersonnelFromSteps(chefDuProjet));
+    personnels.push(this.affecterPersonnelFromSteps(chefDuProjet, 1));
 
     const steps = this.state.etapes;
 
     let dejaexist = [];
     steps.map(step => {
       dejaexist = personnels.filter(p => {
-        return p.personnelId === this.getResponsableId(step.responsable);
+        return (
+          p.personnelId === this.getResponsableId(step.responsable) &&
+          p.etape === step.id
+        );
       });
       if (dejaexist.length === 0) {
         personnels.push(
           this.affecterPersonnelFromSteps(
-            this.getResponsableId(step.responsable)
+            this.getResponsableId(step.responsable),
+            step.id
           )
         );
       }
@@ -198,7 +215,7 @@ class StepperProjects extends React.Component {
 
     personnelAffecter.map(personnel => {
       dejaexist = personnels.filter(p => {
-        return p.personnelId === personnel[0];
+        return p.personnelId === personnel[0] && p.etape === personnel[6];
       });
       if (dejaexist.length === 0) {
         personnels.push({
@@ -207,14 +224,109 @@ class StepperProjects extends React.Component {
           nom: this.getNameFromId(personnel[0]),
           diplome: personnel[3],
           qualite: personnel[4],
-          type: personnel[5]
+          type: personnel[5],
+          etape: personnel[6]
         });
       }
     });
-    this.handleComplete();
+
     this.setState({ personnelConstructor: personnels });
+
+    this.handleCout();
+
+    this.handleComplete();
   };
 
+  handleCout = () => {
+    const etapes = this.state.etapes;
+    const materielsAffecter = this.state.data;
+    const personnelAffecter = this.state.personnelConstructor;
+
+    etapes.map(etape => {
+      let coutConsomable = 0;
+      let coutNonConsomable = 0;
+      let coutPermanent = 0;
+      let coutSaisonier = 0;
+
+      // materiels
+      materielsAffecter.map(materiel => {
+        let quantite = parseInt(materiel[2]);
+        if (materiel[4] === etape.id) {
+          if (materiel[3] === "Consomable") {
+            coutConsomable +=
+              this.getPrixUniteConsomable(materiel[0]) * quantite;
+          } else if (materiel[3] === "Non consomable") {
+            coutNonConsomable +=
+              this.getPrixUniteNonConsomable(materiel[0]) *
+              quantite *
+              8 *
+              6 *
+              parseInt(etape.duree); // 8 heures par semains et 6 jours par semains
+          }
+        }
+      });
+      etape.coutConsomable = coutConsomable;
+      etape.coutNonConsomable = coutNonConsomable;
+
+      // personnels
+      personnelAffecter.map(personnel => {
+        if (personnel.etape === etape.id) {
+          if (personnel.type === "Permanent") {
+            coutPermanent +=
+              (parseInt(etape.duree) *
+                this.getSalairePermanent(personnel.personnelId)) /
+              4;
+          } else if (personnel.type === "Saisonier") {
+            coutSaisonier +=
+              parseInt(etape.duree) *
+              this.getCoutParJourSaisonier(personnel.personnelId) *
+              7;
+          }
+        }
+      });
+      etape.coutPermanent = coutPermanent;
+      etape.coutSaisonier = coutSaisonier;
+    });
+    console.log(etapes);
+    this.setState({ etapes });
+  };
+
+  getPrixUniteConsomable = id => {
+    const consomables = this.state.tousmateriels.consomable;
+    let prix_unite;
+    consomables.map(consomable => {
+      if (consomable.id === id) prix_unite = consomable.prix_unite;
+    });
+    return parseInt(prix_unite);
+  };
+
+  getPrixUniteNonConsomable = id => {
+    const nonconsomables = this.state.tousmateriels.nonconsomable;
+    let cout_par_heure;
+    nonconsomables.map(nonconsomable => {
+      if (nonconsomable.id === id)
+        cout_par_heure = nonconsomable.cout_par_heure;
+    });
+    return parseInt(cout_par_heure);
+  };
+
+  getSalairePermanent = id => {
+    const permanents = this.state.lespersonnels.permanents;
+    let salaire;
+    permanents.map(permanent => {
+      if (permanent.id === id) salaire = permanent.salaire;
+    });
+    return parseInt(salaire);
+  };
+
+  getCoutParJourSaisonier = id => {
+    const saisoniers = this.state.lespersonnels.saisoniers;
+    let coutParJour;
+    saisoniers.map(saisonier => {
+      if (saisonier.id === id) coutParJour = saisonier.coutParJour;
+    });
+    return parseInt(coutParJour);
+  };
   handleCreate = () => {
     const numAo = this.state.projet;
     const chefDuProjet = this.getResponsableId(this.state.chefProjet);
@@ -401,7 +513,13 @@ class StepperProjects extends React.Component {
         "Non consomable"
       ])
     );
-    this.setState({ materiels: [...consomables, ...nonconsomables] });
+    this.setState({
+      materiels: [...consomables, ...nonconsomables],
+      tousmateriels: {
+        consomable: [...consomable],
+        nonconsomable: [...nonconsomable]
+      }
+    });
   };
 
   fetchPersonnels = async () => {
@@ -480,7 +598,11 @@ class StepperProjects extends React.Component {
         ...administratifSelect,
         ...permanentSelect,
         ...saisonierSelect
-      ]
+      ],
+      lespersonnels: {
+        permanents: [...permanent],
+        saisoniers: [...saisonier]
+      }
     });
   };
 

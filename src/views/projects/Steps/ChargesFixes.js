@@ -46,7 +46,7 @@ class ChargesFixes extends React.Component {
       deleteRowCharges,
       handleOnChangeStepsCharges,
       handleOnChange,
-      handleComplete,
+      personnelsConstructor,
       handleBack,
       steps
     } = this.props;
@@ -55,7 +55,7 @@ class ChargesFixes extends React.Component {
     return (
       <ValidatorForm
         ref="form"
-        onSubmit={handleComplete}
+        onSubmit={personnelsConstructor}
         onError={errors => console.log(errors)}
       >
         <Row>
