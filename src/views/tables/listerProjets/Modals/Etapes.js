@@ -9,14 +9,20 @@ export default class Etapes extends React.Component {
   componentWillReceiveProps() {
     const { value, getNomPrenom } = this.props;
     const etapes = [];
-    value.map(etape => {
-      etapes.push([
-        etape.etape,
-        etape.designation,
-        etape.duree,
-        getNomPrenom(etape.responsable)
-      ]);
-    });
+    if (value) {
+      value.map(etape => {
+        etapes.push([
+          etape.etape,
+          etape.designation,
+          etape.duree,
+          getNomPrenom(etape.responsable),
+          etape.coutConsomable,
+          etape.coutNonConsomable,
+          etape.coutPermanent,
+          etape.coutSaisonier
+        ]);
+      });
+    }
     this.setState({ etapes });
   }
   render() {
@@ -90,6 +96,38 @@ export default class Etapes extends React.Component {
       {
         name: "Responsable",
         label: "Responsable",
+        options: {
+          filter: true,
+          sort: true
+        }
+      },
+      {
+        name: "Cout consomable (DH)",
+        label: "Cout consomable (DH)",
+        options: {
+          filter: true,
+          sort: true
+        }
+      },
+      {
+        name: "Cout non consomable (DH)",
+        label: "Cout non consomable (DH)",
+        options: {
+          filter: true,
+          sort: true
+        }
+      },
+      {
+        name: "Cout permanent (DH)",
+        label: "Cout permanent (DH)",
+        options: {
+          filter: true,
+          sort: true
+        }
+      },
+      {
+        name: "Cout saisonier (DH)",
+        label: "Cout saisonier (DH)",
         options: {
           filter: true,
           sort: true

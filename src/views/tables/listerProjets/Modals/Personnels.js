@@ -9,15 +9,18 @@ export default class Personnels extends React.Component {
   componentWillReceiveProps() {
     const { value, getNomPrenom } = this.props;
     const personnels = [];
-    value.map(personnel => {
-      personnels.push([
-        personnel.cin,
-        getNomPrenom(personnel.personnelId),
-        personnel.diplome,
-        personnel.qualite,
-        personnel.type
-      ]);
-    });
+    if (value) {
+      value.map(personnel => {
+        personnels.push([
+          personnel.cin,
+          getNomPrenom(personnel.personnelId),
+          personnel.diplome,
+          personnel.qualite,
+          personnel.type,
+          personnel.etape
+        ]);
+      });
+    }
     this.setState({ personnels });
   }
   render() {
@@ -99,6 +102,14 @@ export default class Personnels extends React.Component {
       {
         name: "Type",
         label: "Type",
+        options: {
+          filter: true,
+          sort: true
+        }
+      },
+      {
+        name: "Etape",
+        label: "Etape",
         options: {
           filter: true,
           sort: true

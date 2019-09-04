@@ -9,9 +9,16 @@ export default class Materiels extends React.Component {
   componentWillReceiveProps() {
     const { value } = this.props;
     const materiels = [];
-    value.map(materiel => {
-      materiels.push([materiel.materiel, materiel.quantite, materiel.type]);
-    });
+    if (value) {
+      value.map(materiel => {
+        materiels.push([
+          materiel.materiel,
+          materiel.quantite,
+          materiel.type,
+          materiel.etape
+        ]);
+      });
+    }
     this.setState({ materiels });
   }
   render() {
@@ -77,6 +84,14 @@ export default class Materiels extends React.Component {
       {
         name: "Type",
         label: "Type",
+        options: {
+          filter: true,
+          sort: true
+        }
+      },
+      {
+        name: "Etape",
+        label: "Etape",
         options: {
           filter: true,
           sort: true

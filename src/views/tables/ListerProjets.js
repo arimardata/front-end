@@ -52,7 +52,8 @@ class ListerProjets extends React.Component {
         elmnt.dateFin,
         elmnt.etapes,
         elmnt.materiels,
-        elmnt.personnels
+        elmnt.personnels,
+        elmnt.charges
       ])
     );
     this.setState({ projets });

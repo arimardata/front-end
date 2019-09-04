@@ -11,6 +11,8 @@ import DoneeDeBasePreview from "./tables/DoneeDeBasePreview";
 import ChargesFixesTablePreview from "./tables/ChargesFixesTablePreview";
 import CoutsPreview from "./tables/CoutsPreview";
 
+import CircularProgress from "@material-ui/core/CircularProgress";
+
 const styles = theme => ({
   root: {},
   instructions: {
@@ -31,7 +33,8 @@ class Validation extends React.Component {
       personnelConstructor,
       chefProjet,
       charges,
-      chargesFixes
+      chargesFixes,
+      loading
     } = this.props.state;
     const { classes, handleCreate, handleBack, steps } = this.props;
     return (
@@ -64,11 +67,20 @@ class Validation extends React.Component {
           <Button
             disabled={activeStep === 0}
             onClick={handleBack}
+            disabled={loading}
             // className={classes.backButton}
           >
             Précedent
           </Button>
-          <Button variant="contained" color="primary" onClick={handleCreate}>
+          <Button
+            variant="contained"
+            disabled={loading}
+            color="primary"
+            onClick={handleCreate}
+          >
+            {loading && (
+              <CircularProgress size={24} className={classes.buttonProgress} />
+            )}{" "}
             {activeStep === steps.length - 1 ? "Finir" : "Suivant"}
           </Button>
         </Row>

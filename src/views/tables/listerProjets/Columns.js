@@ -23,6 +23,7 @@ import fetchApi from "../../../utils/fetchApi";
 import Etapes from "./Modals/Etapes";
 import Personnels from "./Modals/Personnels";
 import Materiels from "./Modals/Materiels";
+import Charges from "./Modals/Charges";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -86,6 +87,9 @@ class More extends React.Component {
         break;
       case "Personnels":
         modal = <Personnels getNomPrenom={this.getNomPrenom} value={value} />;
+        break;
+      case "Charges":
+        modal = <Charges value={value} />;
         break;
     }
 
@@ -231,6 +235,17 @@ export default [
       filter: false,
       customBodyRender: value => (
         <MoreWithStyles modal={"Personnels"} value={value} />
+      )
+    }
+  },
+
+  {
+    name: "Charges",
+    label: "Charges",
+    options: {
+      filter: false,
+      customBodyRender: value => (
+        <MoreWithStyles modal={"Charges"} value={value} />
       )
     }
   }

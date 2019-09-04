@@ -74,7 +74,8 @@ class StepperProjects extends React.Component {
     chargesFixes: [{ id: 1, note: "", montant: 0 }],
     date_debut: "2019-01-01",
     date_fin: "2019-12-31",
-    etape: 1
+    etape: 1,
+    loading: false
   };
 
   totalSteps = () => getSteps().length;
@@ -355,12 +356,17 @@ class StepperProjects extends React.Component {
     return parseInt(coutParJour);
   };
   handleCreate = () => {
+    this.setState({ loading: true });
     const numAo = this.state.projet;
     const chefDuProjet = this.getResponsableId(this.state.chefProjet);
     const dateDebut = this.state.date_debut;
     const dateFin = this.state.date_fin;
     const steps = this.state.etapes;
+    const charges = this.state.charges;
+    const chargesfixes = this.state.chargesFixes;
+
     let etapes = [];
+    let chargesFixes = [];
 
     let i = 1;
 
@@ -369,10 +375,22 @@ class StepperProjects extends React.Component {
         etape: i,
         designation: step.designation,
         duree: step.duree,
-        responsable: this.getResponsableId(step.responsable)
+        responsable: this.getResponsableId(step.responsable),
+        coutConsomable: step.coutConsomable,
+        coutNonConsomable: step.coutNonConsomable,
+        coutPermanent: step.coutPermanent,
+        coutSaisonier: step.coutSaisonier
       });
 
       i++;
+    });
+
+    chargesfixes.map(chargefixe => {
+      chargesFixes.push({
+        num: chargefixe.id,
+        note: chargefixe.note,
+        montant: chargefixe.montant
+      });
     });
 
     const materielAffecter = this.state.data;
@@ -383,7 +401,8 @@ class StepperProjects extends React.Component {
         materielId: materiel[0],
         materiel: materiel[1],
         quantite: materiel[2],
-        type: materiel[3]
+        type: materiel[3],
+        etape: materiel[4]
       });
     });
 
@@ -395,9 +414,10 @@ class StepperProjects extends React.Component {
       dateFin,
       etapes,
       personnels,
-      materiels
+      materiels,
+      chargesFixes,
+      charges
     };
-
     fetchApi({
       url: `/api/projets/ajouter`,
       body: data,
@@ -406,6 +426,7 @@ class StepperProjects extends React.Component {
     })
       .then(data => {
         this.handleComplete();
+        this.setState({ loading: false });
       })
       .catch(err => {
         this.setState({ error: "Erreur de connexion" });

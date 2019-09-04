@@ -36,6 +36,6 @@ export default {
   responsive: "stacked",
   print: false,
   download: false,
-  selectableRows: false,
+  // selectableRows: false,
   filter: false
 };
