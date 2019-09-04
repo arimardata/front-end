@@ -33,7 +33,7 @@ function ChargesFixesTable(props) {
           <TableRow>
             <TableCell align="left">#</TableCell>
             <TableCell align="left">Note</TableCell>
-            <TableCell align="left">Montant</TableCell>
+            <TableCell align="left">Montant (DH)</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

@@ -30,6 +30,7 @@ class Validation extends React.Component {
       data,
       personnelConstructor,
       chefProjet,
+      charges,
       chargesFixes
     } = this.props.state;
     const { classes, handleCreate, handleBack, steps } = this.props;
@@ -56,7 +57,7 @@ class Validation extends React.Component {
           <ChargesFixesTablePreview chargesFixes={chargesFixes} />
         </Row>
         <Row>
-          <CoutsPreview chargesFixes={chargesFixes} />
+          <CoutsPreview charges={charges} />
         </Row>
 
         <Row className={classes.instructions}>

@@ -233,8 +233,36 @@ class StepperProjects extends React.Component {
     this.setState({ personnelConstructor: personnels });
 
     this.handleCout();
+    this.calculateCharges();
 
     this.handleComplete();
+  };
+
+  calculateCharges = () => {
+    const { chargesFixes, etapes } = this.state;
+    let chargefixe = 0;
+    let chargepermanent = 0;
+    let chargesaisonier = 0;
+    let chargeconsomable = 0;
+    let chargenonconsomable = 0;
+    chargesFixes.map(chargeFixe => {
+      chargefixe += parseInt(chargeFixe.montant);
+    });
+    etapes.map(etape => {
+      chargepermanent += parseInt(etape.coutPermanent);
+      chargesaisonier += parseInt(etape.coutSaisonier);
+      chargeconsomable += parseInt(etape.coutConsomable);
+      chargenonconsomable += parseInt(etape.coutNonConsomable);
+    });
+
+    const charges = {
+      chargepermanent,
+      chargesaisonier,
+      chargeconsomable,
+      chargenonconsomable,
+      chargefixe
+    };
+    this.setState({ charges });
   };
 
   handleCout = () => {
@@ -287,7 +315,6 @@ class StepperProjects extends React.Component {
       etape.coutPermanent = coutPermanent;
       etape.coutSaisonier = coutSaisonier;
     });
-    console.log(etapes);
     this.setState({ etapes });
   };
 

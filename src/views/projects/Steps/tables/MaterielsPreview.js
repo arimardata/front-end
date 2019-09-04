@@ -27,6 +27,7 @@ function MaterielsPreview(props) {
             <TableCell align="left">Materiel</TableCell>
             <TableCell align="left">Quantite</TableCell>
             <TableCell align="left">Type </TableCell>
+            <TableCell align="left">Etape </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -35,6 +36,7 @@ function MaterielsPreview(props) {
               <TableCell>{materiel[1]}</TableCell>
               <TableCell align="left"> {materiel[2]}</TableCell>
               <TableCell align="left">{materiel[3]}</TableCell>
+              <TableCell align="left">{materiel[4]}</TableCell>
             </TableRow>
           ])}
         </TableBody>

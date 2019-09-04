@@ -26,15 +26,22 @@ function ChargesFixesTablePreview(props) {
           <TableRow>
             <TableCell align="left">#</TableCell>
             <TableCell align="left">Note</TableCell>
-            <TableCell align="left">Montant</TableCell>
+            <TableCell align="left">Montant (DH)</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {chargesFixes.map(chargesFixe => [
             <TableRow key={chargesFixe.id}>
               <TableCell>{chargesFixe.id}</TableCell>
-              <TableCell align="left"> {chargesFixe.note}</TableCell>
-              <TableCell align="left">{chargesFixe.montant}</TableCell>
+              <TableCell align="left">
+                {" "}
+                {chargesFixe.note}
+                {" DH"}
+              </TableCell>
+              <TableCell align="left">
+                {chargesFixe.montant}
+                {" DH"}
+              </TableCell>
             </TableRow>
           ])}
         </TableBody>

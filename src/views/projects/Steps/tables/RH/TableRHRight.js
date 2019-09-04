@@ -106,7 +106,7 @@ class TableRHRight extends React.Component {
       },
       download: false,
       filter: false,
-      viewColumns: false,
+      // viewColumns: false,
       print: false,
       responsive: "scroll",
 

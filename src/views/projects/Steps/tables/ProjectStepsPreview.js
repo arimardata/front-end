@@ -28,8 +28,8 @@ function ProjectStepsPreview(props) {
             <TableCell align="left">Designation</TableCell>
             <TableCell align="left">Durée (semaines)</TableCell>
             <TableCell align="left">Responsable</TableCell>
-            <TableCell align="left">Cout materiels</TableCell>
-            <TableCell align="left">Cout personnels</TableCell>
+            <TableCell align="left">Cout materiels (DH)</TableCell>
+            <TableCell align="left">Cout personnels (DH)</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -41,9 +41,11 @@ function ProjectStepsPreview(props) {
               <TableCell align="left">{etape.responsable}</TableCell>
               <TableCell align="left">
                 {etape.coutConsomable + etape.coutNonConsomable}
+                {" DH"}
               </TableCell>
               <TableCell align="left">
                 {etape.coutPermanent + etape.coutSaisonier}
+                {" DH"}
               </TableCell>
             </TableRow>
           ])}
