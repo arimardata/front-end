@@ -1,4 +1,5 @@
 import React from "react";
+import CustomToolbarSelect from "./CustomToolbarSelect";
 export default {
   textLabels: {
     body: {
@@ -37,5 +38,12 @@ export default {
   print: false,
   download: false,
   // selectableRows: false,
-  filter: false
+  filter: false,
+  customToolbarSelect: (selectedRows, displayData, setSelectedRows) => (
+    <CustomToolbarSelect
+      selectedRows={selectedRows}
+      displayData={displayData}
+      setSelectedRows={setSelectedRows}
+    />
+  )
 };
