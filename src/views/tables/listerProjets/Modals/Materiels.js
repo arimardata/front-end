@@ -102,7 +102,7 @@ export default class Materiels extends React.Component {
       <div>
         <MUIDataTable
           key={Math.random()}
-          title={""}
+          title={"Materiels"}
           data={this.state.materiels}
           columns={columns}
           options={options}

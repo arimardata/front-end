@@ -138,7 +138,7 @@ export default class Etapes extends React.Component {
       <div>
         <MUIDataTable
           key={Math.random()}
-          title={""}
+          title={"Les étapes"}
           data={this.state.etapes}
           columns={columns}
           options={options}

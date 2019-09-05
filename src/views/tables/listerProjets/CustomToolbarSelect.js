@@ -10,7 +10,7 @@ import UpdateMaterielModal from "../../../utils/UpdateMaterielModal";
 import ConfirmDeleteModal from "../../../utils/ConfirmDeleteModal";
 
 import { Modal, ModalBody } from "shards-react";
-
+import StepperProjects from "../../editproject/StepperProjects";
 import { withStyles } from "@material-ui/core/styles";
 import {
   Dialog,
@@ -31,7 +31,7 @@ import {
 
 import CloseIcon from "@material-ui/icons/Close";
 
-import { Info } from "@material-ui/icons";
+import { Info, Edit } from "@material-ui/icons";
 
 import Informations from "./Modals/Informations";
 
@@ -78,8 +78,8 @@ class CustomToolbarSelect extends React.Component {
     this.props.setSelectedRows(nextSelectedRows);
   };
 
-  handleOpen = () => {
-    this.setState({ openInformations: true });
+  handleOpen = name => () => {
+    this.setState({ openInformations: true, modal: name });
   };
 
   handleClose = () => {
@@ -142,14 +142,23 @@ class CustomToolbarSelect extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { openInformations, fullScreen } = this.state;
-    let info;
+    const { openInformations, fullScreen, modal } = this.state;
+    let info, edit;
 
     if (this.props.selectedRows.data.length == 1)
       info = (
         <Tooltip title={"Projet informations"}>
-          <IconButton onClick={this.handleOpen}>
+          <IconButton onClick={this.handleOpen("Informations")}>
             <Info />
+          </IconButton>
+        </Tooltip>
+      );
+
+    if (this.props.selectedRows.data.length == 1)
+      edit = (
+        <Tooltip title={"Modifier projet"}>
+          <IconButton onClick={this.handleOpen("Edit projet")}>
+            <Edit />
           </IconButton>
         </Tooltip>
       );
@@ -157,12 +166,13 @@ class CustomToolbarSelect extends React.Component {
     return (
       <div className={classes.iconContainer}>
         <React.Fragment>
-          <Tooltip title={"Tous supprimer"}>
+          {/* <Tooltip title={"Tous supprimer"}>
             <IconButton onClick={this.toggleDeleteDialog}>
               <DeleteIcon />
             </IconButton>
-          </Tooltip>
+          </Tooltip> */}
           {info}
+          {edit}
           <Modal
             open={this.state.openDeleteDialog}
             className={classes.deleteDialogTop}
@@ -226,7 +236,12 @@ class CustomToolbarSelect extends React.Component {
             </DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
-                <Informations data={this.props.displayData[0]} />
+                {modal === "Informations" && (
+                  <Informations data={this.props.displayData[0]} />
+                )}
+                {modal === "Edit projet" && (
+                  <StepperProjects id={this.props.displayData[0].data[0]} />
+                )}
               </DialogContentText>
             </DialogContent>
             <DialogActions>

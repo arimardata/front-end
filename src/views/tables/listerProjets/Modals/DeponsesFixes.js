@@ -92,7 +92,7 @@ export default class DeponsesFixes extends React.Component {
       <div>
         <MUIDataTable
           key={Math.random()}
-          title={""}
+          title={"Déponses fixes"}
           data={this.state.chargesfixes}
           columns={columns}
           options={options}

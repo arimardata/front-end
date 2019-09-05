@@ -120,7 +120,7 @@ export default class Personnels extends React.Component {
       <div>
         <MUIDataTable
           key={Math.random()}
-          title={""}
+          title={"Personnels"}
           data={this.state.personnels}
           columns={columns}
           options={options}
