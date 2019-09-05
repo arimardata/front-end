@@ -24,6 +24,7 @@ import Etapes from "./Modals/Etapes";
 import Personnels from "./Modals/Personnels";
 import Materiels from "./Modals/Materiels";
 import Charges from "./Modals/Charges";
+import DeponsesFixes from "./Modals/DeponsesFixes";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -87,6 +88,9 @@ class More extends React.Component {
         break;
       case "Personnels":
         modal = <Personnels getNomPrenom={this.getNomPrenom} value={value} />;
+        break;
+      case "Deponses fixes":
+        modal = <DeponsesFixes value={value} />;
         break;
       case "Charges":
         modal = <Charges value={value} />;
@@ -235,6 +239,16 @@ export default [
       filter: false,
       customBodyRender: value => (
         <MoreWithStyles modal={"Personnels"} value={value} />
+      )
+    }
+  },
+  {
+    name: "Deponses fixes",
+    label: "Deponses fixes",
+    options: {
+      filter: false,
+      customBodyRender: value => (
+        <MoreWithStyles modal={"Deponses fixes"} value={value} />
       )
     }
   },

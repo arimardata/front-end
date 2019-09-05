@@ -53,6 +53,7 @@ class ListerProjets extends React.Component {
         elmnt.etapes,
         elmnt.materiels,
         elmnt.personnels,
+        elmnt.chargesFixes,
         elmnt.charges
       ])
     );

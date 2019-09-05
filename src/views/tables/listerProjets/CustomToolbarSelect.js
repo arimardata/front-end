@@ -79,7 +79,6 @@ class CustomToolbarSelect extends React.Component {
   };
 
   handleOpen = () => {
-    console.log(this.props);
     this.setState({ openInformations: true });
   };
 
@@ -227,7 +226,7 @@ class CustomToolbarSelect extends React.Component {
             </DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
-                <Informations />
+                <Informations data={this.props.displayData[0]} />
               </DialogContentText>
             </DialogContent>
             <DialogActions>
