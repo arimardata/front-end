@@ -116,6 +116,7 @@ class TableMaterielsRight extends React.Component {
     return (
       <MUIDataTable
         data={this.state.data}
+        title={"Matériels affectés"}
         columns={columns}
         options={options}
       />

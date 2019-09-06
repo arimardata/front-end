@@ -394,9 +394,11 @@ const Statistiques = ({ smallStatsPersonnels }) => {
     );
   } else {
     return (
-      <center>
-        <CircularProgress disableShrink />
-      </center>
+      <div style={{ height: "100%" }}>
+        <center style={{ marginTop: 100, marginBottom: 100 }}>
+          <CircularProgress disableShrink />
+        </center>
+      </div>
     );
   }
 };

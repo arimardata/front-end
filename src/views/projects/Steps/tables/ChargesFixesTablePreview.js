@@ -33,11 +33,7 @@ function ChargesFixesTablePreview(props) {
           {chargesFixes.map(chargesFixe => [
             <TableRow key={chargesFixe.id}>
               <TableCell>{chargesFixe.id}</TableCell>
-              <TableCell align="left">
-                {" "}
-                {chargesFixe.note}
-                {" DH"}
-              </TableCell>
+              <TableCell align="left"> {chargesFixe.note}</TableCell>
               <TableCell align="left">
                 {chargesFixe.montant}
                 {" DH"}

@@ -30,6 +30,8 @@ function ProjectStepsPreview(props) {
             <TableCell align="left">Responsable</TableCell>
             <TableCell align="left">Cout materiels (DH)</TableCell>
             <TableCell align="left">Cout personnels (DH)</TableCell>
+
+            <TableCell align="left">Complete</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -46,6 +48,9 @@ function ProjectStepsPreview(props) {
               <TableCell align="left">
                 {etape.coutPermanent + etape.coutSaisonier}
                 {" DH"}
+              </TableCell>
+              <TableCell align="left">
+                {etape.done ? "Complete" : "En cours"}
               </TableCell>
             </TableRow>
           ])}

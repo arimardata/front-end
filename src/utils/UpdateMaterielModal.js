@@ -87,7 +87,8 @@ class UpdateMaterielModal extends React.Component {
   };
 
   componentWillMount() {
-    switch (Store.getTypeStock()) {
+    const { typeStock } = this.props;
+    switch (typeStock) {
       case "Consomable":
         this.setState({
           materiel: this.props.data[1],
@@ -117,6 +118,7 @@ class UpdateMaterielModal extends React.Component {
       cout_par_heure,
       date_dachat
     } = this.state;
+    const { typeStock } = this.props;
     return (
       <ValidatorForm
         ref="form"
@@ -153,7 +155,7 @@ class UpdateMaterielModal extends React.Component {
           </Col>
         </Row>
 
-        {Store.getTypeStock() === "Consomable" && (
+        {typeStock === "Consomable" && (
           <Row form>
             <Col md="6" className="form-group">
               <TextValidator
@@ -171,7 +173,7 @@ class UpdateMaterielModal extends React.Component {
             </Col>
           </Row>
         )}
-        {Store.getTypeStock() === "Non consomable" && (
+        {typeStock === "Non consomable" && (
           <div>
             <Row form>
               <Col md="6" className="form-group">

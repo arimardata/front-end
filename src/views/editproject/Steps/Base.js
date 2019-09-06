@@ -46,6 +46,7 @@ class Base extends React.Component {
       addRow,
       deleteRow,
       handleOnChangeSteps,
+      handleOnChangeStepsSwitch,
       handleOnChange,
       handleComplete,
       handleBack,
@@ -81,6 +82,7 @@ class Base extends React.Component {
             etapes={etapes}
             personnelSelect={personnelSelect}
             handleOnChangeSteps={handleOnChangeSteps}
+            handleOnChangeStepsSwitch={handleOnChangeStepsSwitch}
           />
         </Row>
         <Row className={classes.addDelete}>

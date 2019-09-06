@@ -133,6 +133,7 @@ class TableRHRight extends React.Component {
     return (
       <MUIDataTable
         data={this.state.personnelAffecter}
+        title={"Personnels affectés"}
         columns={columns}
         options={options}
       />

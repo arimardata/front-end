@@ -189,28 +189,28 @@ class StepperProjects extends React.Component {
     const chefDuProjet = this.getResponsableId(this.state.chefProjet);
     const personnels = [];
 
-    //chef du projet
-    personnels.push(this.affecterPersonnelFromSteps(chefDuProjet, 1));
+    // //chef du projet
+    // personnels.push(this.affecterPersonnelFromSteps(chefDuProjet, 1));
 
     const steps = this.state.etapes;
 
     let dejaexist = [];
-    steps.map(step => {
-      dejaexist = personnels.filter(p => {
-        return (
-          p.personnelId === this.getResponsableId(step.responsable) &&
-          p.etape === step.id
-        );
-      });
-      if (dejaexist.length === 0) {
-        personnels.push(
-          this.affecterPersonnelFromSteps(
-            this.getResponsableId(step.responsable),
-            step.id
-          )
-        );
-      }
-    });
+    // steps.map(step => {
+    //   dejaexist = personnels.filter(p => {
+    //     return (
+    //       p.personnelId === this.getResponsableId(step.responsable) &&
+    //       p.etape === step.id
+    //     );
+    //   });
+    //   if (dejaexist.length === 0) {
+    //     personnels.push(
+    //       this.affecterPersonnelFromSteps(
+    //         this.getResponsableId(step.responsable),
+    //         step.id
+    //       )
+    //     );
+    //   }
+    // });
 
     const personnelAffecter = this.state.personnelAffecter;
 
@@ -379,7 +379,8 @@ class StepperProjects extends React.Component {
         coutConsomable: step.coutConsomable,
         coutNonConsomable: step.coutNonConsomable,
         coutPermanent: step.coutPermanent,
-        coutSaisonier: step.coutSaisonier
+        coutSaisonier: step.coutSaisonier,
+        done: false
       });
 
       i++;

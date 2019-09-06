@@ -110,7 +110,7 @@ class CustomToolbarSelect extends React.Component {
           </IconButton>
         </Tooltip>
       );
-
+    const typeStock = Store.getTypeStock();
     return (
       <div className={classes.iconContainer}>
         <React.Fragment>
@@ -126,6 +126,7 @@ class CustomToolbarSelect extends React.Component {
                 id={this.state.id}
                 toggle={this.toggle}
                 data={this.state.data}
+                typeStock={typeStock}
               />
             </ModalBody>
           </Modal>

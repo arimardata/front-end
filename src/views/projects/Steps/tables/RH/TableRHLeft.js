@@ -133,6 +133,7 @@ class TableRHLeft extends React.Component {
       // <MuiThemeProvider theme={theme}>
       <MUIDataTable
         data={this.state.personnels}
+        title={"Personnels disponibles"}
         columns={columns}
         options={options}
       />

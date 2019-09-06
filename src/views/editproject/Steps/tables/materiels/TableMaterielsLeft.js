@@ -116,6 +116,7 @@ class TableMaterielsLeft extends React.Component {
       // <MuiThemeProvider theme={theme}>
       <MUIDataTable
         data={this.state.materiels}
+        title={"Materiels disponibles"}
         columns={columns}
         options={options}
       />

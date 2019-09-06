@@ -18,7 +18,7 @@ import Validation from "./Steps/Validation";
 import ChargesFixes from "./Steps/ChargesFixes";
 import { Store } from "../../flux";
 import fetchApi from "../../utils/fetchApi";
-
+import CircularProgress from "@material-ui/core/CircularProgress";
 const styles = theme => ({
   root: {
     width: "100%",
@@ -69,7 +69,8 @@ class StepperProjects extends React.Component {
         coutConsomable: 0,
         coutNonConsomable: 0,
         coutPermanent: 0,
-        coutSaisonier: 0
+        coutSaisonier: 0,
+        done: false
       }
     ],
     chargesFixes: [],
@@ -77,7 +78,8 @@ class StepperProjects extends React.Component {
     date_fin: "2019-12-31",
     etape: 1,
     loading: false,
-    nomPrenoms: []
+    nomPrenoms: [],
+    loadingProject: true
   };
 
   fetchProject = async () => {
@@ -93,12 +95,13 @@ class StepperProjects extends React.Component {
       url: "/api/projets/findOne/" + id,
       token: window.localStorage.getItem("token")
     });
-    console.log(project);
     this.setState({
+      id: project.id,
       projet: project.numAo,
       date_debut: project.dateDebut,
       date_fin: project.dateFin,
-      chefProjet: this.getNameFromId(project.chefDuProjet)
+      chefProjet: this.getNameFromId(project.chefDuProjet),
+      loadingProject: false
     });
 
     this.setEtapes(project.etapes);
@@ -194,6 +197,7 @@ class StepperProjects extends React.Component {
             deleteRow={this.deleteRow}
             handleOnChangeSteps={this.handleOnChangeSteps}
             handleOnChange={this.handleOnChange}
+            handleOnChangeStepsSwitch={this.handleOnChangeStepsSwitch}
           />
         );
       case 1:
@@ -285,6 +289,7 @@ class StepperProjects extends React.Component {
       }
       return true;
     });
+    if (Object.keys(Personnel).length === 0) return false;
     return Personnel;
   };
 
@@ -293,27 +298,26 @@ class StepperProjects extends React.Component {
     const personnels = [];
 
     //chef du projet
-    personnels.push(this.affecterPersonnelFromSteps(chefDuProjet, 1));
+    // personnels.push(this.affecterPersonnelFromSteps(chefDuProjet, 1));
 
-    const steps = this.state.etapes;
+    // const steps = this.state.etapes;
 
     let dejaexist = [];
-    steps.map(step => {
-      dejaexist = personnels.filter(p => {
-        return (
-          p.personnelId === this.getResponsableId(step.responsable) &&
-          p.etape === step.id
-        );
-      });
-      if (dejaexist.length === 0) {
-        personnels.push(
-          this.affecterPersonnelFromSteps(
-            this.getResponsableId(step.responsable),
-            step.id
-          )
-        );
-      }
-    });
+    // steps.map(step => {
+    //   dejaexist = personnels.filter(p => {
+    //     return (
+    //       p.personnelId === this.getResponsableId(step.responsable) &&
+    //       p.etape === step.id
+    //     );
+    //   });
+    //   const personnel = this.affecterPersonnelFromSteps(
+    //     this.getResponsableId(step.responsable),
+    //     step.id
+    //   );
+    //   if (dejaexist.length === 0 && personnel) {
+    //     personnels.push(personnel);
+    //   }
+    // });
 
     const personnelAffecter = this.state.personnelAffecter;
 
@@ -333,6 +337,7 @@ class StepperProjects extends React.Component {
         });
       }
     });
+    console.log(personnels);
 
     this.setState({ personnelConstructor: personnels });
 
@@ -475,6 +480,7 @@ class StepperProjects extends React.Component {
     const steps = this.state.etapes;
     const charges = this.state.charges;
     const chargesfixes = this.state.chargesFixes;
+    const id = this.state.id;
 
     let etapes = [];
     let chargesFixes = [];
@@ -490,7 +496,8 @@ class StepperProjects extends React.Component {
         coutConsomable: step.coutConsomable,
         coutNonConsomable: step.coutNonConsomable,
         coutPermanent: step.coutPermanent,
-        coutSaisonier: step.coutSaisonier
+        coutSaisonier: step.coutSaisonier,
+        done: step.done
       });
 
       i++;
@@ -530,7 +537,7 @@ class StepperProjects extends React.Component {
       charges
     };
     fetchApi({
-      url: `/api/projets/ajouter`,
+      url: `/api/projets/update/` + id,
       body: data,
       method: "POST",
       token: window.localStorage.getItem("token")
@@ -795,6 +802,28 @@ class StepperProjects extends React.Component {
     });
     this.setState({ etapes });
   };
+  handleOnChangeStepsSwitch = num => e => {
+    const { name, checked } = e.target;
+    const { etapes, id } = this.state;
+    etapes.map(etape => {
+      if (etape.id === num) {
+        etape["done"] = checked;
+      }
+      return true;
+    });
+    let request;
+    if (checked) {
+      request = "restore";
+    } else {
+      request = "charge";
+    }
+    fetchApi({
+      method: "GET",
+      url: "/api/projets/completeStep/" + id + "/" + num + "/" + request,
+      token: window.localStorage.getItem("token")
+    });
+    this.setState({ etapes });
+  };
   handleOnChangeStepsCharges = id => e => {
     const { name, value } = e.target;
     const { chargesFixes } = this.state;
@@ -814,7 +843,8 @@ class StepperProjects extends React.Component {
       id: size,
       designation: "",
       duree: 0,
-      responsable: ""
+      responsable: "",
+      done: false
     });
     this.setState({ etapes });
   };
@@ -908,7 +938,7 @@ class StepperProjects extends React.Component {
   render() {
     const { classes } = this.props;
     const steps = getSteps();
-    const { activeStep, completed } = this.state;
+    const { activeStep, completed, loadingProject } = this.state;
     return (
       <Container fluid className="main-content-container px-4">
         <div className={classes.root}>
@@ -929,22 +959,16 @@ class StepperProjects extends React.Component {
             {activeStep === steps.length ? (
               <div>
                 <Typography variant="h5" className={classes.instructions}>
-                  Projet créer avec succes
+                  Projet modifier avec succes
                 </Typography>
-                <div className={classes.instructions}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={this.handleReset}
-                  >
-                    Créer un nouveau projet
-                  </Button>
-                </div>
               </div>
             ) : (
               <div>
                 <Typography className={classes.instructions}>
-                  {this.getStepContent(activeStep)}
+                  {!loadingProject && this.getStepContent(activeStep)}
+                  <center>
+                    {loadingProject && <CircularProgress disableShrink />}
+                  </center>
                 </Typography>
               </div>
             )}

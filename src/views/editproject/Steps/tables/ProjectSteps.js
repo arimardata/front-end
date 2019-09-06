@@ -9,17 +9,25 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import styles from "./styles";
 import {
   ValidatorForm,
   TextValidator,
   SelectValidator
 } from "react-material-ui-form-validator";
+import Switch from "@material-ui/core/Switch";
 
 import MenuItem from "@material-ui/core/MenuItem";
 
 function ProjectSteps(props) {
-  const { classes, etapes, handleOnChangeSteps, personnelSelect } = props;
+  const {
+    classes,
+    etapes,
+    handleOnChangeSteps,
+    handleOnChangeStepsSwitch,
+    personnelSelect
+  } = props;
 
   return (
     <div className={classes.rootTable}>
@@ -35,6 +43,7 @@ function ProjectSteps(props) {
             <TableCell align="left">Designation</TableCell>
             <TableCell align="left">Durée (semaines)</TableCell>
             <TableCell align="left">Responsable</TableCell>
+            <TableCell align="left">Complete</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -75,6 +84,20 @@ function ProjectSteps(props) {
                       <MenuItem value={personnel[1]}>{personnel[1]}</MenuItem>
                     ))}
                 </SelectValidator>
+              </TableCell>
+              <TableCell align="left">
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={etape.done}
+                      onChange={handleOnChangeStepsSwitch(etape.id)}
+                      value="done"
+                      color="primary"
+                      inputProps={{ "aria-label": "primary  checkbox" }}
+                    />
+                  }
+                  // label={etape.done ? "Complete" : "En cours"}
+                />
               </TableCell>
             </TableRow>
           ])}
