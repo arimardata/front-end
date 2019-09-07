@@ -8,6 +8,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import MoinsDisant from "./dialogContent/MoinsDisant";
 import CautionFinal from "./dialogContent/CautionFinal";
+import CautionProvisoire from "./dialogContent/CautionProvisoire";
+
 import Default from "./dialogContent/Default";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -38,7 +40,7 @@ export default function DialogModal({
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle id="alert-dialog-slide-title">
-          {"Vos etes entrain de changer l'état d'un appel d'offre"}
+          {"Vous etes entrain de changer l'état d'un appel d'offre"}
         </DialogTitle>
         {dragend.targetLaneId === "lane7" && (
           <MoinsDisant
@@ -56,9 +58,18 @@ export default function DialogModal({
             aos={aos}
           />
         )}
+        {dragend.targetLaneId === "lane2" && (
+          <CautionProvisoire
+            handleAgree={handleAgreeDiaog}
+            handleDisagree={handleDisagreeDiaog}
+            dragend={dragend}
+            aos={aos}
+          />
+        )}
 
         {dragend.targetLaneId !== "lane7" &&
-          dragend.targetLaneId !== "lane3" && (
+          dragend.targetLaneId !== "lane3" &&
+          dragend.targetLaneId !== "lane2" && (
             <Default
               handleAgree={handleAgreeDiaog}
               handleDisagree={handleDisagreeDiaog}

@@ -7,39 +7,44 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import fetchApi from "../fetchApi";
 import { Container, Row, Col } from "shards-react";
 
-export default function CautionFinal({
+export default function CautionProvisoire({
   handleAgree,
   handleDisagree,
   dragend,
   aos
 }) {
-  const [cautionFinal, setCautionFinal] = React.useState("");
-  const [bankCautionFinal, setBankCautionFinal] = React.useState("");
-  const [periodeCautionFinal, setPeriodeCautionFinal] = React.useState("");
-  const [dateCautionFinal, setDateCautionFinal] = React.useState("2019-01-01");
+  const [cautionProvisoire, setCautionProvisoire] = React.useState("");
+  const [bankCautionProvisoire, setBankCautionProvisoire] = React.useState("");
+  const [
+    periodeCautionProvisoire,
+    setPeriodeCautionProvisoire
+  ] = React.useState("");
+  const [dateCautionProvisoire, setDateCautionProvisoire] = React.useState(
+    "2019-01-01"
+  );
   const ref = React.useRef("form");
 
   async function handleSubmit() {
     aos.map(ao => {
       if (ao.id === dragend.cardId) {
-        ao.cautionFinal = cautionFinal;
-        ao.bankCautionFinal = bankCautionFinal;
-        ao.periodeCautionFinal = periodeCautionFinal;
-        ao.dateCautionFinal = dateCautionFinal;
-        ao.etat = "Retenu";
+        ao.cautionProvisoire = cautionProvisoire;
+        ao.bankCautionProvisoire = bankCautionProvisoire;
+        ao.periodeCautionProvisoire = periodeCautionProvisoire;
+        ao.dateCautionProvisoire = dateCautionProvisoire;
+        ao.etat = "Postule";
       }
     });
 
     const data = await fetchApi({
       method: "POST",
 
-      url: "/api/projects/AjouterCautionFinal/" + dragend.cardId,
+      url: "/api/projects/AjouterCautionProvisoire/" + dragend.cardId,
       token: window.localStorage.getItem("token"),
       body: {
-        cautionFinal,
-        bankCautionFinal,
-        periodeCautionFinal,
-        dateCautionFinal
+        cautionProvisoire,
+        bankCautionProvisoire,
+        periodeCautionProvisoire,
+        dateCautionProvisoire
       }
     });
     handleAgree();
@@ -57,9 +62,9 @@ export default function CautionFinal({
               <Col md="10">
                 <TextValidator
                   label="La banque"
-                  onChange={e => setBankCautionFinal(e.target.value)}
-                  name="bankCautionFinal"
-                  value={bankCautionFinal}
+                  onChange={e => setBankCautionProvisoire(e.target.value)}
+                  name="bankCautionProvisoire"
+                  value={bankCautionProvisoire}
                   validators={["required"]}
                   errorMessages={["Champ obligatoire"]}
                   style={{ width: "100%", marginBottom: 10 }}
@@ -70,10 +75,10 @@ export default function CautionFinal({
             <Row>
               <Col md="10">
                 <TextValidator
-                  label="La caution finale"
-                  onChange={e => setCautionFinal(e.target.value)}
-                  name="cautionFinal"
-                  value={cautionFinal}
+                  label="La caution provisoire "
+                  onChange={e => setCautionProvisoire(e.target.value)}
+                  name="cautionProvisoire"
+                  value={cautionProvisoire}
                   validators={["required", "isFloat"]}
                   style={{ width: "100%", marginBottom: 10 }}
                   errorMessages={[
@@ -87,12 +92,12 @@ export default function CautionFinal({
               <Col md="10">
                 <TextValidator
                   label="La periode du caution (mois)"
-                  onChange={e => setPeriodeCautionFinal(e.target.value)}
-                  name="periodeCautionFinal"
-                  value={periodeCautionFinal}
+                  onChange={e => setPeriodeCautionProvisoire(e.target.value)}
+                  name="periodeCautionProvisoire"
+                  value={periodeCautionProvisoire}
+                  style={{ width: "100%", marginBottom: 10 }}
                   type="number"
                   validators={["required", "isFloat"]}
-                  style={{ width: "100%", marginBottom: 10 }}
                   errorMessages={[
                     "Champ obligatoire",
                     "Ce champ doit étre un nombre"
@@ -104,12 +109,12 @@ export default function CautionFinal({
               <Col md="10">
                 <TextValidator
                   label="La date"
-                  onChange={e => setDateCautionFinal(e.target.value)}
-                  name="dateCautionFinal"
-                  value={dateCautionFinal}
+                  onChange={e => setDateCautionProvisoire(e.target.value)}
+                  name="dateCautionProvisoire"
+                  value={dateCautionProvisoire}
+                  style={{ width: "100%", marginBottom: 10 }}
                   type="date"
                   validators={["required"]}
-                  style={{ width: "100%", marginBottom: 10 }}
                   errorMessages={["Champ obligatoire"]}
                 />
               </Col>

@@ -336,6 +336,7 @@ class AppelsOffres extends Component {
 
   handleDisagree = () => {
     this.setState({ ...this.state, openDialog: false });
+    window.location.reload();
   };
 
   onDataChange = newData => {

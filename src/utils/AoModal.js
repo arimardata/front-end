@@ -212,7 +212,7 @@ const AoModal = props => {
           N° d'ordre :<span>{data.num_Ordre}</span>
         </div>
         <div className="col">
-          Date limite :<span>{data.date_Limite}</span>
+          Date limite :<span>{data.date_limite}</span>
         </div>
         <div className="col">
           ville :<span>{data.ville}</span>
@@ -227,21 +227,69 @@ const AoModal = props => {
       <hr />
       <div className="row">
         <div className="col">
-          <div>Caution provisoire(CP) : </div>
+          <div>Caution : </div>
           <br />
           <div>{data.caution}</div>
         </div>
+      </div>
 
-        <div className="col">
-          {data.etat === "Retenu" && data.cautionFinal && (
-            <>
-              <div>Caution final : </div>
+      {data.etat !== "Favoris" && data.etat !== "Postule" && data.cautionFinal && (
+        <>
+          <hr />
+          <div className="row">
+            <div className="col">
+              <div>Bank : </div>
+              <br />
+              <div>{data.bankCautionFinal}</div>
+            </div>
+            <div className="col">
+              <div>Caution finale : </div>
               <br />
               <div>{data.cautionFinal}</div>
-            </>
-          )}
-        </div>
-      </div>
+            </div>
+            <div className="col">
+              <div>Periode du caution : </div>
+              <br />
+              <div>{data.periodeCautionFinal}</div>
+            </div>
+
+            <div className="col">
+              <div>Date du caution : </div>
+              <br />
+              <div>{data.dateCautionFinal}</div>
+            </div>
+          </div>
+        </>
+      )}
+
+      {data.etat !== "Favoris" && data.cautionProvisoire && (
+        <>
+          <hr />
+          <div className="row">
+            <div className="col">
+              <div>Bank : </div>
+              <br />
+              <div>{data.bankCautionProvisoire}</div>
+            </div>
+            <div className="col">
+              <div>Caution provisoire : </div>
+              <br />
+              <div>{data.cautionProvisoire}</div>
+            </div>
+            <div className="col">
+              <div>Periode du caution : </div>
+              <br />
+              <div>{data.periodeCautionProvisoire}</div>
+            </div>
+
+            <div className="col">
+              <div>Date du caution : </div>
+              <br />
+              <div>{data.dateCautionProvisoire}</div>
+            </div>
+          </div>
+        </>
+      )}
 
       <hr />
       {data.etat === "Archive Des Projets Non-Accepte" && data.moinsDisant && (
