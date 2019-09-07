@@ -13,6 +13,7 @@ let _store = {
   RHSelectedRowRewind: [],
   typeStock: "Consomable",
   typePersonnel: "Permanent",
+  typeProjet: "Projet",
   userData: {
     id: window.localStorage.getItem("id"),
     username: window.localStorage.getItem("username"),
@@ -93,6 +94,10 @@ class Store extends EventEmitter {
       case Constants.TABLE_PERMANENT_UPDATED:
         this.reloadTable(Constants.TABLE_PERMANENT_UPDATED);
         break;
+      case Constants.TABLE_PROJET_UPDATED:
+        this.reloadTable(Constants.TABLE_PROJET_UPDATED);
+        break;
+
       case Constants.TABLE_SAISONIER_UPDATED:
         this.reloadTable(Constants.TABLE_SAISONIER_UPDATED);
         break;
@@ -108,6 +113,9 @@ class Store extends EventEmitter {
       case Constants.TYPE_PERSONNEL_SELECT:
         this.selectPersonnelChanged(payload);
         break;
+      case Constants.TYPE_PROJET_SELECT:
+        this.selectProjetChanged(payload);
+        break;
       default:
         break;
     }
@@ -115,6 +123,13 @@ class Store extends EventEmitter {
 
   getTypeStock = () => {
     return _store.typeStock;
+  };
+
+  getTypeProjet = () => {
+    return _store.typeProjet;
+  };
+  selectProjetChanged = payload => {
+    _store.typeProjet = payload;
   };
 
   getTypePersonnel = () => {

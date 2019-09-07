@@ -16,6 +16,7 @@ import ColumnsNonConsomable from "./stock/ColumnsNonConsomable";
 
 import { Container, Row } from "shards-react";
 import PageTitle from "../../components/common/PageTitle";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const styles = theme => ({
   formControl: {
@@ -29,7 +30,7 @@ class Stock extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { typeMateriel: "Materiels consomables" };
+    this.state = { typeMateriel: "Materiels consomables", loading: true };
   }
 
   onChangeConsomable = () => {
@@ -40,6 +41,7 @@ class Stock extends React.Component {
   };
 
   fetchConsomable = async () => {
+    this.setState({ loading: true });
     const data = await fetchApi({
       method: "GET",
       url: "/api/stock/consomable/find",
@@ -54,10 +56,11 @@ class Stock extends React.Component {
         elmnt.prix_unite
       ])
     );
-    this.setState({ consomables });
+    this.setState({ consomables, loading: false });
   };
 
   fetchNonConsomable = async () => {
+    this.setState({ loading: true });
     const data = await fetchApi({
       method: "GET",
       url: "/api/stock/nonconsomable/find",
@@ -74,7 +77,7 @@ class Stock extends React.Component {
         elmnt.date_achat
       ])
     );
-    this.setState({ nonconsomables });
+    this.setState({ nonconsomables, loading: false });
   };
 
   handleChange = e => {
@@ -118,6 +121,7 @@ class Stock extends React.Component {
 
   render() {
     const { classes } = this.props;
+    const { loading } = this.state;
     let columns;
     this.state.typeMateriel === "Materiels consomables"
       ? (columns = ColumnsConsomable)
@@ -156,17 +160,20 @@ class Stock extends React.Component {
         </Row>
         <Grid container spacing={32}>
           <Grid item xs={12}>
-            <MUIDataTable
-              key={Math.random()}
-              title={""}
-              data={
-                this.state.typeMateriel === "Materiels consomables"
-                  ? this.state.consomables
-                  : this.state.nonconsomables
-              }
-              columns={columns}
-              options={Options}
-            />
+            <center>{loading && <CircularProgress disableShrink />}</center>
+            {!loading && (
+              <MUIDataTable
+                key={Math.random()}
+                title={""}
+                data={
+                  this.state.typeMateriel === "Materiels consomables"
+                    ? this.state.consomables
+                    : this.state.nonconsomables
+                }
+                columns={columns}
+                options={Options}
+              />
+            )}
           </Grid>
         </Grid>
       </Container>

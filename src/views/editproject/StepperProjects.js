@@ -16,7 +16,7 @@ import Materiels from "./Steps/Materiels";
 import RH from "./Steps/RH";
 import Validation from "./Steps/Validation";
 import ChargesFixes from "./Steps/ChargesFixes";
-import { Store } from "../../flux";
+import { Store, Dispatcher, Constants } from "../../flux";
 import fetchApi from "../../utils/fetchApi";
 import CircularProgress from "@material-ui/core/CircularProgress";
 const styles = theme => ({
@@ -545,6 +545,9 @@ class StepperProjects extends React.Component {
       .then(data => {
         this.handleComplete();
         this.setState({ loading: false });
+        Dispatcher.dispatch({
+          actionType: Constants.TABLE_PROJET_UPDATED
+        });
       })
       .catch(err => {
         this.setState({ error: "Erreur de connexion" });

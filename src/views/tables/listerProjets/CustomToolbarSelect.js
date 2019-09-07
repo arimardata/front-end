@@ -144,7 +144,7 @@ class CustomToolbarSelect extends React.Component {
     const { classes } = this.props;
     const { openInformations, fullScreen, modal } = this.state;
     let info, edit;
-
+    const type = Store.getTypeProjet();
     if (this.props.selectedRows.data.length == 1)
       info = (
         <Tooltip title={"Projet informations"}>
@@ -154,7 +154,7 @@ class CustomToolbarSelect extends React.Component {
         </Tooltip>
       );
 
-    if (this.props.selectedRows.data.length == 1)
+    if (this.props.selectedRows.data.length == 1 && type === "Projet")
       edit = (
         <Tooltip title={"Modifier projet"}>
           <IconButton onClick={this.handleOpen("Edit projet")}>
