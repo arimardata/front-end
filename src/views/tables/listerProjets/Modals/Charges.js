@@ -51,7 +51,7 @@ class Charges extends React.Component {
           <Row>
             <Col>
               <Typography variant="h6" component="h2">
-                Les charges des materiels consomables :
+                Les charges des materiels consommables :
                 <span>{" " + charges.chargeconsomable + " DH"}</span>
               </Typography>
             </Col>
@@ -59,7 +59,7 @@ class Charges extends React.Component {
           <Row>
             <Col>
               <Typography variant="h6" component="h2">
-                Les charges des materiels non consomables :
+                Les charges des materiels non consommables :
                 <span>{" " + charges.chargenonconsomable + " DH"}</span>
               </Typography>
             </Col>
@@ -67,7 +67,8 @@ class Charges extends React.Component {
           <Row>
             <Col>
               <Typography variant="h6" component="h2">
-                Total des charges des materiels consomables et non consomables :
+                Total des charges des materiels consommables et non consommables
+                :
                 <span>
                   {" "}
                   {parseInt(charges.chargenonconsomable) +

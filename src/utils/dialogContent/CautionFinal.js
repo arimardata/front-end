@@ -7,11 +7,14 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import fetchApi from "../fetchApi";
 import { Container, Row, Col } from "shards-react";
 
+import CircularProgress from "@material-ui/core/CircularProgress";
+
 export default function CautionFinal({
   handleAgree,
   handleDisagree,
   dragend,
-  aos
+  aos,
+  loading
 }) {
   const [cautionFinal, setCautionFinal] = React.useState("");
   const [bankCautionFinal, setBankCautionFinal] = React.useState("");
@@ -121,7 +124,13 @@ export default function CautionFinal({
         <Button onClick={handleDisagree} color="primary">
           Annuler
         </Button>
-        <Button type="submit" variant="contained" color="primary">
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          disabled={loading}
+        >
+          {loading && <CircularProgress size={24} />}
           Confirmer
         </Button>
       </DialogActions>

@@ -56,7 +56,8 @@ class Personnel extends React.Component {
         elmnt.dateDeNaissance,
         elmnt.salaire,
         elmnt.dateEmbauche,
-        elmnt.cnss
+        elmnt.cnss,
+        elmnt.disponible ? "Disponible" : "occupé"
       ])
     );
     this.setState({ rows, loading: false });
@@ -81,7 +82,8 @@ class Personnel extends React.Component {
         elmnt.dateDeNaissance,
         elmnt.salaire,
         elmnt.dateEmbauche,
-        elmnt.cnss
+        elmnt.cnss,
+        elmnt.disponible ? "Disponible" : "occupé"
       ])
     );
     this.setState({ rows, loading: false });
@@ -107,7 +109,8 @@ class Personnel extends React.Component {
         elmnt.dateDeNaissance,
         elmnt.coutParJour,
         elmnt.dateDebut,
-        elmnt.dateFin
+        elmnt.dateFin,
+        elmnt.disponible ? "Disponible" : "occupé"
       ])
     );
     this.setState({ rows, loading: false });

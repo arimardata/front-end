@@ -21,7 +21,8 @@ export default function DialogModal({
   handleAgree,
   handleDisagree,
   dragend,
-  aos
+  aos,
+  loading
 }) {
   function handleAgreeDiaog() {
     handleAgree();
@@ -48,6 +49,7 @@ export default function DialogModal({
             handleDisagree={handleDisagreeDiaog}
             dragend={dragend}
             aos={aos}
+            loading={loading}
           />
         )}
         {dragend.targetLaneId === "lane3" && (
@@ -56,6 +58,7 @@ export default function DialogModal({
             handleDisagree={handleDisagreeDiaog}
             dragend={dragend}
             aos={aos}
+            loading={loading}
           />
         )}
         {dragend.targetLaneId === "lane2" && (
@@ -64,6 +67,7 @@ export default function DialogModal({
             handleDisagree={handleDisagreeDiaog}
             dragend={dragend}
             aos={aos}
+            loading={loading}
           />
         )}
 
@@ -75,6 +79,7 @@ export default function DialogModal({
               handleDisagree={handleDisagreeDiaog}
               dragend={dragend}
               aos={aos}
+              loading={loading}
             />
           )}
       </Dialog>

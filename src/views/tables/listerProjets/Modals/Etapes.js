@@ -103,16 +103,16 @@ export default class Etapes extends React.Component {
         }
       },
       {
-        name: "Cout consomable (DH)",
-        label: "Cout consomable (DH)",
+        name: "Cout consommable (DH)",
+        label: "Cout consommable (DH)",
         options: {
           filter: false,
           sort: true
         }
       },
       {
-        name: "Cout non consomable (DH)",
-        label: "Cout non consomable (DH)",
+        name: "Cout non consommable (DH)",
+        label: "Cout non consommable (DH)",
         options: {
           filter: false,
           sort: true

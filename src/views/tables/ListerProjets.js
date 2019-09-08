@@ -28,7 +28,7 @@ class ListerProjets extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { type: "Projet", loading: true };
+    this.state = { type: "Projet en cours", loading: true };
   }
 
   getNomPrenom = id => {
@@ -82,7 +82,7 @@ class ListerProjets extends React.Component {
   };
 
   async componentWillMount() {
-    this.fetchProjets(this.state.type);
+    this.fetchProjets("Projet");
     Store.addChangeListener(Constants.TABLE_PROJET_UPDATED, this.onChange);
   }
 
@@ -93,18 +93,18 @@ class ListerProjets extends React.Component {
   handleChange = e => {
     const { name, value } = e.target;
     switch (value) {
-      case "Projet":
-        this.fetchProjets(value);
+      case "Projet en cours":
+        this.fetchProjets("Projet");
         Dispatcher.dispatch({
           actionType: Constants.TYPE_PROJET_SELECT,
-          payload: "Projet"
+          payload: "Projet en cours"
         });
         break;
-      case "Finis":
-        this.fetchProjets(value);
+      case "Projet finis":
+        this.fetchProjets("Finis");
         Dispatcher.dispatch({
           actionType: Constants.TYPE_PROJET_SELECT,
-          payload: "Finis"
+          payload: "Projet finis"
         });
         break;
     }
@@ -127,9 +127,9 @@ class ListerProjets extends React.Component {
         </Row>
         <Row noGutters className="page-header py-4">
           <FormControl className={classes.formControl}>
-            <InputLabel htmlFor="demo-controlled-open-select">
+            {/* <InputLabel htmlFor="demo-controlled-open-select">
               Type :
-            </InputLabel>
+            </InputLabel> */}
             <Select
               value={this.state.type}
               onChange={this.handleChange}
@@ -138,8 +138,8 @@ class ListerProjets extends React.Component {
                 id: "demo-controlled-open-select"
               }}
             >
-              <MenuItem value={"Projet"}>Projet</MenuItem>
-              <MenuItem value={"Finis"}>Finis</MenuItem>
+              <MenuItem value={"Projet en cours"}>Projet en cours</MenuItem>
+              <MenuItem value={"Projet finis"}>Projet finis</MenuItem>
             </Select>
           </FormControl>
         </Row>

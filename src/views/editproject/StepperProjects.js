@@ -393,10 +393,10 @@ class StepperProjects extends React.Component {
           materiel[4] === parseInt(etape.etape) ||
           materiel[4] === parseInt(etape.id)
         ) {
-          if (materiel[3] === "Consomable") {
+          if (materiel[3] === "Consommable") {
             coutConsomable +=
               this.getPrixUniteConsomable(materiel[0]) * quantite;
-          } else if (materiel[3] === "Non consomable") {
+          } else if (materiel[3] === "Non consommable") {
             coutNonConsomable +=
               this.getPrixUniteNonConsomable(materiel[0]) *
               quantite *
@@ -665,7 +665,7 @@ class StepperProjects extends React.Component {
     });
     let consomables = [];
     consomable.map(elmnt =>
-      consomables.push([elmnt.id, elmnt.id_mat, elmnt.quantite, "Consomable"])
+      consomables.push([elmnt.id, elmnt.id_mat, elmnt.quantite, "Consommable"])
     );
 
     const nonconsomable = await fetchApi({
@@ -679,7 +679,7 @@ class StepperProjects extends React.Component {
         elmnt.id,
         elmnt.id_mat,
         elmnt.quantite,
-        "Non consomable"
+        "Non consommable"
       ])
     );
     this.setState({
@@ -777,17 +777,12 @@ class StepperProjects extends React.Component {
   async componentWillMount() {
     this.fetchMateriels();
     this.fetchPersonnels();
-    this.fetchAosRetenu();
   }
 
-  fetchAosRetenu = async () => {
-    const aos = await fetchApi({
-      method: "GET",
-      url: "/api/projects/findByetat/Retenu",
-      token: window.localStorage.getItem("token")
-    });
-    this.setState({ aos });
-  };
+  async componentWillReceiveProps(newprops) {
+    this.fetchMateriels();
+    this.fetchPersonnels();
+  }
 
   handleOnChange = e => {
     const { name, value } = e.target;

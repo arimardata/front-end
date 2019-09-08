@@ -281,10 +281,10 @@ class StepperProjects extends React.Component {
       materielsAffecter.map(materiel => {
         let quantite = parseInt(materiel[2]);
         if (materiel[4] === etape.id) {
-          if (materiel[3] === "Consomable") {
+          if (materiel[3] === "Consommable") {
             coutConsomable +=
               this.getPrixUniteConsomable(materiel[0]) * quantite;
-          } else if (materiel[3] === "Non consomable") {
+          } else if (materiel[3] === "Non consommable") {
             coutNonConsomable +=
               this.getPrixUniteNonConsomable(materiel[0]) *
               quantite *
@@ -545,7 +545,7 @@ class StepperProjects extends React.Component {
     });
     let consomables = [];
     consomable.map(elmnt =>
-      consomables.push([elmnt.id, elmnt.id_mat, elmnt.quantite, "Consomable"])
+      consomables.push([elmnt.id, elmnt.id_mat, elmnt.quantite, "Consommable"])
     );
 
     const nonconsomable = await fetchApi({
@@ -559,7 +559,7 @@ class StepperProjects extends React.Component {
         elmnt.id,
         elmnt.id_mat,
         elmnt.quantite,
-        "Non consomable"
+        "Non consommable"
       ])
     );
     this.setState({

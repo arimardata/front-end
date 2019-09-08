@@ -56,11 +56,11 @@ class CustomToolbarSelect extends React.Component {
       let url, actionType;
 
       switch (Store.getTypeStock()) {
-        case "Consomable":
+        case "Consommable":
           url = "/api/stock/consomable/delete/" + id;
           actionType = Constants.TABLE_CONSOMABLE_UPDATED;
           break;
-        case "Non consomable":
+        case "Non consommable":
           url = "/api/stock/nonconsomable/delete/" + id;
           actionType = Constants.TABLE_NON_CONSOMABLE_UPDATED;
           break;

@@ -20,12 +20,13 @@ import {
   SelectValidator
 } from "react-material-ui-form-validator";
 import TextField from "@material-ui/core/TextField";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 class UpdatePersonnelModal extends React.Component {
   constructor() {
     super();
 
-    this.state = {};
+    this.state = { request: false, disponible: true, archived: false };
   }
 
   componentWillMount() {
@@ -42,7 +43,8 @@ class UpdatePersonnelModal extends React.Component {
           dateDeNaissance: this.props.data[8],
           salaire: this.props.data[9],
           dateEmbauche: this.props.data[10],
-          cnss: this.props.data[11]
+          cnss: this.props.data[11],
+          disponible: this.props.data[12] === "occupé" ? false : true
         });
         break;
       case "Permanent":
@@ -57,7 +59,8 @@ class UpdatePersonnelModal extends React.Component {
           dateDeNaissance: this.props.data[8],
           salaire: this.props.data[9],
           dateEmbauche: this.props.data[10],
-          cnss: this.props.data[11]
+          cnss: this.props.data[11],
+          disponible: this.props.data[12] === "occupé" ? false : true
         });
         break;
       case "Saisonier":
@@ -70,7 +73,8 @@ class UpdatePersonnelModal extends React.Component {
           diplome: this.props.data[6],
           qualite: this.props.data[7],
           dateDeNaissance: this.props.data[8],
-          coutParJour: this.props.data[9]
+          coutParJour: this.props.data[9],
+          disponible: this.props.data[10] === "occupé" ? false : true
         });
         break;
     }
@@ -124,6 +128,7 @@ class UpdatePersonnelModal extends React.Component {
   };
 
   handleSubmit = async () => {
+    this.setState({ request: true });
     // your submit logic
     let data = this.state;
     let id = this.props.id;
@@ -145,6 +150,8 @@ class UpdatePersonnelModal extends React.Component {
     }
 
     this.props.toggle();
+
+    this.setState({ request: false });
   };
   HandleAnnuler = () => {
     this.setState({});
@@ -169,7 +176,6 @@ class UpdatePersonnelModal extends React.Component {
       date_debut,
       date_fin
     } = this.state;
-
     let fields;
     switch (Store.getTypePersonnel()) {
       case "Permanent":
@@ -394,10 +400,12 @@ class UpdatePersonnelModal extends React.Component {
 
         {fields}
         <Button
+          disabled={this.state.request}
           type="submit"
           variant="contained"
           color="primary" /*onClick={this.handleResult}*/
         >
+          {this.state.request && <CircularProgress size={24} />}
           Enrengistrer
         </Button>
         <Button onClick={this.HandleAnnuler}>Annuler</Button>

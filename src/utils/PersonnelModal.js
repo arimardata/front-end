@@ -20,6 +20,7 @@ import {
   SelectValidator
 } from "react-material-ui-form-validator";
 import TextField from "@material-ui/core/TextField";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 class PersonnelModal extends React.Component {
   constructor() {
@@ -30,7 +31,10 @@ class PersonnelModal extends React.Component {
       dateDeNaissance: "1990-01-01",
       dateEmbauche: "2019-01-01",
       dateDebut: "2019-01-01",
-      dateFin: "2020-01-01"
+      dateFin: "2020-01-01",
+      disponible: true,
+      archived: false,
+      request: false
     };
   }
 
@@ -83,6 +87,8 @@ class PersonnelModal extends React.Component {
 
   handleSubmit = async () => {
     // your submit logic
+
+    this.setState({ request: true });
     let data = this.state;
     switch (data.type_personnel) {
       case "Administratif":
@@ -109,6 +115,8 @@ class PersonnelModal extends React.Component {
     }
 
     this.props.toggle();
+
+    this.setState({ request: false });
   };
   HandleAnnuler = () => {
     this.setState({});
@@ -406,10 +414,12 @@ class PersonnelModal extends React.Component {
         </Row>
         {fields}
         <Button
+          disabled={this.state.request}
           type="submit"
           variant="contained"
           color="primary" /*onClick={this.handleResult}*/
         >
+          {this.state.request && <CircularProgress size={24} />}
           Enrengistrer
         </Button>
         <Button onClick={this.HandleAnnuler}>Annuler</Button>

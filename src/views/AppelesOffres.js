@@ -76,6 +76,7 @@ class AppelsOffres extends Component {
     super(props);
 
     this.state = {
+      loading: false,
       dragend: {},
       openDialog: false,
       openSelect: false,
@@ -309,9 +310,10 @@ class AppelsOffres extends Component {
       position,
       cardDetails
     } = this.state.dragend;
+    this.setState({ loading: true });
     if (sourceLaneId !== targetLaneId) {
       let lane = this.state.baord.lanes.filter(elt => elt.id == targetLaneId);
-      const data = fetchApi({
+      const data = await fetchApi({
         method: "GET",
         url: "/api/projects/changeetat/" + cardDetails.id + "/" + lane[0].title,
         token: window.localStorage.getItem("token")
@@ -330,7 +332,12 @@ class AppelsOffres extends Component {
           };
         }
       });
-      this.setState({ ...this.state, baord, openDialog: false });
+      this.setState({
+        ...this.state,
+        baord,
+        openDialog: false,
+        loading: false
+      });
     }
   };
 
@@ -361,7 +368,7 @@ class AppelsOffres extends Component {
 
   render() {
     const { classes } = this.props;
-    const { openDialog } = this.state;
+    const { openDialog, open, openAdd, loading } = this.state;
     let baord;
     if (this.state.baord) {
       baord = (
@@ -384,8 +391,6 @@ class AppelsOffres extends Component {
         </center>
       );
     }
-    const { open } = this.state;
-    const { openAdd } = this.state;
     return (
       <div className={classes.root}>
         <Container fluid className="main-content-container px-4">
@@ -405,6 +410,7 @@ class AppelsOffres extends Component {
               handleAgree={this.handleAgree}
               dragend={this.state.dragend}
               aos={this.state.aos}
+              loading={loading}
             />
           </Row>
           <Row>

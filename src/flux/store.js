@@ -11,9 +11,9 @@ let _store = {
   materielSelectedRowRewind: [],
   RHSelectedRow: [],
   RHSelectedRowRewind: [],
-  typeStock: "Consomable",
+  typeStock: "Consommable",
   typePersonnel: "Permanent",
-  typeProjet: "Projet",
+  typeProjet: "Projet en cours",
   userData: {
     id: window.localStorage.getItem("id"),
     username: window.localStorage.getItem("username"),
@@ -137,11 +137,11 @@ class Store extends EventEmitter {
   };
   selectStockChanget = () => {
     switch (_store.typeStock) {
-      case "Consomable":
-        _store.typeStock = "Non consomable";
+      case "Consommable":
+        _store.typeStock = "Non consommable";
         break;
-      case "Non consomable":
-        _store.typeStock = "Consomable";
+      case "Non consommable":
+        _store.typeStock = "Consommable";
         break;
     }
   };

@@ -11,11 +11,16 @@ import {
 } from "react-material-ui-form-validator";
 
 import { Button } from "@material-ui/core";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 class AddModal extends React.Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      request: false,
+      mise_en_ligne: "2019-01-01",
+      date_limite: "2020-01-01"
+    };
   }
 
   handleOnChange = e => {
@@ -26,7 +31,7 @@ class AddModal extends React.Component {
   };
 
   handleSubmit = async e => {
-    // your submit logic
+    this.setState({ request: true });
     await fetchApi({
       method: "POST",
 
@@ -34,7 +39,9 @@ class AddModal extends React.Component {
       token: window.localStorage.getItem("token"),
       body: this.state
     });
+
     this.props.toggle();
+    this.setState({ request: false });
 
     window.location.reload();
   };
@@ -44,7 +51,6 @@ class AddModal extends React.Component {
   };
 
   render() {
-    console.log(this.props);
     const {
       num_Ordre,
       chef_ouvrage,
@@ -79,11 +85,11 @@ class AddModal extends React.Component {
                 />
               </p>
             </div>
-            <div className="col-1">
+            {/* <div className="col-1">
               <IconButton>
                 <i className="material-icons">picture_as_pdf</i>
               </IconButton>
-            </div>
+            </div> */}
             {/* <div className="col-1">
           <IconButton onClick={downloadRar(data.num_Ordre)}>
             <i className="material-icons">cloud_download</i>
@@ -110,6 +116,7 @@ class AddModal extends React.Component {
                 onChange={this.handleOnChange}
                 style={{ width: "100%" }}
                 name="mise_en_ligne"
+                type="date"
                 value={mise_en_ligne}
                 validators={["required"]}
                 errorMessages={["Ce Champ est Obligatoir : "]}
@@ -145,6 +152,7 @@ class AddModal extends React.Component {
                 onChange={this.handleOnChange}
                 style={{ width: "100%" }}
                 name="date_limite"
+                type="date"
                 value={date_limite}
                 validators={["required"]}
                 errorMessages={["Ce Champ est Obligatoir : "]}
@@ -208,7 +216,13 @@ class AddModal extends React.Component {
           </div>
 
           <hr />
-          <Button variant="contained" color="primary" type="submit">
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            disabled={this.state.request}
+          >
+            {this.state.request && <CircularProgress size={24} />}
             Enrengistrer Appel d'offre
           </Button>
           <Button onClick={this.HandleAnnuler}>Annuler</Button>

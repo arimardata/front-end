@@ -36,14 +36,14 @@ function CoutsPreview(props) {
         </TableHead>
         <TableBody>
           <TableRow>
-            <TableCell align="left">Materiels consomable</TableCell>
+            <TableCell align="left">Materiels consommable</TableCell>
             <TableCell align="left">
               {charges.chargeconsomable}
               {" DH"}
             </TableCell>
           </TableRow>
           <TableRow>
-            <TableCell align="left">Materiels non consomable</TableCell>
+            <TableCell align="left">Materiels non consommable</TableCell>
             <TableCell align="left">
               {charges.chargenonconsomable}
               {" DH"}

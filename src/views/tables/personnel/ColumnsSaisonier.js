@@ -98,5 +98,14 @@ export default [
       filter: false,
       sort: true
     }
+  },
+  {
+    name: "disponible",
+    label: "disponible",
+    options: {
+      filter: true,
+      sort: true,
+      display: false
+    }
   }
 ];

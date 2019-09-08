@@ -8,11 +8,14 @@ import { Container, Row } from "shards-react";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import fetchApi from "../fetchApi";
 
+import CircularProgress from "@material-ui/core/CircularProgress";
+
 export default function MoinsDisant({
   handleAgree,
   handleDisagree,
   dragend,
-  aos
+  aos,
+  loading
 }) {
   const [moinsDisant, setMoinsDisant] = React.useState("");
   const [montant, setMontant] = React.useState("");
@@ -89,7 +92,13 @@ export default function MoinsDisant({
         <Button onClick={handleDisagree} color="primary">
           Annuler
         </Button>
-        <Button type="submit" variant="contained" color="primary">
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          disabled={loading}
+        >
+          {loading && <CircularProgress size={24} />}
           Confirmer
         </Button>
       </DialogActions>

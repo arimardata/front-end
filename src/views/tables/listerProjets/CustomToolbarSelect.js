@@ -91,6 +91,13 @@ class CustomToolbarSelect extends React.Component {
     this.setState({ fullScreen });
   };
 
+  componentWillMount() {
+    Dispatcher.dispatch({
+      actionType: Constants.TYPE_PROJET_SELECT,
+      payload: "Projet en cours"
+    });
+  }
+
   delete = () => {
     // let data = this.props.selectedRows.data;
     // data.map(async el => {
@@ -154,7 +161,7 @@ class CustomToolbarSelect extends React.Component {
         </Tooltip>
       );
 
-    if (this.props.selectedRows.data.length == 1 && type === "Projet")
+    if (this.props.selectedRows.data.length == 1 && type === "Projet en cours")
       edit = (
         <Tooltip title={"Modifier projet"}>
           <IconButton onClick={this.handleOpen("Edit projet")}>

@@ -194,7 +194,7 @@ const Statistiques = ({ smallStatsPersonnels }) => {
         ]
       },
       {
-        label: "Consomable",
+        label: "Consommable",
         value: statis.materiels.consomable,
         increase: true,
         chartLabels: [null, null, null, null, null, null, null],
@@ -211,7 +211,7 @@ const Statistiques = ({ smallStatsPersonnels }) => {
         ]
       },
       {
-        label: "Non consomable",
+        label: "Non consommable",
         value: statis.materiels.nonConsomable,
         increase: true,
         decrease: false,
