@@ -91,39 +91,7 @@ class CustomToolbarSelect extends React.Component {
     this.setState({ fullScreen });
   };
 
-  componentWillMount() {
-    Dispatcher.dispatch({
-      actionType: Constants.TYPE_PROJET_SELECT,
-      payload: "Projet en cours"
-    });
-  }
-
-  delete = () => {
-    // let data = this.props.selectedRows.data;
-    // data.map(async el => {
-    //   let index = el.index;
-    //   let id = this.props.displayData[index].data[0];
-    //   let url, actionType;
-    //   switch (Store.getTypeStock()) {
-    //     case "Consomable":
-    //       url = "/api/stock/consomable/delete/" + id;
-    //       actionType = Constants.TABLE_CONSOMABLE_UPDATED;
-    //       break;
-    //     case "Non consomable":
-    //       url = "/api/stock/nonconsomable/delete/" + id;
-    //       actionType = Constants.TABLE_NON_CONSOMABLE_UPDATED;
-    //       break;
-    //   }
-    //   await fetchApi({
-    //     method: "DELETE",
-    //     url,
-    //     token: window.localStorage.getItem("token")
-    //   });
-    //   Dispatcher.dispatch({
-    //     actionType
-    //   });
-    // });
-  };
+  componentWillMount() {}
 
   handleClick = () => {
     this.toggle();
