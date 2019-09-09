@@ -16,6 +16,7 @@ import ComponentsOverview from "./views/ComponentsOverview";
 // import Tables from "./views/Tables";
 import AppelesOffres from "./views/AppelesOffres";
 import StepperProjects from "./views/projects/StepperProjects";
+import Allnotifications from "./views/Allnotifications";
 
 export default [
   {
@@ -54,5 +55,10 @@ export default [
     path: "/AppelesOffres",
     layout: DefaultLayout,
     component: AppelesOffres
+  },
+  {
+    path: "/Allnotifications",
+    layout: DefaultLayout,
+    component: Allnotifications
   }
 ];

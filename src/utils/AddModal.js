@@ -1,5 +1,5 @@
 import React from "react";
-import { ListGroup, ListGroupItem, Row, Col, Button } from "shards-react";
+
 import lanesLayout from "./lanesLayout";
 import IconButton from "@material-ui/core/IconButton";
 import fetchApi from "./fetchApi";
@@ -10,19 +10,39 @@ import {
   SelectValidator
 } from "react-material-ui-form-validator";
 
-
+import {
+  ListGroup,
+  ListGroupItem,
+  Row,
+  Col,
+  FormInput,
+  Button,
+  Container,
+  Card,
+  CardHeader,
+  InputGroup,
+  Alert,
+  ButtonGroup,
+  CardBody,
+  Modal,
+  ModalBody,
+  ModalHeader,
+  Progress
+} from "shards-react";
 class AddModal extends React.Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      
+    };
   }
 
 
   handleOnChange = e => {
-    const  { value, name }
-     = e.target;
+    const { value, name }
+      = e.target;
     this.setState({
-      
+
       [name]: value
     });
     console.log(name);
@@ -31,20 +51,21 @@ class AddModal extends React.Component {
   handleSubmit = async e => {
     // your submit logic
     console.log(this.state);
-     await fetchApi({
+    await fetchApi({
       method: "POST",
 
       url: "/api/projects/ajouter",
       token: window.localStorage.getItem("token"),
       body: this.state
     });
-    
+
     this.props.toggle();
   };
   HandleAnnuler = () => {
     this.setState({});
     this.props.toggle();
   };
+
 
 
   render() {
@@ -60,7 +81,8 @@ class AddModal extends React.Component {
       estimation,
       autres_details
     } = this.state;
-    return (
+
+     return (
       <div>
         <ValidatorForm
           autoComplete="on"
@@ -80,8 +102,8 @@ class AddModal extends React.Component {
                 errorMessages={["Ce Champ est Obligatoir : "]}
               /></p>
             </div>
-            <div className="col-1">
-              <IconButton >
+           {/* <div className="col-1">
+              <IconButton onClick={this.OnUploadClick} >
                 <i className="material-icons">picture_as_pdf</i>
               </IconButton>
             </div>
@@ -213,6 +235,8 @@ class AddModal extends React.Component {
             Annuler
             </Button>
         </ValidatorForm>
+
+
       </div>
 
     );

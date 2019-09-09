@@ -196,7 +196,7 @@ class AppelsOffres extends Component {
     this.handleDragEnd = this.handleDragEnd.bind(this);
     this.toggle = this.toggle.bind(this);
     this.toggleAdd =this.toggleAdd.bind(this);
-    this.onCardClick = this.onCardClick.bind(this);
+    //this.onCardClick = this.onCardClick.bind(this);
     this.OnAddClick =this.OnAddClick.bind(this);
   }
 
@@ -253,7 +253,7 @@ class AppelsOffres extends Component {
     this.setState({ baord: {} });
   }
 
-  onCardClick(cardId, metadata, laneId) {
+  onCardClick=(cardId, metadata, laneId)=> {
     let lane = this.state.baord.lanes.filter(elt => elt.id == laneId);
     let card = lane[0].cards.filter(elt => elt.id == cardId);
     let ao = this.state.aos.filter(ao => ao.num_AO == card[0].title);
@@ -364,7 +364,12 @@ class AppelsOffres extends Component {
     window.location.reload();
     
   }
- 
+  onCardDelete=(cardId, laneId)=>{
+console.log(cardId);
+  }
+  askDeleteCard(cardId, laneId){
+    console.log(cardId);
+  }
 
   render() {
     const { classes } = this.props;
@@ -379,7 +384,9 @@ class AppelsOffres extends Component {
           style={{ backgroundColor: "#efefef" }}
           handleDragEnd={this.handleDragEnd}
           onCardClick={this.onCardClick}
-          hideCardDeleteIcon
+          //hideCardDeleteIcon
+          //onCardDelete={console.log("ok")}
+          //onCardDelete={this.onCardDelete()}
           onDataChange={this.onDataChange}
           collapsibleLanes
         />
@@ -431,9 +438,9 @@ class AppelsOffres extends Component {
               <AoModal data={this.state.clicked} toggle={this.toggle} op={this.fetchAos}/>
             </ModalBody>
           </Modal>
-          <Modal  size="lg" open={openAdd} toggle={this.toggleAdd} op={this.fetchAos} >
+          <Modal  size="lg" open={openAdd} toggle={this.toggleAdd}  >
             <ModalBody>
-              <AddModal toggle={this.toggleAdd} op={this.componentWillMount} />
+              <AddModal toggle={this.toggleAdd}  />
             </ModalBody>
           
           
