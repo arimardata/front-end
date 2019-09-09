@@ -8,8 +8,7 @@ import {
   FormInput,
   FormGroup,
   FormCheckbox,
-  FormSelect,
-  Button
+  FormSelect
 } from "shards-react";
 import fetchApi from "./fetchApi";
 import { Constants, Store, Dispatcher } from "../flux";
@@ -19,13 +18,15 @@ import {
   TextValidator,
   SelectValidator
 } from "react-material-ui-form-validator";
+import { Button } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 class ChequeModal extends React.Component {
   constructor() {
     super();
 
-    this.state = { recepteur: "", emetteur: "" };
+    this.state = { recepteur: "", emetteur: "", request: false };
   }
 
   handleOnChange = e => {
@@ -56,6 +57,7 @@ class ChequeModal extends React.Component {
   handleSubmit = async e => {
     // your submit logic
 
+    this.setState({ request: true });
     const data = await fetchApi({
       method: "POST",
 
@@ -66,8 +68,9 @@ class ChequeModal extends React.Component {
     Dispatcher.dispatch({
       actionType: Constants.TABLE_CHEQUE_UPDATED
     });
-    console.log(data);
     this.props.toggle();
+
+    this.setState({ request: false });
   };
   HandleAnnuler = () => {
     this.setState({});
@@ -226,14 +229,14 @@ class ChequeModal extends React.Component {
 
               <Col md="6" className="form-group">
                 <TextField
-                id="date"
+                  id="date"
                   type="date"
                   label=" "
                   onChange={this.handleOnChange}
                   style={{ width: "100%" }}
                   //defaultValue="2017-05-24"
                   InputLabelProps={{
-                    shrink: true,
+                    shrink: true
                   }}
                   name="date"
                   value={date}
@@ -243,12 +246,16 @@ class ChequeModal extends React.Component {
               </Col>
             </Row>
 
-            <Button type="submit" /*onClick={this.handleResult}*/>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary" /*onClick={this.handleResult}*/
+              disabled={this.state.request}
+            >
+              {this.state.request && <CircularProgress size={24} />}
               Enrengistrer Cheque
             </Button>
-            <Button theme="danger" onClick={this.HandleAnnuler}>
-              Annuler
-            </Button>
+            <Button onClick={this.HandleAnnuler}>Annuler</Button>
           </ValidatorForm>
         </ListGroupItem>
       </ListGroup>

@@ -16,6 +16,7 @@ import Columns from "./personnel/Columns";
 import { Container, Row } from "shards-react";
 import PageTitle from "../../components/common/PageTitle";
 import ColumnsSaisonier from "./personnel/ColumnsSaisonier";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const styles = theme => ({
   formControl: {
@@ -27,7 +28,7 @@ class Personnel extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { type_personnel: "Permanent" };
+    this.state = { type_personnel: "Permanent", loading: true };
     this.onChange = this.onChange.bind(this);
   }
 
@@ -55,10 +56,11 @@ class Personnel extends React.Component {
         elmnt.dateDeNaissance,
         elmnt.salaire,
         elmnt.dateEmbauche,
-        elmnt.cnss
+        elmnt.cnss,
+        elmnt.disponible ? "Disponible" : "occupé"
       ])
     );
-    this.setState({ rows });
+    this.setState({ rows, loading: false });
   };
   fetchPermanent = async () => {
     const data = await fetchApi({
@@ -80,10 +82,11 @@ class Personnel extends React.Component {
         elmnt.dateDeNaissance,
         elmnt.salaire,
         elmnt.dateEmbauche,
-        elmnt.cnss
+        elmnt.cnss,
+        elmnt.disponible ? "Disponible" : "occupé"
       ])
     );
-    this.setState({ rows });
+    this.setState({ rows, loading: false });
   };
   fetchSaisonier = async () => {
     const data = await fetchApi({
@@ -93,7 +96,6 @@ class Personnel extends React.Component {
     });
     let rows = [];
 
-    console.log(data);
     data.map(elmnt =>
       rows.push([
         elmnt.id,
@@ -105,14 +107,18 @@ class Personnel extends React.Component {
         elmnt.diplome,
         elmnt.qualite,
         elmnt.dateDeNaissance,
-        elmnt.coutParJour
+        elmnt.coutParJour,
+        elmnt.dateDebut,
+        elmnt.dateFin,
+        elmnt.disponible ? "Disponible" : "occupé"
       ])
     );
-    this.setState({ rows });
+    this.setState({ rows, loading: false });
   };
 
   fetchData = () => {
     let data = this.state;
+    this.setState({ loading: true });
     switch (data.type_personnel) {
       case "Administratif":
         this.fetchAdministratif();
@@ -182,6 +188,7 @@ class Personnel extends React.Component {
 
   render() {
     const { classes } = this.props;
+    const { loading } = this.state;
     let columns =
       this.state.type_personnel === "Saisonier" ? ColumnsSaisonier : Columns;
     return (
@@ -215,13 +222,16 @@ class Personnel extends React.Component {
         </Row>
         <Grid container spacing={32}>
           <Grid item xs={12}>
-            <MUIDataTable
-              key={Math.random()}
-              title={""}
-              data={this.state.rows}
-              columns={columns}
-              options={Options}
-            />
+            <center>{loading && <CircularProgress disableShrink />}</center>
+            {!loading && (
+              <MUIDataTable
+                key={Math.random()}
+                title={""}
+                data={this.state.rows}
+                columns={columns}
+                options={Options}
+              />
+            )}
           </Grid>
         </Grid>
       </Container>

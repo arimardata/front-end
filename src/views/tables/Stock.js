@@ -16,6 +16,7 @@ import ColumnsNonConsomable from "./stock/ColumnsNonConsomable";
 
 import { Container, Row } from "shards-react";
 import PageTitle from "../../components/common/PageTitle";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const styles = theme => ({
   formControl: {
@@ -29,7 +30,7 @@ class Stock extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { typeMateriel: "Materiels consomables" };
+    this.state = { typeMateriel: "Materiels consommables", loading: true };
   }
 
   onChangeConsomable = () => {
@@ -40,6 +41,7 @@ class Stock extends React.Component {
   };
 
   fetchConsomable = async () => {
+    this.setState({ loading: true });
     const data = await fetchApi({
       method: "GET",
       url: "/api/stock/consomable/find",
@@ -54,10 +56,11 @@ class Stock extends React.Component {
         elmnt.prix_unite
       ])
     );
-    this.setState({ consomables });
+    this.setState({ consomables, loading: false });
   };
 
   fetchNonConsomable = async () => {
+    this.setState({ loading: true });
     const data = await fetchApi({
       method: "GET",
       url: "/api/stock/nonconsomable/find",
@@ -74,16 +77,16 @@ class Stock extends React.Component {
         elmnt.date_achat
       ])
     );
-    this.setState({ nonconsomables });
+    this.setState({ nonconsomables, loading: false });
   };
 
   handleChange = e => {
     const { name, value } = e.target;
     switch (value) {
-      case "Materiels consomables":
+      case "Materiels consommables":
         this.fetchConsomable();
         break;
-      case "Materiels non-consomables":
+      case "Materiels non-consommables":
         this.fetchNonConsomable();
         break;
     }
@@ -118,8 +121,9 @@ class Stock extends React.Component {
 
   render() {
     const { classes } = this.props;
+    const { loading } = this.state;
     let columns;
-    this.state.typeMateriel === "Materiels consomables"
+    this.state.typeMateriel === "Materiels consommables"
       ? (columns = ColumnsConsomable)
       : (columns = ColumnsNonConsomable);
     return (
@@ -145,28 +149,31 @@ class Stock extends React.Component {
                 id: "demo-controlled-open-select"
               }}
             >
-              <MenuItem value={"Materiels consomables"}>
-                Materiels consomables
+              <MenuItem value={"Materiels consommables"}>
+                Materiels consommables
               </MenuItem>
-              <MenuItem value={"Materiels non-consomables"}>
-                Materiels non-consomables
+              <MenuItem value={"Materiels non-consommables"}>
+                Materiels non-consommables
               </MenuItem>
             </Select>
           </FormControl>
         </Row>
         <Grid container spacing={32}>
           <Grid item xs={12}>
-            <MUIDataTable
-              key={Math.random()}
-              title={""}
-              data={
-                this.state.typeMateriel === "Materiels consomables"
-                  ? this.state.consomables
-                  : this.state.nonconsomables
-              }
-              columns={columns}
-              options={Options}
-            />
+            <center>{loading && <CircularProgress disableShrink />}</center>
+            {!loading && (
+              <MUIDataTable
+                key={Math.random()}
+                title={""}
+                data={
+                  this.state.typeMateriel === "Materiels consommables"
+                    ? this.state.consomables
+                    : this.state.nonconsomables
+                }
+                columns={columns}
+                options={Options}
+              />
+            )}
           </Grid>
         </Grid>
       </Container>

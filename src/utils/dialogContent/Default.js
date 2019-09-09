@@ -5,12 +5,19 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 
-export default function Default({ handleAgree, handleDisagree, aos, dragend }) {
+import CircularProgress from "@material-ui/core/CircularProgress";
+
+export default function Default({
+  handleAgree,
+  handleDisagree,
+  aos,
+  dragend,
+  loading
+}) {
   const ref = React.useRef("form");
   function handleSubmit() {
     aos.map(ao => {
       if (ao.id === dragend.cardId) {
-        console.log(ao);
         ao.moinsDisant = "";
         ao.montant = "";
         ao.cautionFinal = "";
@@ -31,7 +38,13 @@ export default function Default({ handleAgree, handleDisagree, aos, dragend }) {
         <Button onClick={handleDisagree} color="primary">
           Annuler
         </Button>
-        <Button type="submit" color="primary">
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          disabled={loading}
+        >
+          {loading && <CircularProgress size={24} />}
           Confirmer
         </Button>
       </DialogActions>

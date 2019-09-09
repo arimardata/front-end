@@ -8,10 +8,10 @@ import {
   FormInput,
   FormGroup,
   FormCheckbox,
-  FormSelect,
-  Button
+  FormSelect
 } from "shards-react";
 import fetchApi from "./fetchApi";
+import Button from "@material-ui/core/Button";
 import { Constants, Store, Dispatcher } from "../flux";
 import { TableBody, MenuItem } from "@material-ui/core";
 import {
@@ -20,6 +20,7 @@ import {
   SelectValidator
 } from "react-material-ui-form-validator";
 import TextField from "@material-ui/core/TextField";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 class UpdateMaterielModal extends React.Component {
   constructor() {
@@ -32,7 +33,8 @@ class UpdateMaterielModal extends React.Component {
       prix_unite: "",
       prix_dachat: "",
       cout_par_heure: "",
-      date_dachat: ""
+      date_dachat: "",
+      request: false
     };
   }
 
@@ -45,11 +47,12 @@ class UpdateMaterielModal extends React.Component {
   };
 
   handleSubmit = async e => {
+    this.setState({ request: true });
     let url;
     let body = {};
     let actionType;
     switch (Store.getTypeStock()) {
-      case "Consomable":
+      case "Consommable":
         url = "/api/stock/consomable/update/" + this.props.id;
         body = {
           id_mat: this.state.materiel,
@@ -58,7 +61,7 @@ class UpdateMaterielModal extends React.Component {
         };
         actionType = Constants.TABLE_CONSOMABLE_UPDATED;
         break;
-      case "Non consomable":
+      case "Non consommable":
         url = "/api/stock/nonconsomable/update/" + this.props.id;
         body = {
           id_mat: this.state.materiel,
@@ -80,6 +83,8 @@ class UpdateMaterielModal extends React.Component {
       actionType
     });
     this.props.toggle();
+
+    this.setState({ request: false });
   };
   HandleAnnuler = () => {
     this.setState({});
@@ -87,15 +92,16 @@ class UpdateMaterielModal extends React.Component {
   };
 
   componentWillMount() {
-    switch (Store.getTypeStock()) {
-      case "Consomable":
+    const { typeStock } = this.props;
+    switch (typeStock) {
+      case "Consommable":
         this.setState({
           materiel: this.props.data[1],
           quantite: this.props.data[2],
           prix_unite: this.props.data[3]
         });
         break;
-      case "Non consomable":
+      case "Non consommable":
         this.setState({
           materiel: this.props.data[1],
           quantite: this.props.data[2],
@@ -117,6 +123,7 @@ class UpdateMaterielModal extends React.Component {
       cout_par_heure,
       date_dachat
     } = this.state;
+    const { typeStock } = this.props;
     return (
       <ValidatorForm
         ref="form"
@@ -153,7 +160,7 @@ class UpdateMaterielModal extends React.Component {
           </Col>
         </Row>
 
-        {Store.getTypeStock() === "Consomable" && (
+        {typeStock === "Consommable" && (
           <Row form>
             <Col md="6" className="form-group">
               <TextValidator
@@ -171,7 +178,7 @@ class UpdateMaterielModal extends React.Component {
             </Col>
           </Row>
         )}
-        {Store.getTypeStock() === "Non consomable" && (
+        {typeStock === "Non consommable" && (
           <div>
             <Row form>
               <Col md="6" className="form-group">
@@ -211,7 +218,7 @@ class UpdateMaterielModal extends React.Component {
               <Col md="6" className="form-group">
                 <TextField
                   type="date"
-                  label=" "
+                  label="Date d'achat"
                   onChange={this.handleOnChange}
                   style={{ width: "100%" }}
                   name="date_dachat"
@@ -223,12 +230,16 @@ class UpdateMaterielModal extends React.Component {
             </Row>
           </div>
         )}
-        <Button type="submit" /*onClick={this.handleResult}*/>
+        <Button
+          disabled={this.state.request}
+          type="submit"
+          variant="contained"
+          color="primary" /*onClick={this.handleResult}*/
+        >
+          {this.state.request && <CircularProgress size={24} />}
           Enrengistrer
         </Button>
-        <Button theme="danger" onClick={this.HandleAnnuler}>
-          Annuler
-        </Button>
+        <Button onClick={this.HandleAnnuler}>Annuler</Button>
       </ValidatorForm>
     );
   }

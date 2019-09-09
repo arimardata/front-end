@@ -10,13 +10,14 @@ import Columns from "./cheque/Columns";
 
 import { Container, Row } from "shards-react";
 import PageTitle from "../../components/common/PageTitle";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 // import { Store, Constants, Dispatcher } from "../../flux";
-class Tables extends React.Component {
+class Cheques extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = { loading: true };
     this.onChange = this.onChange.bind(this);
   }
 
@@ -25,6 +26,7 @@ class Tables extends React.Component {
   }
 
   fetchCheques = async () => {
+    this.setState({ loading: true });
     const data = await fetchApi({
       method: "GET",
       url: "/api/Cheques/find",
@@ -46,8 +48,7 @@ class Tables extends React.Component {
         elmnt.telephone
       ])
     );
-    console.log(cheques);
-    this.setState({ cheques });
+    this.setState({ cheques, loading: false });
   };
 
   async componentWillMount() {
@@ -60,6 +61,7 @@ class Tables extends React.Component {
   }
 
   render() {
+    const { loading } = this.state;
     return (
       <Container fluid className="main-content-container px-4">
         <Row noGutters className="page-header py-4">
@@ -72,13 +74,16 @@ class Tables extends React.Component {
         </Row>
         <Grid container spacing={32}>
           <Grid item xs={12}>
-            <MUIDataTable
-              key={Math.random()}
-              title={""}
-              data={this.state.cheques}
-              columns={Columns}
-              options={Options}
-            />
+            <center>{loading && <CircularProgress disableShrink />}</center>
+            {!loading && (
+              <MUIDataTable
+                key={Math.random()}
+                title={""}
+                data={this.state.cheques}
+                columns={Columns}
+                options={Options}
+              />
+            )}
           </Grid>
         </Grid>
       </Container>
@@ -86,4 +91,4 @@ class Tables extends React.Component {
   }
 }
 
-export default Tables;
+export default Cheques;

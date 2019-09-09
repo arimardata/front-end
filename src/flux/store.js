@@ -9,8 +9,11 @@ let _store = {
   navItems: getSidebarNavItems(),
   materielSelectedRow: [],
   materielSelectedRowRewind: [],
-  typeStock: "Consomable",
+  RHSelectedRow: [],
+  RHSelectedRowRewind: [],
+  typeStock: "Consommable",
   typePersonnel: "Permanent",
+  typeProjet: "Projet en cours",
   userData: {
     id: window.localStorage.getItem("id"),
     username: window.localStorage.getItem("username"),
@@ -39,10 +42,23 @@ class Store extends EventEmitter {
     return _store.materielSelectedRow;
   };
   setMaterielSelectedRowRewind = data => {
-    _store.materielSelectedRow = data;
+    _store.materielSelectedRowRewind = data;
   };
   getMaterielSelectedRowRewind = () => {
-    return _store.materielSelectedRow;
+    return _store.materielSelectedRowRewind;
+  };
+
+  setRHSelectedRow = data => {
+    _store.RHSelectedRow = data;
+  };
+  getRHSelectedRow = () => {
+    return _store.RHSelectedRow;
+  };
+  setRHSelectedRowRewind = data => {
+    _store.RHSelectedRowRewind = data;
+  };
+  getRHSelectedRowRewind = () => {
+    return _store.RHSelectedRowRewind;
   };
 
   toggleSidebar() {
@@ -78,6 +94,10 @@ class Store extends EventEmitter {
       case Constants.TABLE_PERMANENT_UPDATED:
         this.reloadTable(Constants.TABLE_PERMANENT_UPDATED);
         break;
+      case Constants.TABLE_PROJET_UPDATED:
+        this.reloadTable(Constants.TABLE_PROJET_UPDATED);
+        break;
+
       case Constants.TABLE_SAISONIER_UPDATED:
         this.reloadTable(Constants.TABLE_SAISONIER_UPDATED);
         break;
@@ -89,9 +109,15 @@ class Store extends EventEmitter {
         break;
       case Constants.TYPE_STOCK_SELECT:
         this.selectStockChanget();
+        break;
       case Constants.TYPE_PERSONNEL_SELECT:
         this.selectPersonnelChanged(payload);
+        break;
+      case Constants.TYPE_PROJET_SELECT:
+        this.selectProjetChanged(payload);
+        break;
       default:
+        break;
     }
   }
 
@@ -99,16 +125,23 @@ class Store extends EventEmitter {
     return _store.typeStock;
   };
 
+  getTypeProjet = () => {
+    return _store.typeProjet;
+  };
+  selectProjetChanged = payload => {
+    _store.typeProjet = payload;
+  };
+
   getTypePersonnel = () => {
     return _store.typePersonnel;
   };
   selectStockChanget = () => {
     switch (_store.typeStock) {
-      case "Consomable":
-        _store.typeStock = "Non consomable";
+      case "Consommable":
+        _store.typeStock = "Non consommable";
         break;
-      case "Non consomable":
-        _store.typeStock = "Consomable";
+      case "Non consommable":
+        _store.typeStock = "Consommable";
         break;
     }
   };

@@ -8,8 +8,7 @@ import {
   FormInput,
   FormGroup,
   FormCheckbox,
-  FormSelect,
-  Button
+  FormSelect
 } from "shards-react";
 import fetchApi from "./fetchApi";
 import { Constants, Store, Dispatcher } from "../flux";
@@ -19,21 +18,25 @@ import {
   TextValidator,
   SelectValidator
 } from "react-material-ui-form-validator";
+
+import { Button } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 class CreerMaterielModal extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      type: "Consomable",
+      type: "Consommable",
       materiel: "",
       quantite: "",
 
       prix_unite: "",
       prix_dachat: "",
       cout_par_heure: "",
-      date_dachat: ""
+      date_dachat: "",
+      request: false
     };
   }
 
@@ -46,11 +49,12 @@ class CreerMaterielModal extends React.Component {
   };
 
   handleSubmit = async e => {
+    this.setState({ request: true });
     let url;
     let body = {};
     let actionType;
     switch (this.state.type) {
-      case "Consomable":
+      case "Consommable":
         url = "/api/stock/consomable/create";
         body = {
           id_mat: this.state.materiel,
@@ -59,7 +63,7 @@ class CreerMaterielModal extends React.Component {
         };
         actionType = Constants.TABLE_CONSOMABLE_UPDATED;
         break;
-      case "Non consomable":
+      case "Non consommable":
         url = "/api/stock/nonconsomable/create";
         body = {
           id_mat: this.state.materiel,
@@ -81,6 +85,8 @@ class CreerMaterielModal extends React.Component {
       actionType
     });
     this.props.toggle();
+
+    this.setState({ request: false });
   };
   HandleAnnuler = () => {
     this.setState({});
@@ -147,13 +153,13 @@ class CreerMaterielModal extends React.Component {
               }}
               name="type"
             >
-              <option value="Consomable">Consomable</option>
-              <option value="Non consomable">Non consomable</option>
+              <option value="Consommable">Consommable</option>
+              <option value="Non consommable">Non consommable</option>
             </TextField>
           </Col>
         </Row>
 
-        {this.state.type === "Consomable" && (
+        {this.state.type === "Consommable" && (
           <Row form>
             <Col md="6" className="form-group">
               <TextValidator
@@ -171,7 +177,7 @@ class CreerMaterielModal extends React.Component {
             </Col>
           </Row>
         )}
-        {this.state.type === "Non consomable" && (
+        {this.state.type === "Non consommable" && (
           <div>
             <Row form>
               <Col md="6" className="form-group">
@@ -211,7 +217,7 @@ class CreerMaterielModal extends React.Component {
               <Col md="6" className="form-group">
                 <TextField
                   type="date"
-                  label=" "
+                  label="Date d'achat"
                   onChange={this.handleOnChange}
                   style={{ width: "100%" }}
                   name="date_dachat"
@@ -223,12 +229,16 @@ class CreerMaterielModal extends React.Component {
             </Row>
           </div>
         )}
-        <Button type="submit" /*onClick={this.handleResult}*/>
+        <Button
+          disabled={this.state.request}
+          type="submit"
+          variant="contained"
+          color="primary" /*onClick={this.handleResult}*/
+        >
+          {this.state.request && <CircularProgress size={24} />}
           Enrengistrer
         </Button>
-        <Button theme="danger" onClick={this.HandleAnnuler}>
-          Annuler
-        </Button>
+        <Button onClick={this.HandleAnnuler}>Annuler</Button>
       </ValidatorForm>
     );
   }

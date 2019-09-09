@@ -16,8 +16,10 @@ import {
   SelectValidator
 } from "react-material-ui-form-validator";
 
+import MenuItem from "@material-ui/core/MenuItem";
+
 function ProjectSteps(props) {
-  const { classes, etapes, handleOnChangeSteps } = props;
+  const { classes, etapes, handleOnChangeSteps, personnelSelect } = props;
 
   return (
     <div className={classes.rootTable}>
@@ -60,13 +62,19 @@ function ProjectSteps(props) {
                 />
               </TableCell>
               <TableCell align="left">
-                <TextValidator
+                <SelectValidator
                   onChange={handleOnChangeSteps(etape.id)}
+                  style={{ width: "80%" }}
                   name="responsable"
                   value={etape.responsable}
                   validators={["required"]}
                   errorMessages={["Ce champ est obligatoire : "]}
-                />
+                >
+                  {personnelSelect &&
+                    personnelSelect.map(personnel => (
+                      <MenuItem value={personnel[1]}>{personnel[1]}</MenuItem>
+                    ))}
+                </SelectValidator>
               </TableCell>
             </TableRow>
           ])}

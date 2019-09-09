@@ -82,21 +82,30 @@ export default [
       filter: false,
       sort: true
     }
+  },
+  {
+    name: "date debut",
+    label: "Date debut",
+    options: {
+      filter: false,
+      sort: true
+    }
+  },
+  {
+    name: "date fin",
+    label: "Date fin",
+    options: {
+      filter: false,
+      sort: true
+    }
+  },
+  {
+    name: "disponible",
+    label: "disponible",
+    options: {
+      filter: true,
+      sort: true,
+      display: false
+    }
   }
-  // {
-  //   name: "date debut",
-  //   label: "Date debut",
-  //   options: {
-  //     filter: false,
-  //     sort: true
-  //   }
-  // },
-  // {
-  //   name: "date fin",
-  //   label: "Date fin",
-  //   options: {
-  //     filter: false,
-  //     sort: true
-  //   }
-  // }
 ];

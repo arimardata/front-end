@@ -40,7 +40,6 @@ class Cheque extends Component {
     );
 
     this.setState({ donnee: donnee });
-    console.log(data);
   }
 
   render() {
@@ -55,7 +54,7 @@ class Cheque extends Component {
       "date",
       "Alerte",
       "email",
-      "telephone" 
+      "telephone"
     ];
 
     const options = {

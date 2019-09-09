@@ -20,6 +20,8 @@ class UsersByDevice extends React.Component {
   }
 
   componentDidMount() {
+    const data = this.props.chartData;
+    data.datasets[0].data = this.props.data;
     const chartConfig = {
       type: "pie",
       data: this.props.chartData,
@@ -47,12 +49,8 @@ class UsersByDevice extends React.Component {
   }
 
   render() {
-    const { title } = this.props;
     return (
       <Card small className="h-100">
-        <CardHeader className="border-bottom">
-          <h6 className="m-0">{title}</h6>
-        </CardHeader>
         <CardBody className="d-flex py-0">
           <canvas
             height="220"
@@ -60,27 +58,6 @@ class UsersByDevice extends React.Component {
             className="blog-users-by-device m-auto"
           />
         </CardBody>
-        <CardFooter className="border-top">
-          <Row>
-            <Col>
-              <FormSelect
-                size="sm"
-                value="last-week"
-                style={{ maxWidth: "130px" }}
-                onChange={() => {}}
-              >
-                <option value="last-week">Last Week</option>
-                <option value="today">Today</option>
-                <option value="last-month">Last Month</option>
-                <option value="last-year">Last Year</option>
-              </FormSelect>
-            </Col>
-            <Col className="text-right view-report">
-              {/* eslint-disable-next-line */}
-              <a href="#">View full report &rarr;</a>
-            </Col>
-          </Row>
-        </CardFooter>
       </Card>
     );
   }
@@ -115,11 +92,23 @@ UsersByDevice.defaultProps = {
         backgroundColor: [
           "rgba(0,255,0,0.5)",
           "rgba(198,16,16,0.5)",
-          "rgba(227,202,96,0.5)"
+          "rgba(227,202,96,0.5)",
+          "rgba(198,202,96,0.5)",
+          "rgba(227,16,96,0.5)",
+          "rgba(16,202,96,0.5)",
+          "rgba(96,202,96,0.5)"
         ]
       }
     ],
-    labels: ["Retenus", "Non Retenus ", "En attente"]
+    labels: [
+      "Retenus",
+      "Non Retenus",
+      "En attente",
+      "A modifier",
+      "Projets finis",
+      "Projets",
+      "Favoris"
+    ]
   }
 };
 

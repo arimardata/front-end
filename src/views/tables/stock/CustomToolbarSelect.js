@@ -56,11 +56,11 @@ class CustomToolbarSelect extends React.Component {
       let url, actionType;
 
       switch (Store.getTypeStock()) {
-        case "Consomable":
+        case "Consommable":
           url = "/api/stock/consomable/delete/" + id;
           actionType = Constants.TABLE_CONSOMABLE_UPDATED;
           break;
-        case "Non consomable":
+        case "Non consommable":
           url = "/api/stock/nonconsomable/delete/" + id;
           actionType = Constants.TABLE_NON_CONSOMABLE_UPDATED;
           break;
@@ -110,7 +110,7 @@ class CustomToolbarSelect extends React.Component {
           </IconButton>
         </Tooltip>
       );
-
+    const typeStock = Store.getTypeStock();
     return (
       <div className={classes.iconContainer}>
         <React.Fragment>
@@ -126,6 +126,7 @@ class CustomToolbarSelect extends React.Component {
                 id={this.state.id}
                 toggle={this.toggle}
                 data={this.state.data}
+                typeStock={typeStock}
               />
             </ModalBody>
           </Modal>

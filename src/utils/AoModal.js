@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { ListGroup, ListGroupItem, Row, Col } from "shards-react";
 import lanesLayout from "./lanesLayout";
 import IconButton from "@material-ui/core/IconButton";
 import fetchApi from "./fetchApi";
 import FileSaver from "file-saver";
-
-
+import ConfirmDeleteModal from "./ConfirmDeleteModal";
+import { Modal, ModalBody } from "shards-react";
 
 const downloadPdf = num_Ordre => async () => {
   const options = {
@@ -16,13 +16,14 @@ const downloadPdf = num_Ordre => async () => {
     responseType: "blob"
   };
   let response = await fetch(
-    "http://localhost:8090/api/files/PDF" + num_Ordre,
+    "https://cors-anywhere.herokuapp.com/http://51.77.157.16:8090/api/files/PDF" +
+      num_Ordre,
     options
   );
 
   var downloadBlob, downloadURL, handledelete, handleedit;
 
-  downloadBlob = function (data, fileName, mimeType) {
+  downloadBlob = function(data, fileName, mimeType) {
     var blob, url;
 
     blob = new Blob([data], {
@@ -30,12 +31,12 @@ const downloadPdf = num_Ordre => async () => {
     });
     url = window.URL.createObjectURL(blob);
     downloadURL(url, fileName);
-    setTimeout(function () {
+    setTimeout(function() {
       return window.URL.revokeObjectURL(url);
     }, 1000);
   };
 
-  downloadURL = function (data, fileName) {
+  downloadURL = function(data, fileName) {
     var a;
     a = document.createElement("a");
     a.href = data;
@@ -147,14 +148,8 @@ const downloadPdf = num_Ordre => async () => {
 // };
 
 const AoModal = props => {
-
-
-
-
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const handledelete = id => async () => {
-    console.log(props)
-
-
     fetchApi({
       method: "DELETE",
       url: "/api/projects/delete/" + id,
@@ -162,18 +157,23 @@ const AoModal = props => {
     });
 
     props.toggle();
-
-
+    window.location.reload();
   };
 
-  
-  const handleedit = id => async() =>{
-  
-  };
-  
+  const handleedit = id => async () => {};
+
   let data = props.data;
   return (
     <div>
+      <Modal open={openDeleteDialog}>
+        <ModalBody>
+          <p>Est-vous sure ?</p>
+          <ConfirmDeleteModal
+            handleAgree={handledelete(data.id)}
+            toggle={() => setOpenDeleteDialog(!openDeleteDialog)}
+          />
+        </ModalBody>
+      </Modal>
       <div className="row">
         <div className="col-10">
           <p>{data.chef_ouvrage}</p>
@@ -184,7 +184,7 @@ const AoModal = props => {
           </IconButton>
         </div>
         <div className="col-1">
-          <IconButton onClick={handledelete(data.id)}>
+          <IconButton onClick={() => setOpenDeleteDialog(!openDeleteDialog)}>
             <i className="material-icons">delete</i>
           </IconButton>
         </div>
@@ -212,7 +212,7 @@ const AoModal = props => {
           N° d'ordre :<span>{data.num_Ordre}</span>
         </div>
         <div className="col">
-          Date limite :<span>{data.date_Limite}</span>
+          Date limite :<span>{data.date_limite}</span>
         </div>
         <div className="col">
           ville :<span>{data.ville}</span>
@@ -227,21 +227,69 @@ const AoModal = props => {
       <hr />
       <div className="row">
         <div className="col">
-          <div>Caution provisoire(CP) : </div>
+          <div>Caution : </div>
           <br />
           <div>{data.caution}</div>
         </div>
+      </div>
 
-        <div className="col">
-          {data.etat === "Retenu" && data.cautionFinal && (
-            <>
-              <div>Caution final : </div>
+      {data.etat !== "Favoris" && data.etat !== "Postule" && data.cautionFinal && (
+        <>
+          <hr />
+          <div className="row">
+            <div className="col">
+              <div>Bank : </div>
+              <br />
+              <div>{data.bankCautionFinal}</div>
+            </div>
+            <div className="col">
+              <div>Caution finale : </div>
               <br />
               <div>{data.cautionFinal}</div>
-            </>
-          )}
-        </div>
-      </div>
+            </div>
+            <div className="col">
+              <div>Periode du caution : </div>
+              <br />
+              <div>{data.periodeCautionFinal}</div>
+            </div>
+
+            <div className="col">
+              <div>Date du caution : </div>
+              <br />
+              <div>{data.dateCautionFinal}</div>
+            </div>
+          </div>
+        </>
+      )}
+
+      {data.etat !== "Favoris" && data.cautionProvisoire && (
+        <>
+          <hr />
+          <div className="row">
+            <div className="col">
+              <div>Bank : </div>
+              <br />
+              <div>{data.bankCautionProvisoire}</div>
+            </div>
+            <div className="col">
+              <div>Caution provisoire : </div>
+              <br />
+              <div>{data.cautionProvisoire}</div>
+            </div>
+            <div className="col">
+              <div>Periode du caution : </div>
+              <br />
+              <div>{data.periodeCautionProvisoire}</div>
+            </div>
+
+            <div className="col">
+              <div>Date du caution : </div>
+              <br />
+              <div>{data.dateCautionProvisoire}</div>
+            </div>
+          </div>
+        </>
+      )}
 
       <hr />
       {data.etat === "Archive Des Projets Non-Accepte" && data.moinsDisant && (

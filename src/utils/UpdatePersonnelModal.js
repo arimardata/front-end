@@ -8,9 +8,9 @@ import {
   FormInput,
   FormGroup,
   FormCheckbox,
-  FormSelect,
-  Button
+  FormSelect
 } from "shards-react";
+import Button from "@material-ui/core/Button";
 import fetchApi from "./fetchApi";
 import { Constants, Store, Dispatcher } from "../flux";
 import { TableBody, MenuItem } from "@material-ui/core";
@@ -20,16 +20,16 @@ import {
   SelectValidator
 } from "react-material-ui-form-validator";
 import TextField from "@material-ui/core/TextField";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 class UpdatePersonnelModal extends React.Component {
   constructor() {
     super();
 
-    this.state = {};
+    this.state = { request: false, disponible: true, archived: false };
   }
 
   componentWillMount() {
-    console.log(this.props.data);
     switch (Store.getTypePersonnel()) {
       case "Administratif":
         this.setState({
@@ -43,7 +43,8 @@ class UpdatePersonnelModal extends React.Component {
           dateDeNaissance: this.props.data[8],
           salaire: this.props.data[9],
           dateEmbauche: this.props.data[10],
-          cnss: this.props.data[11]
+          cnss: this.props.data[11],
+          disponible: this.props.data[12] === "occupé" ? false : true
         });
         break;
       case "Permanent":
@@ -58,7 +59,8 @@ class UpdatePersonnelModal extends React.Component {
           dateDeNaissance: this.props.data[8],
           salaire: this.props.data[9],
           dateEmbauche: this.props.data[10],
-          cnss: this.props.data[11]
+          cnss: this.props.data[11],
+          disponible: this.props.data[12] === "occupé" ? false : true
         });
         break;
       case "Saisonier":
@@ -71,7 +73,8 @@ class UpdatePersonnelModal extends React.Component {
           diplome: this.props.data[6],
           qualite: this.props.data[7],
           dateDeNaissance: this.props.data[8],
-          coutParJour: this.props.data[9]
+          coutParJour: this.props.data[9],
+          disponible: this.props.data[10] === "occupé" ? false : true
         });
         break;
     }
@@ -98,7 +101,6 @@ class UpdatePersonnelModal extends React.Component {
     Dispatcher.dispatch({
       actionType: Constants.TABLE_ADMINISTRATIF_UPDATED
     });
-    console.log(res);
   };
   updatePermanent = async (id, data) => {
     const res = await fetchApi({
@@ -111,7 +113,6 @@ class UpdatePersonnelModal extends React.Component {
     Dispatcher.dispatch({
       actionType: Constants.TABLE_PERMANENT_UPDATED
     });
-    console.log(res);
   };
   updateSaisonier = async (id, data) => {
     const res = await fetchApi({
@@ -124,10 +125,10 @@ class UpdatePersonnelModal extends React.Component {
     Dispatcher.dispatch({
       actionType: Constants.TABLE_SAISONIER_UPDATED
     });
-    console.log(res);
   };
 
   handleSubmit = async () => {
+    this.setState({ request: true });
     // your submit logic
     let data = this.state;
     let id = this.props.id;
@@ -149,6 +150,8 @@ class UpdatePersonnelModal extends React.Component {
     }
 
     this.props.toggle();
+
+    this.setState({ request: false });
   };
   HandleAnnuler = () => {
     this.setState({});
@@ -173,7 +176,6 @@ class UpdatePersonnelModal extends React.Component {
       date_debut,
       date_fin
     } = this.state;
-
     let fields;
     switch (Store.getTypePersonnel()) {
       case "Permanent":
@@ -397,12 +399,16 @@ class UpdatePersonnelModal extends React.Component {
         </Row>
 
         {fields}
-        <Button type="submit" /*onClick={this.handleResult}*/>
+        <Button
+          disabled={this.state.request}
+          type="submit"
+          variant="contained"
+          color="primary" /*onClick={this.handleResult}*/
+        >
+          {this.state.request && <CircularProgress size={24} />}
           Enrengistrer
         </Button>
-        <Button theme="danger" onClick={this.HandleAnnuler}>
-          Annuler
-        </Button>
+        <Button onClick={this.HandleAnnuler}>Annuler</Button>
       </ValidatorForm>
     );
   }

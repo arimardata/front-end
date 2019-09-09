@@ -8,10 +8,10 @@ import {
   FormInput,
   FormGroup,
   FormCheckbox,
-  FormSelect,
-  Button
+  FormSelect
 } from "shards-react";
 import fetchApi from "./fetchApi";
+import Button from "@material-ui/core/Button";
 import { Constants, Store, Dispatcher } from "../flux";
 import { TableBody, MenuItem } from "@material-ui/core";
 import {
@@ -20,6 +20,7 @@ import {
   SelectValidator
 } from "react-material-ui-form-validator";
 import TextField from "@material-ui/core/TextField";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 class PersonnelModal extends React.Component {
   constructor() {
@@ -28,7 +29,12 @@ class PersonnelModal extends React.Component {
     this.state = {
       type_personnel: "Permanent",
       dateDeNaissance: "1990-01-01",
-      dateEmbauche: "2019-01-01"
+      dateEmbauche: "2019-01-01",
+      dateDebut: "2019-01-01",
+      dateFin: "2020-01-01",
+      disponible: true,
+      archived: false,
+      request: false
     };
   }
 
@@ -53,7 +59,6 @@ class PersonnelModal extends React.Component {
     Dispatcher.dispatch({
       actionType: Constants.TABLE_ADMINISTRATIF_UPDATED
     });
-    console.log(res);
   };
   createPermanent = async data => {
     const res = await fetchApi({
@@ -66,7 +71,6 @@ class PersonnelModal extends React.Component {
     Dispatcher.dispatch({
       actionType: Constants.TABLE_PERMANENT_UPDATED
     });
-    console.log(res);
   };
   createSaisonier = async data => {
     const res = await fetchApi({
@@ -79,21 +83,26 @@ class PersonnelModal extends React.Component {
     Dispatcher.dispatch({
       actionType: Constants.TABLE_SAISONIER_UPDATED
     });
-    console.log(res);
   };
 
   handleSubmit = async () => {
     // your submit logic
+
+    this.setState({ request: true });
     let data = this.state;
     switch (data.type_personnel) {
       case "Administratif":
         delete data.type_personnel;
         delete data.coutParJour;
+        delete data.dateDebut;
+        delete data.dateFin;
         this.createAdministratif(data);
         break;
       case "Permanent":
         delete data.type_personnel;
         delete data.coutParJour;
+        delete data.dateDebut;
+        delete data.dateFin;
         this.createPermanent(data);
         break;
       case "Saisonier":
@@ -106,6 +115,8 @@ class PersonnelModal extends React.Component {
     }
 
     this.props.toggle();
+
+    this.setState({ request: false });
   };
   HandleAnnuler = () => {
     this.setState({});
@@ -126,7 +137,9 @@ class PersonnelModal extends React.Component {
       coutParJour,
       salaire,
       cnss,
-      dateEmbauche
+      dateEmbauche,
+      dateDebut,
+      dateFin
     } = this.state;
 
     let fields;
@@ -237,16 +250,15 @@ class PersonnelModal extends React.Component {
                 />
               </Col>
             </Row>
-            {/* <Row form>
+            <Row form>
               <Col md="6" className="form-group">
                 <TextField
                   type="date"
                   label="Date debut"
                   onChange={this.handleOnChange}
-                  defaultValue="2019-01-01"
                   style={{ width: "100%" }}
-                  name="date_debut"
-                  value={date_debut}
+                  name="dateDebut"
+                  value={dateDebut}
                   validators={["required"]}
                   errorMessages={["Ce Champ est Obligatoire : "]}
                 />
@@ -256,15 +268,14 @@ class PersonnelModal extends React.Component {
                   type="date"
                   label="Date fin"
                   onChange={this.handleOnChange}
-                  defaultValue="2020-01-01"
                   style={{ width: "100%" }}
-                  name="date_fin"
-                  value={date_fin}
+                  name="dateFin"
+                  value={dateFin}
                   validators={["required"]}
                   errorMessages={["Ce Champ est Obligatoire : "]}
                 />
               </Col>
-            </Row> */}
+            </Row>
           </div>
         );
         break;
@@ -402,12 +413,16 @@ class PersonnelModal extends React.Component {
           </Col>
         </Row>
         {fields}
-        <Button type="submit" /*onClick={this.handleResult}*/>
+        <Button
+          disabled={this.state.request}
+          type="submit"
+          variant="contained"
+          color="primary" /*onClick={this.handleResult}*/
+        >
+          {this.state.request && <CircularProgress size={24} />}
           Enrengistrer
         </Button>
-        <Button theme="danger" onClick={this.HandleAnnuler}>
-          Annuler
-        </Button>
+        <Button onClick={this.HandleAnnuler}>Annuler</Button>
       </ValidatorForm>
       //     </ListGroupItem>
       //   </ListGroup>
