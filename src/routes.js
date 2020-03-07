@@ -17,6 +17,7 @@ import AppelesOffres from "./views/AppelesOffres";
 import StepperProjects from "./views/projects/StepperProjects";
 import Allnotifications from "./views/Allnotifications";
 import UpdatePasswordPage from "./components/authentication/UpdatePasswordPage";
+import EmailNorifPage from "./components/email-notif/EmailNorifPage";
 
 export default [
   {
@@ -29,6 +30,11 @@ export default [
     path: "/updatePassword",
     layout: DefaultLayout,
     component: UpdatePasswordPage
+  },
+  {
+    path: "/emailNotif",
+    layout: DefaultLayout,
+    component: EmailNorifPage
   },
 
   {
