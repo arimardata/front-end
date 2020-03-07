@@ -48,10 +48,10 @@ export default class UserActions extends React.Component {
         </DropdownToggle>
         <Collapse tag={DropdownMenu} right small open={this.state.visible}>
           <DropdownItem tag={Link} to="/updatePassword">
-            <i className="material-icons">&#xE7FD;</i> Changer mot de passe
+            <i className="material-icons">settings</i> Changer mot de passe
           </DropdownItem>
           <DropdownItem tag={Link} to="/emailNotif">
-            <i className="material-icons">&#xE7FD;</i> Changer l'email
+            <i className="material-icons">settings</i> Changer l'email
           </DropdownItem>
           <DropdownItem divider />
           <DropdownItem

@@ -9,9 +9,7 @@ export default UpdatePasswordPage => (
         <Col>
           <Card lg="8" className="mb-4">
             <CardHeader className="border-bottom">
-              <h6 className="m-0">
-                Veuillez vous saisir le nouveau mot de passe
-              </h6>
+              <h6 className="m-0">Changement du mot de passe</h6>
             </CardHeader>
             <UpdatePasswordForm />
           </Card>
