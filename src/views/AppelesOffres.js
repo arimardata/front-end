@@ -267,7 +267,7 @@ class AppelsOffres extends Component {
       clicked: ao[0]
     });
     this.toggle();
-  }
+  };
   OnAddClick = () => {
     this.setState({ ...this.state, openAdd: !this.state.openAdd });
     this.toggleAdd();
@@ -369,16 +369,13 @@ class AppelsOffres extends Component {
       console.error(error);
     }
     window.location.reload();
-
-
-  }
+  };
   onCardDelete = (cardId, laneId) => {
     console.log(cardId);
-  }
+  };
   askDeleteCard(cardId, laneId) {
     console.log(cardId);
   }
-
 
   render() {
     const { classes } = this.props;
@@ -408,7 +405,6 @@ class AppelsOffres extends Component {
       );
     }
     return (
-
       <div className={classes.root}>
         <Container fluid className="main-content-container px-4">
           <Row noGutters className="page-header py-4">
@@ -456,7 +452,7 @@ class AppelsOffres extends Component {
             </ModalBody>
           </Modal>
 
-          <Modal size="lg" open={openAdd} toggle={this.toggleAdd}  >
+          <Modal size="lg" open={openAdd} toggle={this.toggleAdd}>
             <ModalBody>
               <AddModal toggle={this.toggleAdd} />
 
@@ -465,39 +461,36 @@ class AppelsOffres extends Component {
                   <AddModal toggle={this.toggleAdd} />
                 </ModalBody>
               </Modal>
-
-              <Fab
-                onClick={this.handleClickOpen}
-                aria-label={"Expand"}
-                className={classes.fab}
-                color="inherit"
-              >
-                <Icon>edit_icon</Icon>
-              </Fab>
-              <Fab
-                onClick={this.handleScript}
-                aria-label={"Expand"}
-                className={classes.fab2}
-                color="inherit"
-              >
-                <Icon>autorenew</Icon>
-              </Fab>
-              <Fab
-                onClick={this.OnAddClick}
-                aria-label={"Expand"}
-                className={classes.fab3}
-                color="inherit"
-              >
-                <Icon>add_icon</Icon>
-              </Fab>
-
-              </ModalBody>
+            </ModalBody>
           </Modal>
+          <Fab
+            onClick={this.handleClickOpen}
+            aria-label={"Expand"}
+            className={classes.fab}
+            color="inherit"
+          >
+            <Icon>edit_icon</Icon>
+          </Fab>
+          <Fab
+            onClick={this.handleScript}
+            aria-label={"Expand"}
+            className={classes.fab2}
+            color="inherit"
+          >
+            <Icon>autorenew</Icon>
+          </Fab>
+          <Fab
+            onClick={this.OnAddClick}
+            aria-label={"Expand"}
+            className={classes.fab3}
+            color="inherit"
+          >
+            <Icon>add_icon</Icon>
+          </Fab>
         </Container>
-
       </div>
-        );
-      }
-    }
-    
-    export default withStyles(styles)(AppelsOffres);
+    );
+  }
+}
+
+export default withStyles(styles)(AppelsOffres);

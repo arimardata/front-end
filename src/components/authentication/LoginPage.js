@@ -7,7 +7,7 @@ export default LoginPage => (
     <Container fluid className="px-0">
       <center>
         <Alert className="mb-0">
-          <i className="fa fa-info mx-2" /> Veullez vous connecter pour
+          <i className="fa fa-info mx-2" /> Veuillez vous connecter pour
           continuer :
         </Alert>
       </center>

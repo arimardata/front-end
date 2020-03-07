@@ -16,6 +16,7 @@ import Stock from "./views/tables/Stock";
 import AppelesOffres from "./views/AppelesOffres";
 import StepperProjects from "./views/projects/StepperProjects";
 import Allnotifications from "./views/Allnotifications";
+import UpdatePasswordPage from "./components/authentication/UpdatePasswordPage";
 
 export default [
   {
@@ -24,6 +25,12 @@ export default [
     layout: DefaultLayout,
     component: () => <Redirect to="/statistiques" />
   },
+  {
+    path: "/updatePassword",
+    layout: DefaultLayout,
+    component: UpdatePasswordPage
+  },
+
   {
     path: "/statistiques",
     layout: DefaultLayout,
@@ -59,9 +66,10 @@ export default [
     path: "/Allnotifications",
     layout: DefaultLayout,
     component: Allnotifications
-},{
+  },
+  {
     path: "/lister-projets",
     layout: DefaultLayout,
     component: ListerProjets
- }
+  }
 ];
