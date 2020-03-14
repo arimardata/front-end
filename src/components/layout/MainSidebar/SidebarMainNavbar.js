@@ -23,7 +23,8 @@ class SidebarMainNavbar extends React.Component {
       <div className="main-navbar">
         <Navbar
           className="align-items-stretch bg-white flex-md-nowrap border-bottom p-0"
-          type="light"
+          type="dark"
+          theme="info"
         >
           <NavbarBrand
             className="w-100 mr-0"

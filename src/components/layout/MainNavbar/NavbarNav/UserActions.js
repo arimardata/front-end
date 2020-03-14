@@ -39,7 +39,7 @@ export default class UserActions extends React.Component {
         <DropdownToggle caret tag={NavLink} className="text-nowrap px-3">
           <img
             className="user-avatar rounded-circle mr-2"
-            src={require("./../../../../images/avatars/1.jpg")}
+            src={require("./../../../../images/avatars/6.png")}
             alt="User Avatar"
           />{" "}
           <span className="d-none d-md-inline-block">
@@ -48,11 +48,13 @@ export default class UserActions extends React.Component {
         </DropdownToggle>
         <Collapse tag={DropdownMenu} right small open={this.state.visible}>
           <DropdownItem tag={Link} to="/updatePassword">
-            <i className="material-icons">settings</i> Changer mot de passe
+            <div className="mr-2">
+              <i className="material-icons">settings</i> Changer mot de passe
+            </div>
           </DropdownItem>
-          <DropdownItem tag={Link} to="/emailNotif">
+          {/* <DropdownItem tag={Link} to="/emailNotif">
             <i className="material-icons">settings</i> Changer l'email
-          </DropdownItem>
+          </DropdownItem> */}
           <DropdownItem divider />
           <DropdownItem
             onClick={this.logout}
