@@ -52,9 +52,9 @@ export default class UserActions extends React.Component {
               <i className="material-icons">settings</i> Changer mot de passe
             </div>
           </DropdownItem>
-          {/* <DropdownItem tag={Link} to="/emailNotif">
+          {<DropdownItem tag={Link} to="/emailNotif">
             <i className="material-icons">settings</i> Changer l'email
-          </DropdownItem> */}
+          </DropdownItem> }
           <DropdownItem divider />
           <DropdownItem
             onClick={this.logout}

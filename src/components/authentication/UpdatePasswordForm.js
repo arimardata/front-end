@@ -75,10 +75,10 @@ export default class UpdatePasswordForm extends Component {
           }
           let id = window.localStorage.getItem("id");
           let username = window.localStorage.getItem("username");
-          let authority = window.localStorage.getItem("authority");
+          //let authority = window.localStorage.getItem("authority");
           const body = {
             username,
-            authority,
+            //authority,
             password
           };
 

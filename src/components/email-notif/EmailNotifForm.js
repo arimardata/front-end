@@ -36,6 +36,29 @@ export default class EmailNotifForm extends Component {
 
   handleClick() {
     console.log("CODE HERE ....");
+    console.log(this.state.data["email"]);
+    let email=this.state.data["email"];
+    let id = window.localStorage.getItem("id");
+
+    const body = {
+      id: window.localStorage.getItem("id"),
+      email: this.state.data["email"]
+      //authority: window.localStorage.getItem("authority")
+    };
+
+    fetchApi({
+      method: "POST",
+      body,
+      url: "/api/user/updateemail" ,
+      token: window.localStorage.getItem("token")
+    });
+
+
+    
+    console.log(email);
+    console.log("token:");
+    console.log(window.localStorage.getItem("token"));
+
   }
 
   render() {
