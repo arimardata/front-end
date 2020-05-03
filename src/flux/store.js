@@ -9,10 +9,6 @@ import {
 
 let _store = {
   menuVisible: false,
-  navItems:
-    window.localStorage.getItem("authority") === "ROLE_ADMIN"
-      ? sideBarForAdmin()
-      : sideBarForAssistant(),
   materielSelectedRow: [],
   materielSelectedRowRewind: [],
   RHSelectedRow: [],
@@ -26,7 +22,8 @@ let _store = {
     authority: window.localStorage.getItem("authority"),
     token: window.localStorage.getItem("token"),
     firstLogin: window.localStorage.getItem("firstLogin")
-  }
+  },
+  navItems: sideBarForAssistant()
 };
 
 class Store extends EventEmitter {
@@ -168,6 +165,11 @@ class Store extends EventEmitter {
   };
   setUserData(payload) {
     _store.userData = payload;
+    _store.navItems =
+      _store.userData.authority === "ROLE_ADMIN"
+        ? sideBarForAdmin()
+        : sideBarForAssistant();
+
     this.emit(Constants.LOGIN);
   }
 
