@@ -2,11 +2,17 @@ import { EventEmitter } from "events";
 
 import Dispatcher from "./dispatcher";
 import Constants from "./constants";
-import getSidebarNavItems from "../data/sidebar-nav-items";
+import {
+  sideBarForAssistant,
+  sideBarForAdmin
+} from "../data/sidebar-nav-items";
 
 let _store = {
   menuVisible: false,
-  navItems: getSidebarNavItems(),
+  navItems:
+    window.localStorage.getItem("authority") === "ROLE_ADMIN"
+      ? sideBarForAdmin()
+      : sideBarForAssistant(),
   materielSelectedRow: [],
   materielSelectedRowRewind: [],
   RHSelectedRow: [],

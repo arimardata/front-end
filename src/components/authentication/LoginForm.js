@@ -63,6 +63,7 @@ export default class LoginFrom extends Component {
           window.localStorage.setItem("username", data.username);
           window.localStorage.setItem("authority", data.authority);
           window.localStorage.setItem("firstLogin", data.firstLogin);
+          window.location.reload();
           Dispatcher.dispatch({ actionType: Constants.LOGIN, payload: data });
         } else {
           this.setState({ error: data.message });
